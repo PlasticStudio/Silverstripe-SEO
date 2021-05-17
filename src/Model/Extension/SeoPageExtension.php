@@ -468,6 +468,24 @@ class SeoPageExtension extends DataExtension
     }
 
     /**
+     * check whether the domain currently being viewed has been configure
+     * to be excluded from indexing
+     * 
+     * @return bool
+     */
+    public static function excludeSiteFromIndexing() 
+    {
+        if (Config::inst()->exists('PlasticStudio\SEO', 'noindex_domains')) {
+            foreach (Config::inst()->get('PlasticStudio\SEO', 'noindex_domains') as $domain) {
+                if (strpos(Director::protocolAndHost(), $domain) !== false) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get the current page Meta robots rules
      *
      * @since version 2.0.0
@@ -476,12 +494,8 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageRobots()
     {
-        if (Config::inst()->exists('PlasticStudio\SEO', 'noindex_domains')) {
-            foreach (Config::inst()->get('PlasticStudio\SEO', 'noindex_domains') as $domain) {
-                if (strpos(Director::protocolAndHost(), $domain) !== false) {
-                    return 'noindex,nofollow';
-                }
-            }
+        if (self::excludeSiteFromIndexing()) {
+            return 'noindex,nofollow';
         }
         if($this->owner->Robots) {
             return $this->owner->Robots;
