@@ -19,7 +19,7 @@ These Objects REQUIRE a Link() method to return the DataObject Page URL.
 If you are generating a HTML sitemap you also need to include the parent ID to correctly nest within the generated HTML list.
 
 ```yml
-CyberDuck\SEO\Generators\SitemapGenerator:
+PlasticStudio\SEO\Generators\SitemapGenerator:
   objects:
     MyObject: 
       parent_id: 14
@@ -35,7 +35,7 @@ You can access the sitemap HTML by calling the sitemap generator and referencing
 In your Sitemap Page controller:
 
 ```php
-use CyberDuck\SEO\Generators\SitemapGenerator;
+use PlasticStudio\SEO\Generators\SitemapGenerator;
 
 class SitemapPage_Controller extends PageController
 {

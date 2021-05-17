@@ -21,7 +21,7 @@ DataObjects that wish to act as pages need the SeoExtension applied to them.
 ```yml
 MyObject:
   extensions:
-    - CyberDuck\SEO\Model\Extension\SeoExtension
+    - PlasticStudio\SEO\Model\Extension\SeoExtension
 ```
 
 This extension is the same as the SeoPageExtension apart from it contains a few extra db fields.

@@ -1,5 +1,5 @@
 ---
 Name: seo meta config
 ---
-CyberDuck\SEO\SEO_Meta:
+PlasticStudio\SEO\SEO_Meta:
   defaults: '4.0'

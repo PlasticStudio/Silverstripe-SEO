@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Model;
+namespace PlasticStudio\SEO\Model;
 
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\DropdownField;

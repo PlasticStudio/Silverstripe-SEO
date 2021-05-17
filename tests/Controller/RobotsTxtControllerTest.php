@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Tests\Controller;
+namespace PlasticStudio\SEO\Tests\Controller;
 
 use SilverStripe\Dev\FunctionalTest;
 

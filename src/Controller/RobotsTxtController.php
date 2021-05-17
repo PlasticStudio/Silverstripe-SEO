@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Controller;
+namespace PlasticStudio\SEO\Controller;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;

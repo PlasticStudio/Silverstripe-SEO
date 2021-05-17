@@ -1,9 +1,9 @@
 <?php
 
-namespace CyberDuck\SEO\Controller;
+namespace PlasticStudio\SEO\Controller;
 
 use Page;
-use CyberDuck\SEO\Generators\SitemapGenerator;
+use PlasticStudio\SEO\Generators\SitemapGenerator;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
 use SilverStripe\Control\HTTPRequest;

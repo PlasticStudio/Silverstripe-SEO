@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Generators;
+namespace PlasticStudio\SEO\Generators;
 
 use SilverStripe\ORM\DataObject;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Model\Extension;
+namespace PlasticStudio\SEO\Model\Extension;
 
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;

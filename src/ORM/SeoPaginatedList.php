@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\ORM;
+namespace PlasticStudio\SEO\ORM;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTP;
