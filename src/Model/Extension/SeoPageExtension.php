@@ -476,9 +476,11 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageRobots()
     {
-        foreach (Config::inst()->get('PlasticStudio\SEO', 'noindex_domains') as $domain) {
-            if (strpos(Director::protocolAndHost(), $domain) !== false) {
-                return 'noindex,nofollow';
+        if (Config::inst()->exists('PlasticStudio\SEO', 'noindex_domains')) {
+            foreach (Config::inst()->get('PlasticStudio\SEO', 'noindex_domains') as $domain) {
+                if (strpos(Director::protocolAndHost(), $domain) !== false) {
+                    return 'noindex,nofollow';
+                }
             }
         }
         if($this->owner->Robots) {
