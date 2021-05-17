@@ -88,6 +88,19 @@ class SeoSiteConfigExtension extends DataExtension
             ->setDescription('Minimum size - 1200w x 630h pixels. Used in og:image and twitter:image meta when social image not set on page / model');
         $fields->addFieldToTab('Root.SEO', $uploader);
 
+        if (SeoPageExtension::excludeSiteFromIndexing()) {
+            $noindex_domains = Config::inst()->get('PlasticStudio\SEO', 'noindex_domains');
+            $message = '<div class="message warning">This domain has been configured to be excluded from indexing by robots like Google etc. Excluded domains are:';
+            $message .= '<ul>';
+            foreach ($noindex_domains as $domain) {
+                $message .= '<li>'.$domain.'</li>';
+            }
+            $message .= '</ul></div>';
+
+            $fields->addFieldToTab('Root.SEO', HeaderField::create(false, 'Indexing'));
+            $fields->addFieldToTab('Root.SEO', LiteralField::create(false, $message));
+        }
+
         $fields->addFieldToTab('Root.SEO', HeaderField::create(false, 'Schema'));
         $fields->addFieldToTab('Root.SEO', HeaderField::create(false, 'Organisation (used in blog post schema)', 4));
         $fields->addFieldToTab('Root.SEO', TextField::create('SchemaOrganisationName', 'Name'));

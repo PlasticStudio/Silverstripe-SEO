@@ -25,6 +25,7 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\NumericField;
+use SilverStripe\Forms\LiteralField;
 use SilverStripe\i18n\i18n;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\FieldType\DBField;
@@ -168,6 +169,16 @@ class SeoPageExtension extends DataExtension
 
         // Indexing
         $fields->addFieldToTab('Root.MetaTags', HeaderField::create(false, 'Indexing', 2));
+        if (self::excludeSiteFromIndexing()) {
+            $noindex_domains = Config::inst()->get('PlasticStudio\SEO', 'noindex_domains');
+            $message = '<div class="message warning">This domain has been configured to be excluded from indexing by robots like Google etc. Excluded domains are:';
+            $message .= '<ul>';
+            foreach ($noindex_domains as $domain) {
+                $message .= '<li>'.$domain.'</li>';
+            }
+            $message .= '</ul></div>';
+            $fields->addFieldToTab('Root.MetaTags', LiteralField::create(false, $message));
+        }
         $canonical = TextField::create('Canonical');
         if(!$this->owner->Canonical) {
             $canonical->setAttribute('placeholder', 'Using page URL');
