@@ -2,7 +2,7 @@
     "name": "plasticstudio/silverstripe-seo",
     "description": "A SilverStripe module to optimise the Meta, crawling, indexing, and sharing of your website content (forked from Cyber-Duck/Silverstripe-SEO)",
     "type": "silverstripe-vendormodule",
-    "homepage": "http://github.com/cyber-duck/silverstripe-seo",
+    "homepage": "http://github.com/plasticstudio/silverstripe-seo",
     "keywords": [
         "silverstripe SEO",
         "silverstripe",
@@ -27,7 +27,7 @@
         }
     ],
     "support": {
-        "issues": "http://github.com/cyber-duck/silverstripe-seo/issues"
+        "issues": "http://github.com/plasticstudio/silverstripe-seo/issues"
     },
     "require": {
         "php": ">=5.6",
