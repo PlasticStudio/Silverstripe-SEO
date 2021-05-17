@@ -23,7 +23,7 @@ You can configure the site to be excluded from indexing engines like Google base
     - .myhost-uat.co
 ```
 
-
+This will update the `robots.txt` file to disallow all. It will also set the robots meta tag on each page to `noindex,nofollow`.
 
 
 
