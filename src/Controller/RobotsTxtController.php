@@ -4,6 +4,7 @@ namespace PlasticStudio\SEO\Controller;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\HTTPRequest;
 
 /**
@@ -42,6 +43,13 @@ class RobotsTxtController extends Controller
      **/
     public function index(HTTPRequest $request)
     {
+        foreach (Config::inst()->get('PlasticStudio\SEO', 'noindex_domains') as $domain) {
+            if (strpos(Director::protocolAndHost(), $domain) !== false) {
+                return $this->customise([
+                    'Host' => Director::absoluteBaseUrl()
+                ])->renderWith('RobotsTxtDisallowAll');
+            }
+        }
         return $this->customise([
             'Host' => Director::absoluteBaseUrl()
         ])->renderWith('RobotsTxt');
