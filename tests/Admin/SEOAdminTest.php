@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Tests\Admin;
+namespace PlasticStudio\SEO\Tests\Admin;
 
 use SilverStripe\Dev\FunctionalTest;
 use SilverStripe\Security\Member;

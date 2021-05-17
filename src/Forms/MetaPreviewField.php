@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Forms;
+namespace PlasticStudio\SEO\Forms;
 
 use SilverStripe\Blog\Model\BlogPost;
 use SilverStripe\Control\Controller;

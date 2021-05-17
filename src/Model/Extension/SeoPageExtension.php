@@ -1,11 +1,11 @@
 <?php
 
-namespace CyberDuck\SEO\Model\Extension;
+namespace PlasticStudio\SEO\Model\Extension;
 
 use Page;
-use CyberDuck\SEO\Model\SeoHeadTag;
-use CyberDuck\SEO\Forms\MetaPreviewField;
-use CyberDuck\SEO\Admin\SEOAdmin;
+use PlasticStudio\SEO\Model\SeoHeadTag;
+use PlasticStudio\SEO\Forms\MetaPreviewField;
+use PlasticStudio\SEO\Admin\SEOAdmin;
 use SilverStripe\Assets\Image;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Blog\Model\BlogPost;

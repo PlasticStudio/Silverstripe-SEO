@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Model\Extension;
+namespace PlasticStudio\SEO\Model\Extension;
 
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;

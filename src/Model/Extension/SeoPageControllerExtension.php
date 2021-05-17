@@ -1,6 +1,6 @@
 <?php
 
-namespace CyberDuck\SEO\Model\Extension;
+namespace PlasticStudio\SEO\Model\Extension;
 
 use Page;
 use Exception;

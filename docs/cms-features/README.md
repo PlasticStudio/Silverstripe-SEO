@@ -6,7 +6,7 @@ After installing the module a new CMS section will be created called SEO with a 
 If you would like to customise the Tabs and models shown use the YML config.
 
 ```yml
-CyberDuck\SEO\Admin\SEOAdmin:
+PlasticStudio\SEO\Admin\SEOAdmin:
   managed_models:
     - MyPageClass
     - MyObject

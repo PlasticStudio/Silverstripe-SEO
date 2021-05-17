@@ -1,11 +1,11 @@
 <?php
 
-namespace CyberDuck\SEO\Admin;
+namespace PlasticStudio\SEO\Admin;
 
 use Page;
 use Exception;
-use CyberDuck\SEO\Model\Extension\SeoExtension;
-use CyberDuck\SEO\Model\Extension\SeoPageExtension;
+use PlasticStudio\SEO\Model\Extension\SeoExtension;
+use PlasticStudio\SEO\Model\Extension\SeoPageExtension;
 use SilverStripe\Admin\ModelAdmin;
 
 class SEOAdmin extends ModelAdmin

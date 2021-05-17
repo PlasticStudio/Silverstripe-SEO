@@ -1,7 +1,7 @@
 ---
 Name: seo admin config
 ---
-CyberDuck\SEO\Admin\SEOAdmin:
+PlasticStudio\SEO\Admin\SEOAdmin:
   managed_models:
     - 'Page'
   menu_priority: 100

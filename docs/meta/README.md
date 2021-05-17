@@ -44,7 +44,7 @@ class MyMemberPage_Controller extends PageController
 You can dynamically generate Meta from an object and string with place holders.
 
 ```php
-use CyberDuck\SEO\Generators\DynamicMetaGenerator;
+use PlasticStudio\SEO\Generators\DynamicMetaGenerator;
 
 class MyMemberPage_Controller extends PageController
 {
@@ -68,7 +68,7 @@ The above example will override the Meta title with the custom generated one. Th
 You can also reference and loop out relation properties with the dot syntax and add a separator for the last value.
 
 ```php
-use CyberDuck\SEO\Generators\DynamicMetaGenerator;
+use PlasticStudio\SEO\Generators\DynamicMetaGenerator;
 
 class MyMemberPage_Controller extends PageController
 {

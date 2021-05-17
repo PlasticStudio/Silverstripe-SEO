@@ -1,7 +1,7 @@
 ---
 Name: seo sitemap config
 ---
-CyberDuck\SEO\Generators\SitemapGenerator:
+PlasticStudio\SEO\Generators\SitemapGenerator:
   objects:
     Page:
       parent_id: 0
