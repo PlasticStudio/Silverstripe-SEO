@@ -25,6 +25,7 @@ A SilverStripe module to enhance and optimize your website SEO.
   - Ability to attach images to XML Sitemap pages
   - Nested HTML Sitemap generator
   - Blog module SEO extension
+  - Ability to exclude entire site from indexing engines via robots meta tag
 
 ## Installations
 
@@ -37,7 +38,7 @@ Add the following to your composer.json file and run /dev/build?flush=all
 ```json
 {  
     "require": {  
-        "cyber-duck/silverstripe-seo": "4.2.*"
+        "plasticstudio/silverstripe-seo": "4.2.*"
     }
 }
 ```
@@ -49,7 +50,7 @@ Add the following to your composer.json file and run /dev/build?flush=all
 ```json
 {  
     "require": {  
-        "cyber-duck/silverstripe-seo": "4.1.*"
+        "plasticstudio/silverstripe-seo": "4.1.*"
     }
 }
 ```
