@@ -1,8 +1,8 @@
 {
-    "name": "cyber-duck/silverstripe-seo",
-    "description": "A SilverStripe module to optimise the Meta, crawling, indexing, and sharing of your website content",
+    "name": "plasticstudio/silverstripe-seo",
+    "description": "A SilverStripe module to optimise the Meta, crawling, indexing, and sharing of your website content (forked from Cyber-Duck/Silverstripe-SEO)",
     "type": "silverstripe-vendormodule",
-    "homepage": "http://github.com/cyber-duck/silverstripe-seo",
+    "homepage": "http://github.com/plasticstudio/silverstripe-seo",
     "keywords": [
         "silverstripe SEO",
         "silverstripe",
@@ -20,10 +20,14 @@
             "name": "Andrew Mc Cormack",
             "email": "andrewm@cyber-duck.co.uk",
             "homepage": "https://github.com/Andrew-Mc-Cormack"
+        },
+        {
+            "name": "Jeremy Cole",
+            "email": "jeremy@psdigital.co.nz"
         }
     ],
     "support": {
-        "issues": "http://github.com/cyber-duck/silverstripe-seo/issues"
+        "issues": "http://github.com/plasticstudio/silverstripe-seo/issues"
     },
     "require": {
         "php": ">=5.6",
