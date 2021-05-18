@@ -110,6 +110,10 @@ class SeoPageExtension extends DataExtension
         'SitemapImages' => Image::class
     ];
 
+    private static $owns = [
+        'SocialImage'
+    ];
+
     /**
      * Sitemap defaults
      *
