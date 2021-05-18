@@ -628,7 +628,9 @@ class SeoPageExtension extends DataExtension
      **/
     public function getSiteTwitterHandle()
     {
-        return '@'.SiteConfig::current_site_config()->TwitterHandle;
+        if (SiteConfig::current_site_config()->TwitterHandle) {
+            return '@'.SiteConfig::current_site_config()->TwitterHandle;
+        }
     }
 
     /**
@@ -640,7 +642,9 @@ class SeoPageExtension extends DataExtension
      **/
     public function getSiteCreatorTwitterHandle()
     {
-        return '@'.SiteConfig::current_site_config()->CreatorTwitterHandle;
+        if (SiteConfig::current_site_config()->CreatorTwitterHandle) {
+            return '@'.SiteConfig::current_site_config()->CreatorTwitterHandle;
+        }  
     }
 
     /**
