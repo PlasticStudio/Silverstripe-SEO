@@ -69,12 +69,12 @@ class SeoPageControllerExtension extends Extension
         return DBField::create_field('HTMLText', $meta);
     }
 
-    public function getDefaultPageSocialImage()
+    public function getDefaultSocialImage()
     {
         $siteConfig = SiteConfig::get()->first();
 
         if ($siteConfig) {
-            $image =  Image::get()->byID($siteConfig->DefaultPageSocialImageID);
+            $image =  Image::get()->byID($siteConfig->DefaultSocialImageID);
 
             if ($image) {
                 return $image;

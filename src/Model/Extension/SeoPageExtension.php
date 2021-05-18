@@ -25,6 +25,7 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\NumericField;
+use SilverStripe\Forms\LiteralField;
 use SilverStripe\i18n\i18n;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\FieldType\DBField;
@@ -109,6 +110,10 @@ class SeoPageExtension extends DataExtension
         'SitemapImages' => Image::class
     ];
 
+    private static $owns = [
+        'SocialImage'
+    ];
+
     /**
      * Sitemap defaults
      *
@@ -168,6 +173,16 @@ class SeoPageExtension extends DataExtension
 
         // Indexing
         $fields->addFieldToTab('Root.MetaTags', HeaderField::create(false, 'Indexing', 2));
+        if (self::excludeSiteFromIndexing()) {
+            $noindex_domains = Config::inst()->get('PlasticStudio\SEO', 'noindex_domains');
+            $message = '<div class="message warning">This domain has been configured to be excluded from indexing by robots like Google etc. Excluded domains are:';
+            $message .= '<ul>';
+            foreach ($noindex_domains as $domain) {
+                $message .= '<li>'.$domain.'</li>';
+            }
+            $message .= '</ul></div>';
+            $fields->addFieldToTab('Root.MetaTags', LiteralField::create(false, $message));
+        }
         $canonical = TextField::create('Canonical');
         if(!$this->owner->Canonical) {
             $canonical->setAttribute('placeholder', 'Using page URL');
@@ -468,6 +483,24 @@ class SeoPageExtension extends DataExtension
     }
 
     /**
+     * check whether the domain currently being viewed has been configure
+     * to be excluded from indexing
+     * 
+     * @return bool
+     */
+    public static function excludeSiteFromIndexing() 
+    {
+        if (Config::inst()->exists('PlasticStudio\SEO', 'noindex_domains')) {
+            foreach (Config::inst()->get('PlasticStudio\SEO', 'noindex_domains') as $domain) {
+                if (strpos(Director::protocolAndHost(), $domain) !== false) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get the current page Meta robots rules
      *
      * @since version 2.0.0
@@ -476,10 +509,8 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageRobots()
     {
-        foreach (Config::inst()->get('PlasticStudio\SEO', 'noindex_domains') as $domain) {
-            if (strpos(Director::protocolAndHost(), $domain) !== false) {
-                return 'noindex,nofollow';
-            }
+        if (self::excludeSiteFromIndexing()) {
+            return 'noindex,nofollow';
         }
         if($this->owner->Robots) {
             return $this->owner->Robots;
@@ -601,7 +632,9 @@ class SeoPageExtension extends DataExtension
      **/
     public function getSiteTwitterHandle()
     {
-        return '@'.SiteConfig::current_site_config()->TwitterHandle;
+        if (SiteConfig::current_site_config()->TwitterHandle) {
+            return '@'.SiteConfig::current_site_config()->TwitterHandle;
+        }
     }
 
     /**
@@ -613,7 +646,9 @@ class SeoPageExtension extends DataExtension
      **/
     public function getSiteCreatorTwitterHandle()
     {
-        return '@'.SiteConfig::current_site_config()->CreatorTwitterHandle;
+        if (SiteConfig::current_site_config()->CreatorTwitterHandle) {
+            return '@'.SiteConfig::current_site_config()->CreatorTwitterHandle;
+        }  
     }
 
     /**

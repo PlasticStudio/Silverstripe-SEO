@@ -4,7 +4,9 @@ namespace PlasticStudio\SEO\Controller;
 
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\Director;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\HTTPRequest;
+use PlasticStudio\SEO\Model\Extension\SeoPageExtension;
 
 /**
  * SitemapXML_Controller
@@ -42,6 +44,11 @@ class RobotsTxtController extends Controller
      **/
     public function index(HTTPRequest $request)
     {
+        if (SeoPageExtension::excludeSiteFromIndexing()) {
+            return $this->customise([
+                'Host' => Director::absoluteBaseUrl()
+            ])->renderWith('RobotsTxtDisallowAll');
+        }
         return $this->customise([
             'Host' => Director::absoluteBaseUrl()
         ])->renderWith('RobotsTxt');
