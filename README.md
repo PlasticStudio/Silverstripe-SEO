@@ -1,11 +1,9 @@
 # SilverStripe 4 SEO
 
-[![Latest Stable Version](https://poser.pugx.org/cyber-duck/silverstripe-seo/v/stable)](https://packagist.org/packages/cyber-duck/silverstripe-seo)
-[![Latest Unstable Version](https://poser.pugx.org/cyber-duck/silverstripe-seo/v/unstable)](https://packagist.org/packages/cyber-duck/silverstripe-seo)
-[![Total Downloads](https://poser.pugx.org/cyber-duck/silverstripe-seo/downloads)](https://packagist.org/packages/cyber-duck/silverstripe-seo)
-[![License](https://poser.pugx.org/cyber-duck/silverstripe-seo/license)](https://packagist.org/packages/cyber-duck/silverstripe-seo)
-
-Author: [Andrew Mc Cormack](https://github.com/Andrew-Mc-Cormack)
+This module is base on [![Cyber-Duck Silverstripe SEO](https://packagist.org/packages/cyber-duck/silverstripe-seo)](https://packagist.org/packages/cyber-duck/silverstripe-seo), and adds the following enhancements and fixes:
+ - Ability to exclude the entire site from being indexed by search engines
+ - Fixes issue 35 `Call to undefined method SilverStripe\Config\Collections\CachedConfigCollection::remove()` (https://github.com/Cyber-Duck/Silverstripe-SEO/issues/35)
+ - Fixes a bug preventing configured default social image from being used
 
 ## Features
 
