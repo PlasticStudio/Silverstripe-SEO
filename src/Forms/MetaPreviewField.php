@@ -16,8 +16,6 @@ use SilverStripe\View\Requirements;
  * Gogole SERP preview field
  *
  * @package silverstripe-seo
- * @license MIT License https://github.com/cyber-duck/silverstripe-seo/blob/master/LICENSE
- * @author  <andrewm@cyber-duck.co.uk>
  **/
 class MetaPreviewField extends LiteralField
 {
@@ -41,7 +39,7 @@ class MetaPreviewField extends LiteralField
     {
         $this->page = $page;
         
-        Requirements::javascript('cyber-duck/silverstripe-seo:assets/js/serp.js');
+        Requirements::javascript('plasticstudio/silverstripe-seo:assets/js/serp.js');
 
         parent::__construct('MetaPreviewField', $this->getMetaContent());
     }

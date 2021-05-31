@@ -16,8 +16,6 @@ use SilverStripe\ORM\ArrayList;
  * sitemap.xml controller
  *
  * @package silverstripe-seo
- * @license MIT License https://github.com/cyber-duck/silverstripe-seo/blob/master/LICENSE
- * @author  <andrewm@cyber-duck.co.uk>
  **/
 class SitemapXMLController extends Controller
 {

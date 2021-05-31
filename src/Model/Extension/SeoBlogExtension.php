@@ -13,8 +13,6 @@ use SilverStripe\ORM\DataExtension;
  * Adds SEO options to the Blog Page class
  *
  * @package silverstripe-seo
- * @license MIT License https://github.com/cyber-duck/silverstripe-seo/blob/master/LICENSE
- * @author  <andrewm@cyber-duck.co.uk>
  **/
 class SeoBlogExtension extends DataExtension
 {
