@@ -18,8 +18,6 @@ use SilverStripe\ORM\DataExtension;
  * Updates the CMS site config with custom fields for SEO and Social sharing
  *
  * @package silverstripe-seo
- * @license MIT License https://github.com/cyber-duck/silverstripe-seo/blob/master/LICENSE
- * @author  <andrewm@cyber-duck.co.uk>
  **/
 class SeoSiteConfigExtension extends DataExtension
 {

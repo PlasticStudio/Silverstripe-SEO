@@ -10,8 +10,6 @@ use SilverStripe\ORM\DataObject;
  * Hlper class for creating dynamic Meta strings using placeholders and object properties
  *
  * @package silverstripe-seo
- * @license MIT License https://github.com/cyber-duck/silverstripe-seo/blob/master/LICENSE
- * @author  <andrewm@cyber-duck.co.uk>
  **/
 class DynamicMetaGenerator
 {

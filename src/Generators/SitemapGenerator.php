@@ -18,8 +18,6 @@ use SilverStripe\Subsites\Model\SubsiteDomain;
  * Generates an HTML sitemap list
  *
  * @package silverstripe-seo
- * @license MIT License https://github.com/cyber-duck/silverstripe-seo/blob/master/LICENSE
- * @author  <andrewm@cyber-duck.co.uk>
  **/
 class SitemapGenerator
 {
