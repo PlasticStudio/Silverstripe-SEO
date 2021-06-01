@@ -4,7 +4,6 @@ Name: seo admin config
 PlasticStudio\SEO\Admin\SEOAdmin:
   managed_models:
     - 'Page'
-  menu_priority: 100
   menu_icon_class: 'font-icon-database'
   model_importers: null
   page_length: 100
