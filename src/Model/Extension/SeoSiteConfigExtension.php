@@ -26,7 +26,7 @@ class SeoSiteConfigExtension extends DataExtension
      *
      * @since version 1.0.6
      *
-     * @config array $db 
+     * @config array $db
      **/
     private static $db = [
         'OGSiteName'             => 'Varchar(512)',
@@ -42,7 +42,7 @@ class SeoSiteConfigExtension extends DataExtension
      *
      * @since version 1.0.0
      *
-     * @config array $has_one 
+     * @config array $has_one
      **/
     private static $has_one = [
         'SchemaOrganisationImage' => Image::class,
@@ -54,13 +54,22 @@ class SeoSiteConfigExtension extends DataExtension
      *
      * @since version 1.0.0
      *
-     * @config array $has_one 
+     * @config array $has_one
      **/
     private static $owns = [
         'SchemaOrganisationImage',
         'DefaultSocialImage'
     ];
-    
+
+    /**
+     * Defines the default values for the fields
+     *
+     * @var bool[]
+     */
+    private static $defaults = [
+        'UseTitleAsMetaTitle' => true // Use the page title as the meta title by default
+    ];
+
     /**
      * Adds extra fields for social config across networks
      *
@@ -106,7 +115,7 @@ class SeoSiteConfigExtension extends DataExtension
             ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
             ->setAllowedFileCategories('image', 'image/supported');
         $fields->addFieldToTab('Root.SEO', $uploader);
-        
+
         return $fields;
     }
 }
