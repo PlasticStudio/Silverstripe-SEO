@@ -137,7 +137,7 @@ class SeoPageExtension extends DataExtension
     private $pagination;
 
     /**
-     * Adds our SEO Meta fields to the page field list. The tab is divided into
+     * Adds our SEO Meta fields to the page settings field list. The tab is divided into
      * logical sections controlling various aspects of page SEO.
      *
      * @since version 1.0.0
@@ -146,7 +146,7 @@ class SeoPageExtension extends DataExtension
      *
      * @return FieldList
      **/
-    public function updateCMSFields(FieldList $fields)
+    public function updateSettingsFields(FieldList $fields)
     {
         $fields->removeByName('HeadTags');
         $fields->removeByName('SitemapImages');
@@ -483,10 +483,10 @@ class SeoPageExtension extends DataExtension
     /**
      * check whether the domain currently being viewed has been configure
      * to be excluded from indexing
-     * 
+     *
      * @return bool
      */
-    public static function excludeSiteFromIndexing() 
+    public static function excludeSiteFromIndexing()
     {
         if (Config::inst()->exists('PlasticStudio\SEO', 'noindex_domains')) {
             foreach (Config::inst()->get('PlasticStudio\SEO', 'noindex_domains') as $domain) {
@@ -646,7 +646,7 @@ class SeoPageExtension extends DataExtension
     {
         if (SiteConfig::current_site_config()->CreatorTwitterHandle) {
             return '@'.SiteConfig::current_site_config()->CreatorTwitterHandle;
-        }  
+        }
     }
 
     /**
