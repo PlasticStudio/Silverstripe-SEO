@@ -5,7 +5,7 @@
     <% if $PageMetaDescription %>
         <meta name="description" content="$PageMetaDescription">
     <% else_if $Content %>
-        <meta name="description" content="$PageMetaDescription">
+        <meta name="description" content="$Content.LimitWordCount(12)">
     <% end_if %>
 
     <% if $PageCanonical %>
@@ -30,8 +30,8 @@
             <meta property="og:description" content="$PageMetaDescription">
             <meta name="twitter:description" content="$PageMetaDescription">
         <% else_if $Content %>
-            <meta property="og:description" content="$Content.LimitWordCount(25)">
-            <meta name="twitter:description" content="$Content.LimitWordCount(25)">
+            <meta property="og:description" content="$Content.LimitWordCount(12)">
+            <meta name="twitter:description" content="$Content.LimitWordCount(12)">
         <% end_if %>
 
         <% if $PageURL %>
