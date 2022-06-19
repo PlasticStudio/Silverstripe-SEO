@@ -28,6 +28,11 @@ class HTMLSitemap extends Page {
 		$fields->removeByName('Content');
 		return $fields;
 	}
+
+    public function Sitemap()
+	{
+		return SiteTree::get()->Filter(['ParentID' => 0]);
+	}
 	
 	/**
 	 * Add default record to database
