@@ -92,7 +92,7 @@ class SitemapXMLController extends Controller
         if (!empty($objects)) {
             foreach ($objects as $name => $values) {
                 // exclude error pages, so google doesn't error
-                $list = $name::get()->filter('ClassName:not', [ErrorPage::class]);
+                $list = $name::get()->filter('ClassName:not', ErrorPage::class);
                 foreach ($list as $page) {
                     if (!$page->SitemapHide) {
                         $pages->push($page);
