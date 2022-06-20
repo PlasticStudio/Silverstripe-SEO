@@ -12,7 +12,7 @@
 							<li>
 								<a href="$Link" title="{$SiteConfig.Title} - <% if MetaTitle %>$MetaTitle.XML <% else %> $Title.XML <% end_if %>">$MenuTitle.XML</a>
 								<% if $AllChildren %>
-									<% include SitemapNextLevel %>
+									<% include PlasticStudio\\SEO\\Includes\\SitemapNextLevel %>
 								<% end_if %>
 							</li>
 						<% end_if %>
