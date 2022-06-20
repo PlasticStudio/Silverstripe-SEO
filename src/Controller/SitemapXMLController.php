@@ -9,6 +9,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\ArrayList;
+use SilverStripe\ErrorPage\ErrorPage;
 
 /**
  * SitemapXML_Controller
@@ -88,10 +89,12 @@ class SitemapXMLController extends Controller
         
         $objects = (array) Config::inst()->get(SitemapGenerator::class, 'objects');
 
-        if(!empty($objects)) {
-            foreach($objects as $name => $values) {
-                foreach($name::get() as $page) {
-                    if(!$page->SitemapHide) {
+        if (!empty($objects)) {
+            foreach ($objects as $name => $values) {
+                // exclude error pages, so google doesn't error
+                $list = $name::get()->filter('ClassName:not', ErrorPage::class);
+                foreach ($list as $page) {
+                    if (!$page->SitemapHide) {
                         $pages->push($page);
                     }
                 }
