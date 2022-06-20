@@ -32,7 +32,7 @@ class HTMLSitemap extends Page {
 
     public function Sitemap()
 	{
-		return SiteTree::get()->Filter(['ParentID' => 0])->exclude('ClassName', ErrorPage::class);
+		return SiteTree::get()->Filter(['ParentID' => 0])->exclude('ClassName', ErrorPage::class)->exclude('ID', $this->ID);
 	}
 	
 	/**
