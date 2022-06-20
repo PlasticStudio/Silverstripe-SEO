@@ -10,9 +10,9 @@
 					<% loop $Sitemap %>
 						<% if not $ExcludeFromSitemap %>
 							<li>
-								<a href="$Link" title="<% if MetaKeywords %>$MetaKeywords <% else %> Webdesign Wellington <% end_if %> - {$SiteConfig.Title} - <% if MetaTitle %>$MetaTitle.XML <% else %> $Title.XML <% end_if %>">$MenuTitle.XML</a>
+								<a href="$Link" title="{$SiteConfig.Title} - <% if MetaTitle %>$MetaTitle.XML <% else %> $Title.XML <% end_if %>">$MenuTitle.XML</a>
 								<% if $AllChildren %>
-									<% include $SitemapNextLevel %>
+									<% include SitemapNextLevel %>
 								<% end_if %>
 							</li>
 						<% end_if %>
@@ -21,8 +21,6 @@
 				<% else %>
 				
 					<p>There are no pages in this site yet.</p>
-					$Content
-					$Form
 				
 				<% end_if %>
 			
@@ -32,3 +30,5 @@
 	</main>
 
 </section>
+
+$ElementalArea

@@ -9,7 +9,6 @@ class HTMLSitemap_Controller extends PageController {
 	
 	public function init() {
 		parent::init();
-		Requirements::css('plasticstudio/silverstripe-seo:assets/css/sitemap.css');
+		Requirements::css('plasticstudio/silverstripe-seo:assets/css/html-sitemap.css');
 	}
-
 }

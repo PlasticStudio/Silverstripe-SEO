@@ -4,6 +4,7 @@ namespace PlasticStudio\SEO\Pages;
 
 use Page;
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\ErrorPage\ErrorPage;
 use SilverStripe\ORM\DB;
 
 class HTMLSitemap extends Page {
@@ -31,7 +32,7 @@ class HTMLSitemap extends Page {
 
     public function Sitemap()
 	{
-		return SiteTree::get()->Filter(['ParentID' => 0]);
+		return SiteTree::get()->Filter(['ParentID' => 0])->exclude('ClassName', ErrorPage::class);
 	}
 	
 	/**
