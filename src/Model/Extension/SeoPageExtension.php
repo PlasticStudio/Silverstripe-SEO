@@ -3,35 +3,36 @@
 namespace PlasticStudio\SEO\Model\Extension;
 
 use Page;
-use PlasticStudio\SEO\Model\SeoHeadTag;
-use PlasticStudio\SEO\Forms\MetaPreviewField;
-use PlasticStudio\SEO\Admin\SEOAdmin;
+use SilverStripe\i18n\i18n;
 use SilverStripe\Assets\Image;
-use SilverStripe\AssetAdmin\Forms\UploadField;
-use SilverStripe\Blog\Model\BlogPost;
+use SilverStripe\Core\Convert;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
+use SilverStripe\Control\Director;
+use SilverStripe\Forms\HeaderField;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\PaginatedList;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Controller;
-use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\Core\Convert;
+use SilverStripe\Forms\LiteralField;
+use SilverStripe\Forms\NumericField;
+use PlasticStudio\SEO\Admin\SEOAdmin;
+use SilverStripe\Blog\Model\BlogPost;
 use SilverStripe\ErrorPage\ErrorPage;
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\TextareaField;
+use SilverStripe\Security\Permission;
+use PlasticStudio\SEO\Model\SeoHeadTag;
+use SilverStripe\ORM\FieldType\DBField;
+use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\Forms\GridField\GridField;
+use PlasticStudio\SEO\Forms\MetaPreviewField;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use PlasticStudio\SEO\Schema\Builder\SchemaBuilder;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
-use SilverStripe\Forms\HeaderField;
-use SilverStripe\Forms\TextField;
-use SilverStripe\Forms\TextareaField;
-use SilverStripe\Forms\DropdownField;
-use SilverStripe\Forms\NumericField;
-use SilverStripe\Forms\LiteralField;
-use SilverStripe\i18n\i18n;
-use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\FieldType\DBField;
-use SilverStripe\ORM\PaginatedList;
-use SilverStripe\Security\Permission;
-use SilverStripe\SiteConfig\SiteConfig;
 
 /**
  * @package silverstripe-seo
@@ -799,5 +800,56 @@ class SeoPageExtension extends DataExtension
                 return $this->getPageURL().'?'.$this->pagination->getPaginationGetVar().'='.$start;
             }
         }
+    }
+
+
+
+
+    /*----------------- SCHEMAS ------------------- */
+
+    
+    /**
+     * Hook onto the page meta tags and append any configured schema objects
+     * fixme: does not trigger correctly on DataObjects pages
+     *
+     * @param $tags
+     */
+    public function ApplySchema()
+    {
+        $schemas = array_filter($this->owner->config()->get('active_schema'));
+        foreach ($schemas as $schema) {
+            if (self::is_valid($schema)) {
+                $this->appendSchema(new $schema());
+            }
+        }
+    }
+
+
+    /**
+     * Append a schema ld+json tag
+     *
+     * @param $tags
+     * @param $schema
+     */
+    private function appendSchema(SchemaBuilder $schema)
+    {
+        if ($schema = $schema->getSchema($this->owner)) {
+            Requirements::insertHeadTags(sprintf(
+                "<script type='application/ld+json'>%s</script>",
+                json_encode($schema)
+            ), get_class($schema));
+        }
+    }
+
+    /**
+     * Check if the set schema is of an active and available type
+     *
+     * @param $schema
+     *
+     * @return bool
+     */
+    private static function is_valid($schema)
+    {
+        return class_exists($schema) && new $schema() instanceof SchemaBuilder;
     }
 }
