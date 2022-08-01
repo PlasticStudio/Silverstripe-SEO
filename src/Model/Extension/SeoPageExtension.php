@@ -12,6 +12,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\PaginatedList;
+use SilverStripe\View\Requirements;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
