@@ -18,7 +18,7 @@ class PostalAddressSchema extends SchemaType
         $this->{'@type'} = 'PostalAddress';
         $this->streetAddress = $streetAddress;
         $this->addressLocality = $addressLocality;
-        $this->addressRegion = $addressLocality;
+        $this->addressRegion = $addressRegion;
         $this->postalCode = $postalCode;
         $this->addressCountry = $addressCountry;
     }
