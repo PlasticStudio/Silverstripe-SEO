@@ -3,6 +3,8 @@
 namespace Plasticstudio\SEO\Schema\Type;
 
 use SilverStripe\ORM\ArrayList;
+use PlasticStudio\SEO\Schema\Type\ThingSchema;
+use PlasticStudio\SEO\Schema\Type\ListItemSchema;
 
 class BreadcrumbListSchema extends SchemaType
 {

@@ -2,12 +2,6 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
-/**
- * Class ListItemSchema
- * @package Broarm\Schema\Type
- * @property string position
- * @property string item
- */
 class ListItemSchema extends SchemaType
 {
     /**
