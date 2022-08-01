@@ -2,9 +2,9 @@
 
 namespace PlasticStudio\SEO\Schema\Builder;
 
-use Broarm\Schema\Type\ContactPointSchema;
-use Broarm\Schema\Type\ImageObjectSchema;
-use Broarm\Schema\Type\OrganizationSchema;
+use PlasticStudio\SEO\Schema\Type\ContactPointSchema;
+use PlasticStudio\SEO\Schema\Type\ImageObjectSchema;
+use PlasticStudio\SEO\Schema\Type\OrganizationSchema;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\SiteConfig\SiteConfig;

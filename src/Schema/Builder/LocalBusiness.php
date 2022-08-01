@@ -1,17 +1,11 @@
 <?php
-/**
- * LocalBusiness.php
- *
- * @author Bram de Leeuw
- * Date: 04/11/16
- */
 
-namespace Broarm\Schema\Builder;
+namespace PlasticStudio\SEO\Schema\Builder;
 
-use Broarm\Schema\Schema;
-use Broarm\Schema\Type\GeoCoordinatesSchema;
-use Broarm\Schema\Type\LocalBusinessSchema;
-use Broarm\Schema\Type\PostalAddressSchema;
+use PlasticStudio\SEO\Schema\Schema;
+use PlasticStudio\SEO\Schema\Type\GeoCoordinatesSchema;
+use PlasticStudio\SEO\Schema\Type\LocalBusinessSchema;
+use PlasticStudio\SEO\Schema\Type\PostalAddressSchema;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\SiteConfig\SiteConfig;
