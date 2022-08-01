@@ -17,7 +17,7 @@ class OrganizationSchema extends SchemaType
     {
         $this->{'@context'} = 'http://schema.org';
         $this->{'@type'} = 'Organization';
-        $this->name = $url;
+        $this->name = $name;
         $this->url = $url;
         $this->logo = $logo;
     }
