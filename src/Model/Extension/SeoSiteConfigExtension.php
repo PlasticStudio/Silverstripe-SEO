@@ -40,6 +40,7 @@ class SeoSiteConfigExtension extends DataExtension
         'State' => 'Varchar',
         'Postcode' => 'Varchar',
         'Country' => 'Varchar',
+        'Phone' => 'Varchar',
     ];
 
     /**
@@ -130,6 +131,7 @@ class SeoSiteConfigExtension extends DataExtension
                 TextField::create('State', 'State'),
                 TextField::create('Postcode', 'Postcode'),
                 TextField::create('Country', 'Country'),
+                TextField::create('Phone', 'Phone'),
             ]
         );
 
