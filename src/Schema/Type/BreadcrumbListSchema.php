@@ -4,12 +4,6 @@ namespace Plasticstudio\SEO\Schema\Type;
 
 use SilverStripe\ORM\ArrayList;
 
-/**
- * Class BreadcrumbListSchema
- * @package Broarm\Schema\Type
- *
- * @property array itemListElement;
- */
 class BreadcrumbListSchema extends SchemaType
 {
     /**
