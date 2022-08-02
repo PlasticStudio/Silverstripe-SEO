@@ -821,6 +821,7 @@ class SeoPageExtension extends DataExtension
      */
     public function ApplySchema()
     {
+        // if a schema has been pasted into CMS, add it to page
         if($this->owner->ManualSchema) {
             Requirements::insertHeadTags(sprintf(
                 "<script type='application/ld+json'>%s</script>",

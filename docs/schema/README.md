@@ -2,7 +2,7 @@
 
 This module allows you to add schema.org JSON to your webpage and auto generates schema for Blog Posts, Local Business, Organisation, Breadcrumbs
 
-## Displaying Schema on Your Page
+## Displaying dynamic schema on Your Page
 
 Add an ApplySchema template variable to your page (preferably before the closing body tag)
 
@@ -72,4 +72,4 @@ The following data is pulled from the actual BlogPost:
 
 ## Manually Adding Schema
 
-Every page apart from Blog Posts have a Schema tab with a textarea field where you can add custom schema to that page.
+Every page apart from Blog Posts have a Settings -> Schema tab with a textarea field where you can add custom schema to that page.
