@@ -825,8 +825,8 @@ class SeoPageExtension extends DataExtension
             Requirements::insertHeadTags(sprintf(
                 "<script type='application/ld+json'>%s</script>",
                 json_encode($this->owner->ManualSchema)
-            ), get_class($this->owner->ManualSchema));
-            
+            ));
+
             return;
         }
 
