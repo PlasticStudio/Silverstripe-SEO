@@ -1,15 +1,19 @@
 # Schema
 
-This module allows you to add schema.org JSON to your webpage and auto generates schema for Blog Posts
+This module allows you to add schema.org JSON to your webpage and auto generates schema for Blog Posts, Local Business, Organisation, Breadcrumbs
 
 ## Displaying Schema on Your Page
 
-Add a PageSchema template variable to your page (preferably before the closing body tag)
+Add an ApplySchema template variable to your page (preferably before the closing body tag)
 
 ```html
-    $PageSchema
+    $ApplySchema
 </body>
 ```
+
+## Complete the Schema Settings fields
+
+In Site Settings, SEO tab, complete site name, address, phone and lat/lng details
 
 ## Auto Generated BlogPost Schema
 
@@ -52,19 +56,19 @@ settings
 
 In your CMS settings add your organisation name and image to populate the data:
 
-  - publisher.name
-  - publisher.logo.url
-  - publisher.logo.width
-  - publisher.logo.height
+- publisher.name
+- publisher.logo.url
+- publisher.logo.width
+- publisher.logo.height
 
 The following data is pulled from the actual BlogPost:
 
-  - headline - Title
-  - datePublished - PublishDate
-  - dateModified - LastEdited
-  - description - Summary
-  - author.name - First Author FirstName and Surname
-  - image - FeaturedImage.URL
+- headline - Title
+- datePublished - PublishDate
+- dateModified - LastEdited
+- description - Summary
+- author.name - First Author FirstName and Surname
+- image - FeaturedImage.URL
 
 ## Manually Adding Schema
 

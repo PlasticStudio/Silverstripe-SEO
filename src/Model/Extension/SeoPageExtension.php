@@ -78,6 +78,7 @@ class SeoPageExtension extends DataExtension
         'MetaTitle'       => 'Varchar(512)',
         'Canonical'       => 'Varchar(512)',
         'Robots'          => 'Varchar(100)',
+        'ManualSchema'    => 'Text',
         'Priority'        => 'Decimal(3,2)',
         'ChangeFrequency' => 'Varchar(20)',
         'SitemapHide'     => 'Boolean',
@@ -237,6 +238,9 @@ class SeoPageExtension extends DataExtension
         $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
         $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
         $fields->addFieldToTab('Root.MetaTags', $grid);
+
+        // SCHEMA TAB
+        $fields->addFieldToTab('Root.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
 
         // SITEMAP TAB
         // Sitemap
@@ -817,6 +821,15 @@ class SeoPageExtension extends DataExtension
      */
     public function ApplySchema()
     {
+        if($this->owner->ManualSchema) {
+            Requirements::insertHeadTags(sprintf(
+                "<script type='application/ld+json'>%s</script>",
+                json_encode($this->owner->ManualSchema)
+            ), get_class($this->owner->ManualSchema));
+            
+            return;
+        }
+
         $schemas = array_filter($this->owner->config()->get('active_schema'));
         foreach ($schemas as $schema) {
             if (self::is_valid($schema)) {
