@@ -826,8 +826,6 @@ class SeoPageExtension extends DataExtension
                 "<script type='application/ld+json'>%s</script>",
                 json_encode($this->owner->ManualSchema)
             ));
-
-            return;
         }
 
         $schemas = array_filter($this->owner->config()->get('active_schema'));
