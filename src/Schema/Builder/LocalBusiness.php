@@ -39,14 +39,14 @@ class LocalBusiness extends SchemaBuilder
             Director::absoluteBaseURL()
         );
 
-
-        if (SiteConfig::has_extension('Geocodable')) {
+        $lat = $siteConfig->getField('Lat');
+        $lng = $siteConfig->getField('Lng');
+        if ($lat && $lng) {
             $localBusiness->geo = new GeoCoordinatesSchema(
-                $siteConfig->getField('Lat'),
-                $siteConfig->getField('Lng')
+                $lat,
+                $lng
             );
         }
-
 
         if ($telephone = $siteConfig->getField('Phone')) {
             $localBusiness->telephone = $telephone;

@@ -40,6 +40,8 @@ class SeoSiteConfigExtension extends DataExtension
         'State' => 'Varchar',
         'Postcode' => 'Varchar',
         'Country' => 'Varchar',
+        'Lat' => 'Varchar',
+        'Lng' => 'Varchar',
         'Phone' => 'Varchar',
     ];
 
