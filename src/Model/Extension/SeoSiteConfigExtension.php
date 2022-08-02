@@ -134,6 +134,8 @@ class SeoSiteConfigExtension extends DataExtension
                 TextField::create('Postcode', 'Postcode'),
                 TextField::create('Country', 'Country'),
                 TextField::create('Phone', 'Phone'),
+                TextField::create('Lat', 'Latitude'),
+                TextField::create('Lng', 'Longitude'),
             ]
         );
 
