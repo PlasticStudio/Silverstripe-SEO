@@ -50,8 +50,10 @@ Skeletor\Artena\Models\CustomDataObjectOrPage:
 
 ### BlogPost Schema
 
-NewsArticle schema for Blog Posts.
-If you're using a custom post, you'll need to write a custom schema, OR use the same field names (see fields pulled from blog post below).
+NewsArticle schema is set up for Blog module's Blog Posts.
+
+If you're using a custom post page, you'll need to write a custom schema, OR use the same field names (see fields pulled from blog post below).
+
 The below snippet is auto generated form your BlogPost data and some site config settings.
 
 ```javascript
