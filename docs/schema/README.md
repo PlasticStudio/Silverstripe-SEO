@@ -2,23 +2,57 @@
 
 This module allows you to add schema.org JSON to your webpage and auto generates schema for Blog Posts, Local Business, Organisation, Breadcrumbs
 
+## Manual schemas
+
+Every page apart from Blog Posts have a Settings -> Schema tab with a textarea field where you can add custom schema to that page.
+
 ## Displaying dynamic schema on Your Page
 
-Add an ApplySchema template variable to your page (preferably before the closing body tag)
+### Installation / set up
 
-```html
-    $ApplySchema
-</body>
+1. Add a yml to specify which schema to include where
+2. In Site Settings, SEO tab, complete site name, address, phone and lat/lng details
+3. Add $ApplySchema template variable to your page (preferably before the closing body tag)
+
+### Example YAML
+
+```
+# Google SEO schema settings
+
+Page:
+  default_image: "public/path_to_logo_file.png"
+  active_schema:
+    - 'PlasticStudio\SEO\Schema\Builder\Breadcrumbs'
+
+Skeletor\Pages\HomePage:
+  active_schema:
+    - 'PlasticStudio\SEO\Schema\Builder\LocalBusiness'
+
+Skeletor\Pages\NewsArticle:
+  active_schema:
+    - 'PlasticStudio\SEO\Schema\Builder\NewsArticle'
 ```
 
-## Complete the Schema Settings fields
+### Example of custom schema
 
-In Site Settings, SEO tab, complete site name, address, phone and lat/lng details
+1. Create new schema type in app/src/Schema/Types
+2. Extend PlasticStudio\SEO\Schema\Type\SchemaType
+3. Write a construct method with required fields from Google Schema
+4. In yaml, specify your custom schema builder
 
-## Auto Generated BlogPost Schema
+eg: https://gist.github.com/ebakernz/1dbcb7cd229ebccf2e861dbb47729991
 
-The below snippet is auto generated form your BlogPost data and some site config
-settings
+```
+Skeletor\Artena\Models\CustomDataObjectOrPage:
+  active_schema:
+    - 'Skeletor\Schema\Builder\CustomBuilder'
+```
+
+### BlogPost Schema
+
+NewsArticle schema for Blog Posts.
+If you're using a custom post, you'll need to write a custom schema, OR use the same field names (see fields pulled from blog post below).
+The below snippet is auto generated form your BlogPost data and some site config settings.
 
 ```javascript
 <script type="application/ld+json">
@@ -54,7 +88,7 @@ settings
 </script>
 ```
 
-In your CMS settings add your organisation name and image to populate the data:
+In your CMS Site Settings add your organisation name and image to populate the data:
 
 - publisher.name
 - publisher.logo.url
@@ -69,7 +103,3 @@ The following data is pulled from the actual BlogPost:
 - description - Summary
 - author.name - First Author FirstName and Surname
 - image - FeaturedImage.URL
-
-## Manually Adding Schema
-
-Every page apart from Blog Posts have a Settings -> Schema tab with a textarea field where you can add custom schema to that page.
