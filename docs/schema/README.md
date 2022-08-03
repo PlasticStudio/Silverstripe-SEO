@@ -2,6 +2,8 @@
 
 This module allows you to add schema.org JSON to your webpage and auto generates schema for Blog Posts, Local Business, Organisation, Breadcrumbs
 
+Google schema references: https://developers.google.com/search/docs/advanced/structured-data/article
+
 ## Manual schemas
 
 Every page apart from Blog Posts have a Settings -> Schema tab with a textarea field where you can add custom schema to that page.
@@ -11,10 +13,10 @@ Every page apart from Blog Posts have a Settings -> Schema tab with a textarea f
 ### Installation / set up
 
 1. Add a yml to specify which schema to include where
-2. In Site Settings, SEO tab, complete site name, address, phone and lat/lng details
+2. In Site Settings -> SEO tab, complete site name, address, phone and lat/lng details
 3. Add $ApplySchema template variable to your page (preferably before the closing body tag)
 
-### Example YAML
+#### Example YAML
 
 ```
 # Google SEO schema settings
@@ -33,12 +35,15 @@ Skeletor\Pages\NewsArticle:
     - 'PlasticStudio\SEO\Schema\Builder\NewsArticle'
 ```
 
-### Example of custom schema
+## Custom schema example
 
 1. Create new schema type in app/src/Schema/Types
 2. Extend PlasticStudio\SEO\Schema\Type\SchemaType
 3. Write a construct method with required fields from Google Schema
-4. In yaml, specify your custom schema builder
+4. Create a new builder module in app/src/Schema/Builder
+5. Extend PlasticStudio\SEO\Schema\Builder\SchemaBuilder
+6. Write a getSchema method to pull specific data for schema type
+7. In yaml, specify your custom schema builder
 
 eg: https://gist.github.com/ebakernz/1dbcb7cd229ebccf2e861dbb47729991
 
@@ -48,11 +53,27 @@ Skeletor\Artena\Models\CustomDataObjectOrPage:
     - 'Skeletor\Schema\Builder\CustomBuilder'
 ```
 
-### BlogPost Schema
+## BlogPost Schema
 
 NewsArticle schema is set up for Blog module's Blog Posts.
 
 If you're using a custom post page, you'll need to write a custom schema, OR use the same field names (see fields pulled from blog post below).
+
+In your CMS Site Settings -> SEO tab, add your organisation name and image to populate the data:
+
+- publisher.name
+- publisher.logo.url
+- publisher.logo.width
+- publisher.logo.height
+
+The following data is pulled from the actual BlogPost:
+
+- headline - Title
+- datePublished - PublishDate
+- dateModified - LastEdited
+- description - Summary
+- author.name - First Author FirstName and Surname
+- image - FeaturedImage.URL
 
 The below snippet is auto generated form your BlogPost data and some site config settings.
 
@@ -89,19 +110,3 @@ The below snippet is auto generated form your BlogPost data and some site config
 }
 </script>
 ```
-
-In your CMS Site Settings add your organisation name and image to populate the data:
-
-- publisher.name
-- publisher.logo.url
-- publisher.logo.width
-- publisher.logo.height
-
-The following data is pulled from the actual BlogPost:
-
-- headline - Title
-- datePublished - PublishDate
-- dateModified - LastEdited
-- description - Summary
-- author.name - First Author FirstName and Surname
-- image - FeaturedImage.URL
