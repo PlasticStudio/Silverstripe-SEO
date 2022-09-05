@@ -1,6 +1,9 @@
 <% with $SeoPageObject %>
-
-    <title>$PageMetaTitle</title>
+    <% if $PageMetaTitle %>
+        <title>$PageMetaTitle</title>
+    <% else_if $Title %>
+        <title>$Title | $SiteConfig.Title</title>
+    <% end_if %>
 
     <% if $PageMetaDescription %>
         <meta name="description" content="$PageMetaDescription">
