@@ -459,8 +459,8 @@ class SeoPageExtension extends DataExtension
         if(class_exists(BlogPost::class)) {
             if($this->owner instanceof BlogPost) {
                 if($this->owner->Parent()->DefaultPostMetaDescription == 1) {
-                    if ($this->page->Summary) {
-                        return strip_tags($this->page->Summary);
+                    if ($this->owner->Summary) {
+                        return strip_tags($this->owner->Summary);
                     }
                 }
             }
