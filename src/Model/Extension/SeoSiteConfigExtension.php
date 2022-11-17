@@ -26,7 +26,7 @@ class SeoSiteConfigExtension extends DataExtension
      *
      * @since version 1.0.6
      *
-     * @config array $db 
+     * @config array $db
      **/
     private static $db = [
         'OGSiteName'             => 'Varchar(512)',
@@ -34,7 +34,15 @@ class SeoSiteConfigExtension extends DataExtension
         'CreatorTwitterHandle'   => 'Varchar(512)',
         'FacebookAppID'          => 'Varchar(512)',
         'UseTitleAsMetaTitle'    => 'Boolean',
-        'SchemaOrganisationName' => 'Varchar(512)'
+        'SchemaOrganisationName' => 'Varchar(512)',
+        'Address' => 'Varchar',
+        'Suburb' => 'Varchar',
+        'State' => 'Varchar',
+        'Postcode' => 'Varchar',
+        'Country' => 'Varchar',
+        'Lat' => 'Varchar',
+        'Lng' => 'Varchar',
+        'Phone' => 'Varchar',
     ];
 
     /**
@@ -42,7 +50,7 @@ class SeoSiteConfigExtension extends DataExtension
      *
      * @since version 1.0.0
      *
-     * @config array $has_one 
+     * @config array $has_one
      **/
     private static $has_one = [
         'SchemaOrganisationImage' => Image::class,
@@ -54,13 +62,22 @@ class SeoSiteConfigExtension extends DataExtension
      *
      * @since version 1.0.0
      *
-     * @config array $has_one 
+     * @config array $has_one
      **/
     private static $owns = [
         'SchemaOrganisationImage',
         'DefaultSocialImage'
     ];
-    
+
+    /**
+     * Defines the default values for the fields
+     *
+     * @var bool[]
+     */
+    private static $defaults = [
+        'UseTitleAsMetaTitle' => true // Use the page title as the meta title by default
+    ];
+
     /**
      * Adds extra fields for social config across networks
      *
@@ -99,14 +116,29 @@ class SeoSiteConfigExtension extends DataExtension
             $fields->addFieldToTab('Root.SEO', LiteralField::create(false, $message));
         }
 
-        $fields->addFieldToTab('Root.SEO', HeaderField::create(false, 'Schema'));
+        $fields->addFieldToTab('Root.SEO', HeaderField::create(false, 'Schema settings'));
         $fields->addFieldToTab('Root.SEO', HeaderField::create(false, 'Organisation (used in blog post schema)', 4));
         $fields->addFieldToTab('Root.SEO', TextField::create('SchemaOrganisationName', 'Name'));
         $uploader = UploadField::create('SchemaOrganisationImage', 'Image')
             ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
             ->setAllowedFileCategories('image', 'image/supported');
         $fields->addFieldToTab('Root.SEO', $uploader);
-        
+
+        $fields->addFieldsToTab(
+            'Root.SEO',
+            [
+                HeaderField::create(false, 'Address (used in Local Business schema)', 4),
+                TextField::create('Address', 'Address'),
+                TextField::create('Suburb', 'Suburb'),
+                TextField::create('State', 'State'),
+                TextField::create('Postcode', 'Postcode'),
+                TextField::create('Country', 'Country'),
+                TextField::create('Phone', 'Phone'),
+                TextField::create('Lat', 'Latitude'),
+                TextField::create('Lng', 'Longitude'),
+            ]
+        );
+
         return $fields;
     }
 }

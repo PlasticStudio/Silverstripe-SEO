@@ -1,22 +1,59 @@
-<% with SeoPageObject %>
+<% with $SeoPageObject %>
 
-    <title>$PageMetaTitle</title>
-    <meta name="description" content="$PageMetaDescription">
+    <% if $PageMetaTitle %>
+        <title>$PageMetaTitle</title>
+    <% else_if $Title %>
+        <title>$Title | $SiteConfig.Title</title>
+    <% end_if %>
 
-    <link rel="canonical" href="$PageCanonical">
-    <meta name="robots" content="$PageRobots">
+    <% if $PageMetaDescription %>
+        <meta name="description" content="$PageMetaDescription">
+    <% else_if $Content %>
+        <meta name="description" content="$Content.LimitWordCount(12)">
+    <% end_if %>
+
+    <% if $PageCanonical %>
+        <link rel="canonical" href="$PageCanonical">
+    <% end_if %>
+
+    <% if $PageRobots %>
+        <meta name="robots" content="$PageRobots">
+    <% end_if %>
 
     <% if not $HideSocial %>
 
-        <meta property="og:title" content="$PageMetaTitle">
-        <meta property="og:description" content="$PageMetaDescription">
-        <meta property="og:type" content="$PageOgType">
-        <meta property="og:url" content="$PageURL">
-        <meta property="og:locale" content="$PageOgLocale">
+        <% if $PageMetaTitle %>
+            <meta property="og:title" content="$PageMetaTitle">
+            <meta name="twitter:title" content="$PageMetaTitle">
+        <% else_if $Title %>
+            <meta property="og:title" content="$Title">
+            <meta name="twitter:title" content="$Title">
+        <% end_if %>
 
-        <meta name="twitter:title" content="$PageMetaTitle">
-        <meta name="twitter:description" content="$PageMetaDescription">
-        <meta name="twitter:card" content="$PageTwitterCard">
+        <% if $PageMetaDescription %>
+            <meta property="og:description" content="$PageMetaDescription">
+            <meta name="twitter:description" content="$PageMetaDescription">
+        <% else_if $Content %>
+            <meta property="og:description" content="$Content.LimitWordCount(12)">
+            <meta name="twitter:description" content="$Content.LimitWordCount(12)">
+        <% end_if %>
+
+        <% if $PageURL %>
+            <meta property="og:url" content="$PageURL">
+        <% end_if %>
+
+        <% if $PageOgType %>
+            <meta property="og:type" content="$PageOgType">
+        <% end_if %>
+
+        <% if $PageOgLocale %>
+            <meta property="og:locale" content="$PageOgLocale">
+        <% end_if %>
+
+        <% if $PageTwitterCard %>
+            <meta name="twitter:card" content="$PageTwitterCard">
+        <% end_if %>
+
         <% if $PageSocialImage %>
             <meta property="og:image" content="$PageSocialImage.AbsoluteURL">
             <meta name="twitter:image" content="$PageSocialImage.AbsoluteURL">
@@ -42,33 +79,35 @@
 
     <% end_if %>
 
-    <% loop HeadTags.Filter('Type', 'name') %>
+    <% loop $HeadTags.Filter('Type', 'name') %>
         <meta name="$Title" content="$Value">
     <% end_loop %>
 
-    <% loop HeadTags.Filter('Type', 'link') %>
+    <% loop $HeadTags.Filter('Type', 'link') %>
         <link rel="$Title" href="$value">
     <% end_loop %>
 
-    <% loop HeadTags.Filter('Type', 'property') %>
+    <% loop $HeadTags.Filter('Type', 'property') %>
         <meta property="$Title" content="$Value">
     <% end_loop %>
 
-    <% if PageGenerator %>
+    <% if $PageGenerator %>
         <meta name="generator" content="$PageGenerator">
     <% end_if %>
 
-    <meta http-equiv="Content-type" content="text/html; charset=$PageCharset">
+    <% if $PageCharset %>
+        <meta http-equiv="Content-type" content="text/html; charset=$PageCharset">
+    <% end_if %>
 
-    <% if isCMSPreviewPage %>
+    <% if $isCMSPreviewPage %>
         <meta name="x-page-id" content="$CMSPageID">
         <meta name="x-cms-edit-link" content="$CMSPageEditLink">
     <% end_if %>
 
-    <% if PaginationPrevTag %>
+    <% if $PaginationPrevTag %>
         <link rel="prev" href="$PaginationPrevTag">
     <% end_if %>
-    <% if PaginationNextTag %>
+    <% if $PaginationNextTag %>
         <link rel="next" href="$PaginationNextTag">
     <% end_if %>
 
