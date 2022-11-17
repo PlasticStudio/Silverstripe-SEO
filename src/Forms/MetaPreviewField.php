@@ -111,7 +111,9 @@ class MetaPreviewField extends LiteralField
         if(class_exists(BlogPost::class)) {
             if($this->page instanceof BlogPost) {
                 if($this->page->Parent()->DefaultPostMetaDescription == 1) {
-                    return strip_tags($this->page->Summary);
+                    if ($this->page->Summary) {
+                        return strip_tags($this->page->Summary);
+                    }
                 }
             }
         }

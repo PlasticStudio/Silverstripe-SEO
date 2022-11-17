@@ -36,8 +36,8 @@
     },
     "autoload": {
         "psr-4": {
-            "CyberDuck\\SEO\\": "src/",
-            "CyberDuck\\SEO\\Tests\\": "tests/"
+            "PlasticStudio\\SEO\\": "src/",
+            "PlasticStudio\\SEO\\Tests\\": "tests/"
         }
     },
     "extra": {
