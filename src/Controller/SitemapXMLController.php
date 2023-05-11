@@ -96,7 +96,7 @@ class SitemapXMLController extends Controller
                 $list = $name::get()->filter('ClassName:not', ErrorPage::class);
 
                 foreach ($list as $page) {
-                    // Exclude redirector pages that redirect to external URLs
+                    // Exclude redirector pages that redirect to external URLs, so google doesn't error
                     if ($page instanceof RedirectorPage && $page->RedirectionType == 'External') {
                         continue;
                     }
