@@ -3,13 +3,14 @@
 namespace PlasticStudio\SEO\Controller;
 
 use Page;
-use PlasticStudio\SEO\Generators\SitemapGenerator;
-use SilverStripe\Control\Controller;
-use SilverStripe\Control\Director;
-use SilverStripe\Control\HTTPRequest;
-use SilverStripe\Core\Config\Config;
 use SilverStripe\ORM\ArrayList;
+use SilverStripe\Control\Director;
+use SilverStripe\Control\Controller;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\Control\HTTPRequest;
 use SilverStripe\ErrorPage\ErrorPage;
+use SilverStripe\CMS\Model\RedirectorPage;
+use PlasticStudio\SEO\Generators\SitemapGenerator;
 
 /**
  * SitemapXML_Controller
@@ -31,7 +32,7 @@ class SitemapXMLController extends Controller
     {
         parent::init();
 
-        $this->response->addHeader("Content-Type", "application/xml"); 
+        $this->response->addHeader("Content-Type", "application/xml");
     }
 
     /**
@@ -93,7 +94,13 @@ class SitemapXMLController extends Controller
             foreach ($objects as $name => $values) {
                 // exclude error pages, so google doesn't error
                 $list = $name::get()->filter('ClassName:not', ErrorPage::class);
+
                 foreach ($list as $page) {
+                    // Exclude redirector pages that redirect to external URLs, so google doesn't error
+                    if ($page instanceof RedirectorPage && $page->RedirectionType == 'External') {
+                        continue;
+                    }
+
                     if (!$page->SitemapHide) {
                         $pages->push($page);
                     }
