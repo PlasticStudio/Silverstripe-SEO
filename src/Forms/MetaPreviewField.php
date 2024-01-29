@@ -93,7 +93,9 @@ class MetaPreviewField extends LiteralField
      **/
     private function getPageMetaLink()
     {
-        return Director::absoluteBaseURL().substr($this->page->Link() ?? '', 1);
+        if($this->page->Link()) {            
+            return Director::absoluteBaseURL().substr($this->page->Link(), 1);
+        }
     }
 
     /**
