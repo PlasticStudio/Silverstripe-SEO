@@ -95,6 +95,8 @@ class MetaPreviewField extends LiteralField
     {
         if($this->page->Link()) {            
             return Director::absoluteBaseURL() . $this->page->Link();
+        } else {
+            return Director::absoluteBaseURL();
         }
     }
 
