@@ -51,7 +51,7 @@ class HTMLSitemap extends Page {
 				$HTMLSitemap->Title = 'HTML Sitemap';
 				$HTMLSitemap->Content = '';
 				$HTMLSitemap->write();
-				$HTMLSitemap->publish('Stage', 'Live');
+				$HTMLSitemap->publishRecursive();
 				$HTMLSitemap->flushCache();
 				DB::alteration_message('Sitemap HTML page created', 'created');
 			}
