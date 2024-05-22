@@ -33,7 +33,7 @@ class HTMLSitemap extends Page {
 
     public function Sitemap()
 	{
-		return SiteTree::get()->Filter(['ParentID' => 0, 'ClassName:not' => [ErrorPage::class, HTMLSitemap::class]]);
+		return SiteTree::get()->Filter(['ParentID' => 0, 'ClassName:not' => [ErrorPage::class, HTMLSitemap::class], 'SitemapHide' => 0])->sort('Sort ASC');
 	}
 	
 	/**
