@@ -7,7 +7,6 @@ use SilverStripe\ORM\DB;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\ErrorPage\ErrorPage;
-use PlasticStudio\SEO\Pages\HTMLSitemap;
 
 class HTMLSitemap extends Page {
 
