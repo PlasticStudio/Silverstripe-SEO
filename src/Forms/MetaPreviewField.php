@@ -94,9 +94,9 @@ class MetaPreviewField extends LiteralField
     private function getPageMetaLink()
     {
         if($this->page->Link()) {            
-            return Director::absoluteBaseURL() . $this->page->Link();
+            return rtrim(Director::absoluteBaseURL(), '/') . $this->page->Link();
         } else {
-            return Director::absoluteBaseURL();
+            return rtrim(Director::absoluteBaseURL(), '/');
         }
     }
 
