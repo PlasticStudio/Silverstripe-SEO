@@ -33,7 +33,21 @@ class HTMLSitemap extends Page {
 
     public function Sitemap()
 	{
-		return SiteTree::get()->Filter(['ParentID' => 0, 'ClassName:not' => [ErrorPage::class, HTMLSitemap::class], 'SitemapHide' => 0])->sort('Sort ASC');
+		// exclude error pages and self
+		$sitetree = SiteTree::get()->Filter(['ParentID' => 0, 'ClassName:not' => [ErrorPage::class, HTMLSitemap::class]])->sort('Sort ASC');
+
+		$pages = ArrayList::create();
+		
+		// exclude pages that are hidden from the sitemap
+		foreach ($sitetree as $item) {
+			$page = Page::get()->byID($item->ID);
+
+			if ($page && !$page->SitemapHide) {
+				$pages->push($page);
+			}
+		}
+
+		return $pages;
 	}
 	
 	/**
