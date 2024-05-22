@@ -532,7 +532,8 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageURL()
     {
-        return Director::absoluteBaseURL().substr($this->owner->Link(), 1);
+        // trim trailing slash on base if exists (ss4/ss5 compatibility)
+        return trim(Director::absoluteBaseURL(), '/').$this->owner->Link();
     }
 
     /**

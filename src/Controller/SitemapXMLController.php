@@ -58,7 +58,8 @@ class SitemapXMLController extends Controller
      **/
     public function getSitemapHost()
     {
-        return substr(Director::absoluteBaseUrl(), 0, -1);
+        // remove trailing slash, if exists (ss4/ss5 compatibility)
+        return rtrim(Director::absoluteBaseUrl(), '/');
     }
 
     /**
