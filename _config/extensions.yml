@@ -16,3 +16,6 @@ SilverStripe\Blog\Model\Blog:
 SilverStripe\Blog\Model\BlogPost:
   extensions:
     - PlasticStudio\SEO\Model\Extension\SeoBlogPostExtension
+SilverStripe\CMS\Model\RedirectorPage:
+  extensions:
+    - PlasticStudio\SEO\Model\Extension\SeoRedirectorPageExtension

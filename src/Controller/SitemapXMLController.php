@@ -102,7 +102,7 @@ class SitemapXMLController extends Controller
                         continue;
                     }
 
-                    if (!$page->SitemapHide) {
+                    if (!$page->XMLSitemapHide) {
                         $pages->push($page);
                     }
                 }
