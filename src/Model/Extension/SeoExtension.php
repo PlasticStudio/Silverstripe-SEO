@@ -39,11 +39,9 @@ class SeoExtension extends SeoPageExtension
      **/
     public function updateCMSFields(FieldList $fields) 
     {
-        $fields = parent::updateCMSFields($fields);
 
         $fields->addFieldToTab('Root.Main', TextField::create('Title'));
         $fields->addFieldToTab('Root.Main', TextField::create('URLSegment'));
 
-        return $fields;
     }
 }
