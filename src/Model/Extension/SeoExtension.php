@@ -43,5 +43,7 @@ class SeoExtension extends SeoPageExtension
         $fields->addFieldToTab('Root.Main', TextField::create('Title'));
         $fields->addFieldToTab('Root.Main', TextField::create('URLSegment'));
 
+        $this->updateSettingsFields($fields);
+
     }
 }
