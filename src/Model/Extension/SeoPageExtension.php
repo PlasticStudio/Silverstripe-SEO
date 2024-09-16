@@ -149,7 +149,7 @@ class SeoPageExtension extends DataExtension
         // META TAB
         // Meta
         $title = TextField::create('MetaTitle');
-        $description = TextareaField::create('MetaDescription');
+        $description = TextareaField::create('MetaDescription')->setDescription('Max 160 characters');
         if(class_exists(BlogPost::class)) {
             if($this->owner instanceof BlogPost) {
                 if($this->owner->Parent()->DefaultPostMetaTitle == 1) {
@@ -161,6 +161,22 @@ class SeoPageExtension extends DataExtension
             }
         }
 
+        // Social image
+        $uploader = UploadField::create('SocialImage')
+            ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
+            ->setAllowedFileCategories('image', 'image/supported');
+        if(class_exists(BlogPost::class)) {
+            if($this->owner instanceof BlogPost) {
+                if($this->owner->Parent()->UseFeaturedAsSocialImage == 1) {
+                    $uploader->setDescription('Using the page featured image');
+                }
+            }
+        }
+
+        // Extra Meta Tags
+        $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
+        $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+
         $fields->addFieldToTab(
             'Root.Main',
             ToggleCompositeField::create(
@@ -170,6 +186,8 @@ class SeoPageExtension extends DataExtension
                     MetaPreviewField::create($this->owner),
                     $title,
                     $description,
+                    $uploader
+                    $grid
                 ]   
             ),
         );
@@ -243,22 +261,9 @@ class SeoPageExtension extends DataExtension
             $card->setDescription('Using default twitter card "summary"');
         }
         $fields->addFieldToTab('Root.MetaTags', $card);
-        $uploader = UploadField::create('SocialImage')
-            ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
-            ->setAllowedFileCategories('image', 'image/supported');
-        if(class_exists(BlogPost::class)) {
-            if($this->owner instanceof BlogPost) {
-                if($this->owner->Parent()->UseFeaturedAsSocialImage == 1) {
-                    $uploader->setDescription('Using the page featured image');
-                }
-            }
-        }
-        $fields->addFieldToTab('Root.MetaTags', $uploader);
+        
 
-        // Extra Meta Tags
-        $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
-        $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
-        $fields->addFieldToTab('Root.MetaTags', $grid);
+        
 
         // SCHEMA TAB
         $fields->addFieldToTab('Root.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
