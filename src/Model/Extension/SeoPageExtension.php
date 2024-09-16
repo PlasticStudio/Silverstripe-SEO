@@ -142,20 +142,10 @@ class SeoPageExtension extends DataExtension
     private $pagination;
 
     /**
-     * Adds our SEO Meta fields to the page settings field list. The tab is divided into
-     * logical sections controlling various aspects of page SEO.
-     *
-     * @since version 1.0.0
-     *
-     * @param FieldList $fields The fields object
-     *
-     * @return FieldList
-     **/
-    public function updateSettingsFields(FieldList $fields)
+     * Add fields to main/content tab
+     */
+    public function updateCMSFields(FieldList $fields)
     {
-        $fields->removeByName('HeadTags');
-        $fields->removeByName('SitemapImages');
-
         // META TAB
         // Meta
         $title = TextField::create('MetaTitle');
@@ -180,8 +170,24 @@ class SeoPageExtension extends DataExtension
             ),
         );
 
-        $fields->addFieldToTab('Root.Main', $title);
-        $fields->addFieldToTab('Root.Main', $description);
+    }
+
+    /**
+     * Adds our SEO Meta fields to the page settings field list. The tab is divided into
+     * logical sections controlling various aspects of page SEO.
+     *
+     * @since version 1.0.0
+     *
+     * @param FieldList $fields The fields object
+     *
+     * @return FieldList
+     **/
+    public function updateSettingsFields(FieldList $fields)
+    {
+        $fields->removeByName('HeadTags');
+        $fields->removeByName('SitemapImages');
+
+        
 
         // Indexing
         $fields->addFieldToTab('Root.MetaTags', HeaderField::create(false, 'Indexing', 2));
