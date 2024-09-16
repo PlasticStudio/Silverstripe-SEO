@@ -164,9 +164,13 @@ class SeoPageExtension extends DataExtension
         $fields->addFieldToTab(
             'Root.Main',
             ToggleCompositeField::create(
-                MetaPreviewField::create($this->owner),
-                $title,
-                $description,
+                'SEO',
+                'SEO',
+                [
+                    MetaPreviewField::create($this->owner),
+                    $title,
+                    $description,
+                ]   
             ),
         );
 
