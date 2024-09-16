@@ -207,11 +207,14 @@ class SeoPageExtension extends DataExtension
     {
         $fields->removeByName('HeadTags');
         $fields->removeByName('SitemapImages');
-
         
+        // Extra Meta Tags
+        $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
+        $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+        $fields->addFieldToTab('Root.MetaTags', $grid);
 
         // Indexing
-        $fields->addFieldToTab('Root.MetaTags', HeaderField::create(false, 'Indexing', 2));
+        $fields->addFieldToTab('Root.Indexing', HeaderField::create(false, 'Indexing', 2));
         if (self::excludeSiteFromIndexing()) {
             $noindex_domains = Config::inst()->get('PlasticStudio\SEO', 'noindex_domains');
             $message = '<div class="message warning">This domain has been configured to be excluded from indexing by robots like Google etc. Excluded domains are:';
@@ -220,31 +223,31 @@ class SeoPageExtension extends DataExtension
                 $message .= '<li>'.$domain.'</li>';
             }
             $message .= '</ul></div>';
-            $fields->addFieldToTab('Root.MetaTags', LiteralField::create(false, $message));
+            $fields->addFieldToTab('Root.Indexing', LiteralField::create(false, $message));
         }
         $canonical = TextField::create('Canonical');
         if(!$this->owner->Canonical) {
             $canonical->setAttribute('placeholder', 'Using page URL');
         }
-        $fields->addFieldToTab('Root.MetaTags', $canonical);
+        $fields->addFieldToTab('Root.Indexing', $canonical);
         $robots = DropdownField::create('Robots', 'Robots')
             ->setSource($this->getRobotsIndexingRules())
             ->setEmptyString('- please select - ');
         if(!$this->owner->Robots) {
             $robots->setDescription('Using default "index,follow" rule');
         }
-        $fields->addFieldToTab('Root.MetaTags', $robots);
+        $fields->addFieldToTab('Root.Indexing', $robots);
 
         // Social Sharing
-        $fields->addFieldToTab('Root.MetaTags', HeaderField::create(false, 'Social Sharing', 2));
-        $fields->addFieldToTab('Root.MetaTags', CheckboxField::create('HideSocial', 'Hide Social Meta?'));
+        $fields->addFieldToTab('Root.Indexing', HeaderField::create(false, 'Social Sharing', 2));
+        $fields->addFieldToTab('Root.Indexing', CheckboxField::create('HideSocial', 'Hide Social Meta?'));
         $og = DropdownField::create('OGtype', 'Open Graph Type')
             ->setSource($this->getOGtypes())
             ->setEmptyString('- please select - ');
         if(!$this->owner->OGtype) {
             $og->setDescription('Using default "website" type');
         }
-        $fields->addFieldToTab('Root.MetaTags', $og);
+        $fields->addFieldToTab('Root.Indexing', $og);
         $og = DropdownField::create('OGlocale', 'Open Graph Locale')
             ->setSource($this->getOGlocales())
             ->setEmptyString('- please select - ');
@@ -252,19 +255,14 @@ class SeoPageExtension extends DataExtension
             $locale = str_replace('-', '_', i18n::get_locale());
             $og->setDescription(sprintf('Using default locale from application "%s"', $locale));
         }
-        $fields->addFieldToTab('Root.MetaTags', $og);
+        $fields->addFieldToTab('Root.Indexing', $og);
         $card = DropdownField::create('TwitterCard', 'Twitter Card')
             ->setSource($this->getTwitterCardTypes())
             ->setEmptyString('- please select - ');
         if(!$this->owner->TwitterCard) {
             $card->setDescription('Using default twitter card "summary"');
         }
-        $fields->addFieldToTab('Root.MetaTags', $card);
-        
-        // Extra Meta Tags
-        $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
-        $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
-        $fields->addFieldToTab('Root.MetaTags', $grid);
+        $fields->addFieldToTab('Root.Indexing', $card);
         
 
         // SCHEMA TAB
