@@ -186,8 +186,8 @@ class SeoPageExtension extends DataExtension
                     MetaPreviewField::create($this->owner),
                     $title,
                     $description,
-                    $uploader
-                    $grid
+                    $uploader,
+                    $grid,
                 ]   
             ),
         );
