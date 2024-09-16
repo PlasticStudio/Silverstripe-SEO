@@ -147,6 +147,10 @@ class SeoPageExtension extends DataExtension
     public function updateCMSFields(FieldList $fields)
     {
         // META TAB
+
+        // Preview
+        $metapreview = MetaPreviewField::create($this->owner)->setRightTitle('Google preview');
+
         // Meta
         $title = TextField::create('MetaTitle');
         $description = TextareaField::create('MetaDescription')->setDescription('Max 160 characters');
@@ -171,11 +175,7 @@ class SeoPageExtension extends DataExtension
                     $uploader->setDescription('Using the page featured image');
                 }
             }
-        }
-
-        // Extra Meta Tags
-        $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
-        $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+        }        
 
         $fields->addFieldToTab(
             'Root.Main',
@@ -183,11 +183,10 @@ class SeoPageExtension extends DataExtension
                 'SEO',
                 'SEO',
                 [
-                    MetaPreviewField::create($this->owner),
+                    $metapreview,
                     $title,
                     $description,
                     $uploader,
-                    $grid,
                 ]   
             ),
         );
@@ -262,7 +261,10 @@ class SeoPageExtension extends DataExtension
         }
         $fields->addFieldToTab('Root.MetaTags', $card);
         
-
+        // Extra Meta Tags
+        $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
+        $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+        $fields->addFieldToTab('Root.MetaTags', $grid);
         
 
         // SCHEMA TAB
