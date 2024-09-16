@@ -29,6 +29,7 @@ use PlasticStudio\SEO\Model\SeoHeadTag;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\ToggleCompositeField;
 use PlasticStudio\SEO\Forms\MetaPreviewField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use PlasticStudio\SEO\Schema\Builder\SchemaBuilder;
@@ -157,7 +158,6 @@ class SeoPageExtension extends DataExtension
 
         // META TAB
         // Meta
-        $fields->addFieldToTab('Root.MetaTags', MetaPreviewField::create($this->owner));
         $title = TextField::create('MetaTitle');
         $description = TextareaField::create('MetaDescription');
         if(class_exists(BlogPost::class)) {
@@ -170,8 +170,18 @@ class SeoPageExtension extends DataExtension
                 }
             }
         }
-        $fields->addFieldToTab('Root.MetaTags', $title);
-        $fields->addFieldToTab('Root.MetaTags', $description);
+
+        $fields->addFieldToTab(
+            'Root.Main',
+            ToggleCompositeField::create(
+                MetaPreviewField::create($this->owner),
+                $title,
+                $description,
+            ),
+        );
+
+        $fields->addFieldToTab('Root.Main', $title);
+        $fields->addFieldToTab('Root.Main', $description);
 
         // Indexing
         $fields->addFieldToTab('Root.MetaTags', HeaderField::create(false, 'Indexing', 2));
