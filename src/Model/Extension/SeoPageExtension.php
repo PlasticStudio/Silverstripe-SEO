@@ -87,7 +87,8 @@ class SeoPageExtension extends DataExtension
         'HideSocial'      => 'Boolean',
         'OGtype'          => 'Varchar(100)',
         'OGlocale'        => 'Varchar(10)',
-        'TwitterCard'     => 'Varchar(100)'
+        'TwitterCard'     => 'Varchar(100)',
+        'FocusKeyword'    => 'Varchar(100)',
     ];
 
     /**
@@ -146,12 +147,21 @@ class SeoPageExtension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
-        // META TAB
 
-        // Preview
-        $metapreview = MetaPreviewField::create($this->owner)->setRightTitle('Google preview');
+        $fields->addFieldToTab(
+            'Root.Main',
+            ToggleCompositeField::create(
+                'SEOHealthAnalysis',
+                'SEO Health Analysis',
+                [
+                    MetaPreviewField::create($this->owner)->setRightTitle('Google preview'),
+                    TextField::create('FocusKeyword', 'Set focus keyword'),
+                    // content analysis
+                ]   
+            ),
+        );       
 
-        // Meta
+        // Metadata
         $title = TextField::create('MetaTitle');
         $description = TextareaField::create('MetaDescription')->setDescription('Max 160 characters');
         if(class_exists(BlogPost::class)) {
@@ -165,6 +175,18 @@ class SeoPageExtension extends DataExtension
             }
         }
 
+        $fields->addFieldToTab(
+            'Root.Main',
+            ToggleCompositeField::create(
+                'PageMetadata',
+                'Metadata',
+                [
+                    $title,
+                    $description,                    
+                ]   
+            ),
+        );
+
         // Social image
         $uploader = UploadField::create('SocialImage')
             ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
@@ -175,21 +197,22 @@ class SeoPageExtension extends DataExtension
                     $uploader->setDescription('Using the page featured image');
                 }
             }
-        }        
+        }
 
-        $fields->addFieldToTab(
-            'Root.Main',
-            ToggleCompositeField::create(
-                'SEO',
-                'SEO',
-                [
-                    $metapreview,
-                    $title,
-                    $description,
-                    $uploader,
-                ]   
-            ),
-        );
+        // // OPEN GRAPH
+        // $fields->addFieldToTab(
+        //     'Root.Main',
+        //     ToggleCompositeField::create(
+        //         'OpenGraph',
+        //         'Open Graph',
+        //         [
+        //             // type,
+        //             // Title
+        //             // description
+        //             $uploader,
+        //         ]   
+        //     ),
+        // );
 
     }
 
