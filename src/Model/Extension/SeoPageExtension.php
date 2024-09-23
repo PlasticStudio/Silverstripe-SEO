@@ -214,7 +214,6 @@ class SeoPageExtension extends DataExtension
         $fields->addFieldToTab('Root.AdvancedSEO.MetaTags', $grid);
 
         // Indexing
-        $fields->addFieldToTab('Root.Indexing', HeaderField::create(false, 'Indexing', 2));
         if (self::excludeSiteFromIndexing()) {
             $noindex_domains = Config::inst()->get('PlasticStudio\SEO', 'noindex_domains');
             $message = '<div class="message warning">This domain has been configured to be excluded from indexing by robots like Google etc. Excluded domains are:';
@@ -241,7 +240,6 @@ class SeoPageExtension extends DataExtension
         $fields->addFieldToTab('Root.AdvancedSEO.Indexing', $robots);
 
         // Social Sharing
-        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', HeaderField::create(false, 'Social Sharing', 2));
         $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', CheckboxField::create('HideSocial', 'Hide Social Meta?'));
         $og = DropdownField::create('OGtype', 'Open Graph Type')
             ->setSource($this->getOGtypes())
@@ -259,13 +257,14 @@ class SeoPageExtension extends DataExtension
             $og->setDescription(sprintf('Using default locale from application "%s"', $locale));
         }
         $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $og);
-        $card = DropdownField::create('TwitterCard', 'Twitter Card')
-            ->setSource($this->getTwitterCardTypes())
-            ->setEmptyString('- please select - ');
-        if(!$this->owner->TwitterCard) {
-            $card->setDescription('Using default twitter card "summary"');
-        }
-        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $card);
+        
+        // $card = DropdownField::create('TwitterCard', 'Twitter Card')
+        //     ->setSource($this->getTwitterCardTypes())
+        //     ->setEmptyString('- please select - ');
+        // if(!$this->owner->TwitterCard) {
+        //     $card->setDescription('Using default twitter card "summary"');
+        // }
+        // $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $card);
         
 
         // SCHEMA TAB
