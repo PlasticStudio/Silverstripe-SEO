@@ -273,7 +273,7 @@ class SeoPageExtension extends DataExtension
         // SITEMAP TAB
         // Sitemap
 
-        $fields->addFieldToTab('Root.Behavior', CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'));
+        $fields->addFieldToTab('Root.Settings', CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'));
         $fields->addFieldToTab('Root.Behavior', CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?'));
 
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', HeaderField::create(false, 'Sitemap', 2));
