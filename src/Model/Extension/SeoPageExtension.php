@@ -210,9 +210,9 @@ class SeoPageExtension extends DataExtension
         $visibility = FieldGroup::create(
             CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'),
             CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?')
-        )->setTitle('Sitemap Visibility');
+        )->setTitle('Sitemap');
 
-        $fields->addFieldToTab('Root.Settings', $visibility, 'CanViewType');
+        $fields->addFieldToTab('Root.Settings', $visibility);
 
         $fields->removeByName('HeadTags');
         $fields->removeByName('SitemapImages');
