@@ -4,4 +4,4 @@ Name: seo meta preview config
 ---
 PlasticStudio\SEO\Forms\MetaPreviewField:
   meta_title: 'Your Meta Title Here - What Your Page is About'
-  meta_description: 'This is a preview of your Meta description and how it will look in the Search Engine Results Page. Always try to keep it short and make it fit into the space provided.'
+  meta_description: 'The meta description is empty. Create a concise summary that is unique, descriptive, and relevant to the page. Incorporate the target keywords to encourage users to click through to your site.'
