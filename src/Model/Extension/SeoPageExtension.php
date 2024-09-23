@@ -144,6 +144,23 @@ class SeoPageExtension extends DataExtension
 
    
 
+
+    // /**
+    //  * Create meta title and social image on save
+    //  */
+    // public function onBeforeWrite() {
+    //     if (!$this->owner->MetaTitle) {
+            
+    //     }
+    //     if (!$this->owner->MetaDescription) {
+            
+    //     }
+    //     parent::onBeforeWrite();
+    // }
+
+
+
+
     /**
      * Add fields to main/content tab
      */
@@ -156,7 +173,12 @@ class SeoPageExtension extends DataExtension
 
         // Meta
         $title = TextField::create('MetaTitle');
+        if ($this->owner->MetaTitle == '') {
+            $title->setDescription('Set the meta title. The page title will be used if left empty.');
+        }
+
         $description = TextareaField::create('MetaDescription')->setDescription('Max 160 characters');
+
         if(class_exists(BlogPost::class)) {
             if($this->owner instanceof BlogPost) {
                 if($this->owner->Parent()->DefaultPostMetaTitle == 1) {
@@ -195,23 +217,6 @@ class SeoPageExtension extends DataExtension
         );
 
     }
-
-
-
-    /**
-     * Create meta title and social image on save
-     */
-    public function onBeforeWrite() {
-        if (!$this->owner->MetaTitle) {
-            $this->owner->MetaTitle = $this->generatePageMetaTitle();
-        }
-        if (!$this->owner->MetaDescription) {
-            $this->owner->MetaDescription = $this->getPageMetaDescription();
-        }
-        parent::onBeforeWrite();
-    }
-
-
 
 
     /**
@@ -472,21 +477,6 @@ class SeoPageExtension extends DataExtension
             'app'                 => 'App',
             'product'             => 'Product'
         ];
-    }
-
-    /**
-     * Generate a page Meta title based on the current page type
-     * and configuration settings
-     * 
-     * @since version 1.0.0
-     * 
-     * @return string
-     */
-    public function generatePageMetaTitle() {
-        // UseTitleAsMetaTitle
-        if(SiteConfig::current_site_config()->UseTitleAsMetaTitle) {
-            return $this->owner->Title;
-        }
     }
 
     /**
