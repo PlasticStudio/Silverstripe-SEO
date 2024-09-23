@@ -223,7 +223,7 @@ class SeoPageExtension extends DataExtension
                 $message .= '<li>'.$domain.'</li>';
             }
             $message .= '</ul></div>';
-            $fields->addFieldToTab('Root.Indexing', LiteralField::create(false, $message));
+            $fields->addFieldToTab('Root.AdvancedSEO.Indexing', LiteralField::create(false, $message));
         }
         $canonical = TextField::create('Canonical');
         if(!$this->owner->Canonical) {
@@ -236,18 +236,19 @@ class SeoPageExtension extends DataExtension
         if(!$this->owner->Robots) {
             $robots->setDescription('Using default "index,follow" rule');
         }
-        $fields->addFieldToTab('Root.Indexing', $robots);
+        $fields->addFieldToTab('Root.AdvancedSEO.Indexing', $robots);
 
         // Social Sharing
-        $fields->addFieldToTab('Root.Indexing', HeaderField::create(false, 'Social Sharing', 2));
-        $fields->addFieldToTab('Root.Indexing', CheckboxField::create('HideSocial', 'Hide Social Meta?'));
+        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', HeaderField::create(false, 'Social Sharing', 2));
+        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', CheckboxField::create('HideSocial', 'Hide Social Meta?'));
         $og = DropdownField::create('OGtype', 'Open Graph Type')
             ->setSource($this->getOGtypes())
             ->setEmptyString('- please select - ');
         if(!$this->owner->OGtype) {
             $og->setDescription('Using default "website" type');
         }
-        $fields->addFieldToTab('Root.Indexing', $og);
+        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $og);
+
         $og = DropdownField::create('OGlocale', 'Open Graph Locale')
             ->setSource($this->getOGlocales())
             ->setEmptyString('- please select - ');
@@ -255,25 +256,25 @@ class SeoPageExtension extends DataExtension
             $locale = str_replace('-', '_', i18n::get_locale());
             $og->setDescription(sprintf('Using default locale from application "%s"', $locale));
         }
-        $fields->addFieldToTab('Root.Indexing', $og);
+        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $og);
         $card = DropdownField::create('TwitterCard', 'Twitter Card')
             ->setSource($this->getTwitterCardTypes())
             ->setEmptyString('- please select - ');
         if(!$this->owner->TwitterCard) {
             $card->setDescription('Using default twitter card "summary"');
         }
-        $fields->addFieldToTab('Root.Indexing', $card);
+        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $card);
         
 
         // SCHEMA TAB
-        $fields->addFieldToTab('Root.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
+        $fields->addFieldToTab('Root.AdvancedSEO.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
 
         // SITEMAP TAB
         // Sitemap
-        $fields->addFieldToTab('Root.Sitemap', HeaderField::create(false, 'Sitemap', 2));
-        $fields->addFieldToTab('Root.Sitemap', CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'));
-        $fields->addFieldToTab('Root.Sitemap', CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?'));
-        $fields->addFieldToTab('Root.Sitemap', NumericField::create('Priority')->setScale(1)
+        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', HeaderField::create(false, 'Sitemap', 2));
+        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'));
+        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?'));
+        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', NumericField::create('Priority')->setScale(1)
             ->setDescription('0.1, 0.2, 0.3, ..., 0.9, 1.0.<br >1.0 is your highest priorty, the most important page. Often the homepage.'));
         $fields->addFieldToTab('Root.Sitemap', DropdownField::create('ChangeFrequency', 'Change Frequency')
             ->setSource($this->getSitemapChangeFrequency())
@@ -283,7 +284,7 @@ class SeoPageExtension extends DataExtension
             ->setIsMultiUpload(true)
             ->setFolderName('SitemapImages')
             ->setAllowedFileCategories('image', 'image/supported');
-        $fields->addFieldToTab('Root.Sitemap', $uploader);
+        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', $uploader);
 
         return $fields;
     }
