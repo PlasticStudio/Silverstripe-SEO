@@ -57,7 +57,7 @@ class MetaPreviewField extends LiteralField
             'SerpMetaTitle'       => $this->getPageMetaTitle(),
             'SerpMetaLink'        => $this->getPageMetaLink(),
             'SerpMetaDescription' => $this->getPageMetaDescription(),
-            'SerpMetaDescriptionClass' => $this->getPageMetaDescriptionClass(),
+            // 'SerpMetaDescriptionClass' => $this->getPageMetaDescriptionClass(),
         ])->renderWith('MetaPreview');
     }
 
@@ -125,7 +125,10 @@ class MetaPreviewField extends LiteralField
                 }
             }
         }
-        return Config::inst()->get(MetaPreviewField::class, 'meta_description');
+        // no description
+        return false;
+        // default description in preview.yml
+        // return Config::inst()->get(MetaPreviewField::class, 'meta_description');
     }
 
     /**
@@ -135,15 +138,15 @@ class MetaPreviewField extends LiteralField
      *
      * @return string
      **/
-    private function getPageMetaDescriptionClass()
-    {
-        // if description is the one from config, class is 'notice'
-        // else class is 'has-content'
-        $description = $this->getPageMetaDescription();
-        if($description == Config::inst()->get(MetaPreviewField::class, 'meta_description')) {
-            return 'notice';
-        } else {
-            return 'has-content';
-        }    
-    }
+    // private function getPageMetaDescriptionClass()
+    // {
+    //     // if description is the one from config, class is 'notice'
+    //     // else class is 'has-content'
+    //     $description = $this->getPageMetaDescription();
+    //     if($description == Config::inst()->get(MetaPreviewField::class, 'meta_description')) {
+    //         return 'notice';
+    //     } else {
+    //         return 'has-content';
+    //     }    
+    // }
 }
