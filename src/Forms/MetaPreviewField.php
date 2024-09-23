@@ -57,7 +57,7 @@ class MetaPreviewField extends LiteralField
     {
         return Controller::curr()->customise([
             'SerpSiteTitle'         => SiteConfig::current_site_config()->Title,
-            'SerpBaseURL'           => Director::absoluteBaseURL(),
+            'SerpPageURL'           => Director::absoluteBaseURL() . $this->page->Link(),
             'SerpMetaTitle'         => $this->getPageMetaTitle(),
             'SerpMetaLink'          => $this->getPageMetaLink(),
             'SerpMetaDescription'   => $this->getPageMetaDescription(),

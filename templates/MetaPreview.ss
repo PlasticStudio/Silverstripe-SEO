@@ -6,7 +6,7 @@
                 <span class="seo-serp-url__favicon"><img src="/favicon.ico" width="18" height="18" /></span>
                 <div>
                     <div class="seo-serp-url__title">$SerpSiteTitle</div>
-                    <div class="seo-serp-url__text">$SerpBaseURL</div>
+                    <div class="seo-serp-url__text">$SerpPageURL</div>
                 </div>
             </div>
             <div class="seo-serp-text seo-serp-title">$SerpMetaTitle</div>
