@@ -225,11 +225,13 @@ class SeoPageExtension extends DataExtension
             $message .= '</ul></div>';
             $fields->addFieldToTab('Root.AdvancedSEO.Indexing', LiteralField::create(false, $message));
         }
+        
         $canonical = TextField::create('Canonical');
         if(!$this->owner->Canonical) {
             $canonical->setAttribute('placeholder', 'Using page URL');
         }
-        $fields->addFieldToTab('Root.Indexing', $canonical);
+        $fields->addFieldToTab('Root.AdvancedSEO.Indexing', $canonical);
+        
         $robots = DropdownField::create('Robots', 'Robots')
             ->setSource($this->getRobotsIndexingRules())
             ->setEmptyString('- please select - ');
@@ -276,7 +278,7 @@ class SeoPageExtension extends DataExtension
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?'));
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', NumericField::create('Priority')->setScale(1)
             ->setDescription('0.1, 0.2, 0.3, ..., 0.9, 1.0.<br >1.0 is your highest priorty, the most important page. Often the homepage.'));
-        $fields->addFieldToTab('Root.Sitemap', DropdownField::create('ChangeFrequency', 'Change Frequency')
+        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', DropdownField::create('ChangeFrequency', 'Change Frequency')
             ->setSource($this->getSitemapChangeFrequency())
             ->setEmptyString('- please select - '));
 
