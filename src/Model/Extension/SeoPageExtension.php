@@ -154,15 +154,25 @@ class SeoPageExtension extends DataExtension
 
         // Meta
         $title = TextField::create('MetaTitle')->setMaxLength(60);
-        $title->setDescription('The meta title should be unique and include the target keyword for page ranking. Max 60 characters.');
         if ($this->owner->MetaTitle == '') {
-            $title->setRightTitle('The page title will be used if not set.');
-            $notice = LiteralField::create('Notice', '<p class="message warning">The meta title is empty. The page title will be used if not set.</p>');
+            $title->setDescription(
+                'Enter a unique and include the target keyword for page ranking. Max 60 characters.
+                <br /><p class="message warning">The meta title is empty. The page title (' . $this->owner->Title . ') will be used if not set.</p>'
+            );
+        
         } else {
-            $notice = '';
+            $title->setDescription('Enter a unique and include the target keyword for page ranking. Max 60 characters.');
         }
 
-        $description = TextareaField::create('MetaDescription')->setDescription('Max 160 characters');
+        $description = TextareaField::create('MetaDescription')->setMaxLength(160);
+        if ($this->owner->MetaDescription == '') {
+            $description->setDescription(
+                'Enter a concise summary of the page content. Max 160 characters.
+                <br /><p class="message warning">The meta description should not be left empty.</p>'
+            );
+        } else {
+            $description->setDescription('Enter a concise summary of the page content. Max 160 characters.');
+        }
 
         if(class_exists(BlogPost::class)) {
             if($this->owner instanceof BlogPost) {
@@ -194,7 +204,6 @@ class SeoPageExtension extends DataExtension
                 'Page SEO Settings',
                 [
                     $metapreview,
-                    $notice,
                     $title,
                     $description,
                     $uploader,
