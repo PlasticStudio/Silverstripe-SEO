@@ -29,11 +29,13 @@ use PlasticStudio\SEO\Model\SeoHeadTag;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\ToggleCompositeField;
 use PlasticStudio\SEO\Forms\MetaPreviewField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use PlasticStudio\SEO\Schema\Builder\SchemaBuilder;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\FieldGroup;
 
 /**
  * @package silverstripe-seo
@@ -67,6 +69,15 @@ use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
  **/
 class SeoPageExtension extends DataExtension
 {
+     /**
+     * A PaginatedList instance used for rel Meta tags
+     *
+     * @since version 2.0.0
+     *
+     * @var PaginatedList $pagination
+     **/
+    private $pagination;
+
     /**
      * Our page fields
      *
@@ -132,13 +143,77 @@ class SeoPageExtension extends DataExtension
     ];
 
     /**
-     * A PaginatedList instance used for rel Meta tags
-     *
-     * @since version 2.0.0
-     *
-     * @var PaginatedList $pagination
-     **/
-    private $pagination;
+     * Add fields to main/content tab
+     */
+    public function updateCMSFields(FieldList $fields)
+    {
+        // META TAB
+
+        // Preview
+        $metapreview = MetaPreviewField::create($this->owner);
+
+        // Meta
+        $title = TextField::create('MetaTitle')->setMaxLength(60);
+        if ($this->owner->MetaTitle == '') {
+            $title->setDescription(
+                'Enter a unique and include the target keyword for page ranking. Max 60 characters.
+                <br /><p class="message warning">The meta title is empty. The page title (' . $this->owner->Title . ') will be used if not set.</p>'
+            );
+        
+        } else {
+            $title->setDescription('Enter a unique and include the target keyword for page ranking. Max 60 characters.');
+        }
+
+        $description = TextareaField::create('MetaDescription')->setMaxLength(160);
+        if ($this->owner->MetaDescription == '') {
+            $description->setDescription(
+                'Enter a concise summary of the page content. Max 160 characters.
+                <br /><p class="message warning">The meta description should not be left empty.</p>'
+            );
+        } else {
+            $description->setDescription('Enter a concise summary of the page content. Max 160 characters.');
+        }
+
+        if(class_exists(BlogPost::class)) {
+            if($this->owner instanceof BlogPost) {
+                if($this->owner->Parent()->DefaultPostMetaTitle == 1) {
+                    $title->setAttribute('placeholder', 'Using page title');
+                }
+                if($this->owner->Parent()->DefaultPostMetaDescription == 1) {
+                    $description->setAttribute('placeholder', 'Using page summary');
+                }
+            }
+        }
+
+        // Social image
+        $uploader = UploadField::create('SocialImage')
+            ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
+            ->setAllowedFileCategories('image', 'image/supported')
+            ->setDescription('The image that will be used when sharing this page on social media platforms. Recommended size 1200x630px.');
+        if(class_exists(BlogPost::class)) {
+            if($this->owner instanceof BlogPost) {
+                if($this->owner->Parent()->UseFeaturedAsSocialImage == 1) {
+                    $uploader->setDescription('Using the page featured image');
+                }
+            }
+        }        
+
+        $fields->addFieldToTab(
+            'Root.Main',
+            ToggleCompositeField::create(
+                'SEO',
+                'Page SEO Settings',
+                [
+                    $metapreview,
+                    $title,
+                    $description,
+                    $uploader,
+                ]   
+            ),
+        );
+
+    }
+
 
     /**
      * Adds our SEO Meta fields to the page settings field list. The tab is divided into
@@ -152,29 +227,23 @@ class SeoPageExtension extends DataExtension
      **/
     public function updateSettingsFields(FieldList $fields)
     {
+        // Sitemap - add to behavior tab
+        $visibility = FieldGroup::create(
+            CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'),
+            CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?')
+        )->setTitle('Sitemap');
+
+        $fields->addFieldToTab('Root.Settings', $visibility);
+
         $fields->removeByName('HeadTags');
         $fields->removeByName('SitemapImages');
-
-        // META TAB
-        // Meta
-        $fields->addFieldToTab('Root.MetaTags', MetaPreviewField::create($this->owner));
-        $title = TextField::create('MetaTitle');
-        $description = TextareaField::create('MetaDescription');
-        if(class_exists(BlogPost::class)) {
-            if($this->owner instanceof BlogPost) {
-                if($this->owner->Parent()->DefaultPostMetaTitle == 1) {
-                    $title->setAttribute('placeholder', 'Using page title');
-                }
-                if($this->owner->Parent()->DefaultPostMetaDescription == 1) {
-                    $description->setAttribute('placeholder', 'Using page summary');
-                }
-            }
-        }
-        $fields->addFieldToTab('Root.MetaTags', $title);
-        $fields->addFieldToTab('Root.MetaTags', $description);
+        
+        // Extra Meta Tags
+        $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
+        $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
+        $fields->addFieldToTab('Root.AdvancedSEO.MetaTags', $grid);
 
         // Indexing
-        $fields->addFieldToTab('Root.MetaTags', HeaderField::create(false, 'Indexing', 2));
         if (self::excludeSiteFromIndexing()) {
             $noindex_domains = Config::inst()->get('PlasticStudio\SEO', 'noindex_domains');
             $message = '<div class="message warning">This domain has been configured to be excluded from indexing by robots like Google etc. Excluded domains are:';
@@ -183,31 +252,33 @@ class SeoPageExtension extends DataExtension
                 $message .= '<li>'.$domain.'</li>';
             }
             $message .= '</ul></div>';
-            $fields->addFieldToTab('Root.MetaTags', LiteralField::create(false, $message));
+            $fields->addFieldToTab('Root.AdvancedSEO.Indexing', LiteralField::create(false, $message));
         }
+        
         $canonical = TextField::create('Canonical');
         if(!$this->owner->Canonical) {
             $canonical->setAttribute('placeholder', 'Using page URL');
         }
-        $fields->addFieldToTab('Root.MetaTags', $canonical);
+        $fields->addFieldToTab('Root.AdvancedSEO.Indexing', $canonical);
+        
         $robots = DropdownField::create('Robots', 'Robots')
             ->setSource($this->getRobotsIndexingRules())
             ->setEmptyString('- please select - ');
         if(!$this->owner->Robots) {
             $robots->setDescription('Using default "index,follow" rule');
         }
-        $fields->addFieldToTab('Root.MetaTags', $robots);
+        $fields->addFieldToTab('Root.AdvancedSEO.Indexing', $robots);
 
         // Social Sharing
-        $fields->addFieldToTab('Root.MetaTags', HeaderField::create(false, 'Social Sharing', 2));
-        $fields->addFieldToTab('Root.MetaTags', CheckboxField::create('HideSocial', 'Hide Social Meta?'));
+        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', CheckboxField::create('HideSocial', 'Hide Social Meta?'));
         $og = DropdownField::create('OGtype', 'Open Graph Type')
             ->setSource($this->getOGtypes())
             ->setEmptyString('- please select - ');
         if(!$this->owner->OGtype) {
             $og->setDescription('Using default "website" type');
         }
-        $fields->addFieldToTab('Root.MetaTags', $og);
+        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $og);
+
         $og = DropdownField::create('OGlocale', 'Open Graph Locale')
             ->setSource($this->getOGlocales())
             ->setEmptyString('- please select - ');
@@ -215,50 +286,32 @@ class SeoPageExtension extends DataExtension
             $locale = str_replace('-', '_', i18n::get_locale());
             $og->setDescription(sprintf('Using default locale from application "%s"', $locale));
         }
-        $fields->addFieldToTab('Root.MetaTags', $og);
-        $card = DropdownField::create('TwitterCard', 'Twitter Card')
-            ->setSource($this->getTwitterCardTypes())
-            ->setEmptyString('- please select - ');
-        if(!$this->owner->TwitterCard) {
-            $card->setDescription('Using default twitter card "summary"');
-        }
-        $fields->addFieldToTab('Root.MetaTags', $card);
-        $uploader = UploadField::create('SocialImage')
-            ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
-            ->setAllowedFileCategories('image', 'image/supported');
-        if(class_exists(BlogPost::class)) {
-            if($this->owner instanceof BlogPost) {
-                if($this->owner->Parent()->UseFeaturedAsSocialImage == 1) {
-                    $uploader->setDescription('Using the page featured image');
-                }
-            }
-        }
-        $fields->addFieldToTab('Root.MetaTags', $uploader);
-
-        // Extra Meta Tags
-        $grid = GridField::create('HeadTags', 'Other Meta Tags', $this->owner->HeadTags(), GridFieldConfig_RelationEditor::create());
-        $grid->getConfig()->removeComponentsByType(GridFieldAddExistingAutocompleter::class);
-        $fields->addFieldToTab('Root.MetaTags', $grid);
+        $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $og);
+        
+        // $card = DropdownField::create('TwitterCard', 'Twitter Card')
+        //     ->setSource($this->getTwitterCardTypes())
+        //     ->setEmptyString('- please select - ');
+        // if(!$this->owner->TwitterCard) {
+        //     $card->setDescription('Using default twitter card "summary"');
+        // }
+        // $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $card);
+        
 
         // SCHEMA TAB
-        $fields->addFieldToTab('Root.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
+        $fields->addFieldToTab('Root.AdvancedSEO.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
 
         // SITEMAP TAB
-        // Sitemap
-        $fields->addFieldToTab('Root.Sitemap', HeaderField::create(false, 'Sitemap', 2));
-        $fields->addFieldToTab('Root.Sitemap', CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'));
-        $fields->addFieldToTab('Root.Sitemap', CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?'));
-        $fields->addFieldToTab('Root.Sitemap', NumericField::create('Priority')->setScale(1)
+        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', NumericField::create('Priority')->setScale(1)
             ->setDescription('0.1, 0.2, 0.3, ..., 0.9, 1.0.<br >1.0 is your highest priorty, the most important page. Often the homepage.'));
-        $fields->addFieldToTab('Root.Sitemap', DropdownField::create('ChangeFrequency', 'Change Frequency')
+        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', DropdownField::create('ChangeFrequency', 'Change Frequency')
             ->setSource($this->getSitemapChangeFrequency())
             ->setEmptyString('- please select - '));
 
-        $uploader = UploadField::create('SitemapImages')
-            ->setIsMultiUpload(true)
-            ->setFolderName('SitemapImages')
-            ->setAllowedFileCategories('image', 'image/supported');
-        $fields->addFieldToTab('Root.Sitemap', $uploader);
+        // $uploader = UploadField::create('SitemapImages')
+        //     ->setIsMultiUpload(true)
+        //     ->setFolderName('SitemapImages')
+        //     ->setAllowedFileCategories('image', 'image/supported');
+        // $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', $uploader);
 
         return $fields;
     }

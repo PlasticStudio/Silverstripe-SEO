@@ -9,6 +9,7 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\Requirements;
+use SilverStripe\SiteConfig\SiteConfig;
 
 /**
  * MetaPreviewField
@@ -40,6 +41,7 @@ class MetaPreviewField extends LiteralField
         $this->page = $page;
         
         Requirements::javascript('plasticstudio/silverstripe-seo:assets/js/serp.js');
+        Requirements::css('plasticstudio/silverstripe-seo:assets/css/preview-field.css');
 
         parent::__construct('MetaPreviewField', $this->getMetaContent());
     }
@@ -54,9 +56,11 @@ class MetaPreviewField extends LiteralField
     private function getMetaContent()
     {
         return Controller::curr()->customise([
-            'SerpMetaTitle'       => $this->getPageMetaTitle(),
-            'SerpMetaLink'        => $this->getPageMetaLink(),
-            'SerpMetaDescription' => $this->getPageMetaDescription()
+            'SerpSiteTitle'         => SiteConfig::current_site_config()->Title,
+            'SerpMetaLink'          => $this->getPageMetaLink(),
+            'SerpMetaTitle'         => $this->getPageMetaTitle(),
+            'SerpMetaDescription'   => $this->getPageMetaDescription(),
+            // 'SerpMetaDescriptionClass' => $this->getPageMetaDescriptionClass(),
         ])->renderWith('MetaPreview');
     }
 
@@ -78,6 +82,9 @@ class MetaPreviewField extends LiteralField
                     return $this->page->Title;
                 }
             }
+        }
+        if ($this->page->Title) {
+            return $this->page->Title;
         }
         return Config::inst()->get(MetaPreviewField::class, 'meta_title');
     }
@@ -121,6 +128,28 @@ class MetaPreviewField extends LiteralField
                 }
             }
         }
-        return Config::inst()->get(MetaPreviewField::class, 'meta_description');
+        // no description
+        return false;
+        // default description in preview.yml
+        // return Config::inst()->get(MetaPreviewField::class, 'meta_description');
     }
+
+    /**
+     * Get the Meta description class to show in the SERP preview
+     *
+     * @since version 2.0.0
+     *
+     * @return string
+     **/
+    // private function getPageMetaDescriptionClass()
+    // {
+    //     // if description is the one from config, class is 'notice'
+    //     // else class is 'has-content'
+    //     $description = $this->getPageMetaDescription();
+    //     if($description == Config::inst()->get(MetaPreviewField::class, 'meta_description')) {
+    //         return 'notice';
+    //     } else {
+    //         return 'has-content';
+    //     }    
+    // }
 }

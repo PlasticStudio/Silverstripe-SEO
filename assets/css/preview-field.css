@@ -1,0 +1,52 @@
+
+.seo-serp-preview {
+    height: inherit;
+    margin: 0;
+    border: 1px solid #ced5e1;
+    border-radius: 4px;
+    padding: 20px;
+}
+
+.seo-serp-url {
+    display: flex;
+    padding: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+    align-items: center;
+}
+
+.seo-serp-url__favicon {
+    background-color: #f1f3f4;
+    border: 1px solid #dadce0;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 26px;
+    width: 26px;
+    margin-right: 12px;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.seo-serp-url__title {
+    color: #202124;
+    font-size: 14px;
+    display: block;
+    line-height: 20px;
+    white-space: nowrap;
+    margin-bottom: 2px;
+}
+
+.seo-serp-title {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #1a0dab;
+    margin: 12px 0 10px;
+}
+
+.seo-serp-description {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
