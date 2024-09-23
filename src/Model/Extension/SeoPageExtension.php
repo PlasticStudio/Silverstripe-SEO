@@ -156,7 +156,8 @@ class SeoPageExtension extends DataExtension
         $title = TextField::create('MetaTitle')->setMaxLength(60);
         $title->setDescription('The meta title should be unique and include the target keyword for page ranking. Max 60 characters.');
         if ($this->owner->MetaTitle == '') {
-            $notice = LiteralField::create('Notice', '<p class="message warning">The meta title is empty. This is not recommended for SEO.</p>');
+            $title->setRightTitle('The page title will be used if not set.');
+            $notice = LiteralField::create('Notice', '<p class="message warning">The meta title is empty. The page title will be used if not set.</p>');
         } else {
             $notice = '';
         }
