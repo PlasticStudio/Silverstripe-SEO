@@ -194,8 +194,8 @@ class SeoPageExtension extends DataExtension
                 'Page SEO Settings',
                 [
                     $metapreview,
-                    $title,
                     $notice,
+                    $title,
                     $description,
                     $uploader,
                 ]   
