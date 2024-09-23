@@ -69,6 +69,15 @@ use SilverStripe\Forms\FieldGroup;
  **/
 class SeoPageExtension extends DataExtension
 {
+     /**
+     * A PaginatedList instance used for rel Meta tags
+     *
+     * @since version 2.0.0
+     *
+     * @var PaginatedList $pagination
+     **/
+    private $pagination;
+
     /**
      * Our page fields
      *
@@ -133,14 +142,7 @@ class SeoPageExtension extends DataExtension
         'TwitterCard'     => 'summary'
     ];
 
-    /**
-     * A PaginatedList instance used for rel Meta tags
-     *
-     * @since version 2.0.0
-     *
-     * @var PaginatedList $pagination
-     **/
-    private $pagination;
+   
 
     /**
      * Add fields to main/content tab
@@ -193,6 +195,24 @@ class SeoPageExtension extends DataExtension
         );
 
     }
+
+
+
+    /**
+     * Create meta title and social image on save
+     */
+    public function onBeforeWrite() {
+        if (!$this->owner->MetaTitle) {
+            $this->owner->MetaTitle = $this->generatePageMetaTitle();
+        }
+        if (!$this->owner->MetaDescription) {
+            $this->owner->MetaDescription = $this->getPageMetaDescription();
+        }
+        parent::onBeforeWrite();
+    }
+
+
+
 
     /**
      * Adds our SEO Meta fields to the page settings field list. The tab is divided into
@@ -280,18 +300,17 @@ class SeoPageExtension extends DataExtension
         $fields->addFieldToTab('Root.AdvancedSEO.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
 
         // SITEMAP TAB
-        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', HeaderField::create(false, 'Sitemap', 2));
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', NumericField::create('Priority')->setScale(1)
             ->setDescription('0.1, 0.2, 0.3, ..., 0.9, 1.0.<br >1.0 is your highest priorty, the most important page. Often the homepage.'));
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', DropdownField::create('ChangeFrequency', 'Change Frequency')
             ->setSource($this->getSitemapChangeFrequency())
             ->setEmptyString('- please select - '));
 
-        $uploader = UploadField::create('SitemapImages')
-            ->setIsMultiUpload(true)
-            ->setFolderName('SitemapImages')
-            ->setAllowedFileCategories('image', 'image/supported');
-        $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', $uploader);
+        // $uploader = UploadField::create('SitemapImages')
+        //     ->setIsMultiUpload(true)
+        //     ->setFolderName('SitemapImages')
+        //     ->setAllowedFileCategories('image', 'image/supported');
+        // $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', $uploader);
 
         return $fields;
     }
@@ -453,6 +472,21 @@ class SeoPageExtension extends DataExtension
             'app'                 => 'App',
             'product'             => 'Product'
         ];
+    }
+
+    /**
+     * Generate a page Meta title based on the current page type
+     * and configuration settings
+     * 
+     * @since version 1.0.0
+     * 
+     * @return string
+     */
+    public function generatePageMetaTitle() {
+        // UseTitleAsMetaTitle
+        if(SiteConfig::current_site_config()->UseTitleAsMetaTitle) {
+            return $this->owner->Title;
+        }
     }
 
     /**
