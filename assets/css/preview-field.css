@@ -2,7 +2,8 @@
 .seo-serp-preview {
     height: inherit;
     margin: 0;
-    border: 1px solid #b3b3b3;
+    border: 1px solid #ced5e1;
+    border-radius: 4px;
     padding: 20px;
 }
 
