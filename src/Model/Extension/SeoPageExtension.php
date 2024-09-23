@@ -205,6 +205,15 @@ class SeoPageExtension extends DataExtension
      **/
     public function updateSettingsFields(FieldList $fields)
     {
+
+        // Sitemap - add to behavior tab
+        $visibility = FieldGroup::create(
+            CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'),
+            CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?')
+        )->setTitle('Sitemap Visibility');
+
+        $fields->addFieldToTab('Root.Settings', $visibility, 'CanViewType');
+
         $fields->removeByName('HeadTags');
         $fields->removeByName('SitemapImages');
         
@@ -271,11 +280,6 @@ class SeoPageExtension extends DataExtension
         $fields->addFieldToTab('Root.AdvancedSEO.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
 
         // SITEMAP TAB
-        // Sitemap
-
-        $fields->addFieldToTab('Root.Settings', CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'));
-        $fields->addFieldToTab('Root.Behavior', CheckboxField::create('XMLSitemapHide', 'Hide in XML sitemap?'));
-
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', HeaderField::create(false, 'Sitemap', 2));
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', NumericField::create('Priority')->setScale(1)
             ->setDescription('0.1, 0.2, 0.3, ..., 0.9, 1.0.<br >1.0 is your highest priorty, the most important page. Often the homepage.'));
