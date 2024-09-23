@@ -9,6 +9,7 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\View\Requirements;
+use SilverStripe\SiteConfig\SiteConfig;
 
 /**
  * MetaPreviewField
@@ -40,6 +41,7 @@ class MetaPreviewField extends LiteralField
         $this->page = $page;
         
         Requirements::javascript('plasticstudio/silverstripe-seo:assets/js/serp.js');
+        Requirements::css('plasticstudio/silverstripe-seo:assets/css/preview-field.css');
 
         parent::__construct('MetaPreviewField', $this->getMetaContent());
     }
@@ -54,9 +56,11 @@ class MetaPreviewField extends LiteralField
     private function getMetaContent()
     {
         return Controller::curr()->customise([
-            'SerpMetaTitle'       => $this->getPageMetaTitle(),
-            'SerpMetaLink'        => $this->getPageMetaLink(),
-            'SerpMetaDescription' => $this->getPageMetaDescription(),
+            'SerpSiteTitle'         => SiteConfig::current_site_config()->Title,
+            'SerpBaseURL'           => Director::absoluteBaseURL(),
+            'SerpMetaTitle'         => $this->getPageMetaTitle(),
+            'SerpMetaLink'          => $this->getPageMetaLink(),
+            'SerpMetaDescription'   => $this->getPageMetaDescription(),
             // 'SerpMetaDescriptionClass' => $this->getPageMetaDescriptionClass(),
         ])->renderWith('MetaPreview');
     }

@@ -150,7 +150,7 @@ class SeoPageExtension extends DataExtension
         // META TAB
 
         // Preview
-        $metapreview = MetaPreviewField::create($this->owner)->setRightTitle('Google preview');
+        $metapreview = MetaPreviewField::create($this->owner);
 
         // Meta
         $title = TextField::create('MetaTitle')->setMaxLength(60);
