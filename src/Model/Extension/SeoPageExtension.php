@@ -142,25 +142,6 @@ class SeoPageExtension extends DataExtension
         'TwitterCard'     => 'summary'
     ];
 
-   
-
-
-    // /**
-    //  * Create meta title and social image on save
-    //  */
-    // public function onBeforeWrite() {
-    //     if (!$this->owner->MetaTitle) {
-            
-    //     }
-    //     if (!$this->owner->MetaDescription) {
-            
-    //     }
-    //     parent::onBeforeWrite();
-    // }
-
-
-
-
     /**
      * Add fields to main/content tab
      */
@@ -172,9 +153,12 @@ class SeoPageExtension extends DataExtension
         $metapreview = MetaPreviewField::create($this->owner)->setRightTitle('Google preview');
 
         // Meta
-        $title = TextField::create('MetaTitle');
+        $title = TextField::create('MetaTitle')->setMaxLength(60);
+        $title->setDescription('The meta title should be unique and include the target keyword for page ranking. Max 60 characters.');
         if ($this->owner->MetaTitle == '') {
-            $title->setDescription('Set the meta title. The page title will be used if left empty.');
+            $notice = LiteralField::create('Notice', '<p class="message warning">The meta title is empty. This is not recommended for SEO.</p>');
+        } else {
+            $notice = '';
         }
 
         $description = TextareaField::create('MetaDescription')->setDescription('Max 160 characters');
@@ -210,6 +194,7 @@ class SeoPageExtension extends DataExtension
                 [
                     $metapreview,
                     $title,
+                    $notice,
                     $description,
                     $uploader,
                 ]   
