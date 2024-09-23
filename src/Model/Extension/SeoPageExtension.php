@@ -188,7 +188,8 @@ class SeoPageExtension extends DataExtension
         // Social image
         $uploader = UploadField::create('SocialImage')
             ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
-            ->setAllowedFileCategories('image', 'image/supported');
+            ->setAllowedFileCategories('image', 'image/supported')
+            ->setDescription('The image that will be used when sharing this page on social media platforms. Recommended size 1200x630px.');
         if(class_exists(BlogPost::class)) {
             if($this->owner instanceof BlogPost) {
                 if($this->owner->Parent()->UseFeaturedAsSocialImage == 1) {
