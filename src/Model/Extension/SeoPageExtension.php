@@ -35,6 +35,7 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use PlasticStudio\SEO\Schema\Builder\SchemaBuilder;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use SilverStripe\Forms\FieldGroup;
 
 /**
  * @package silverstripe-seo
@@ -205,7 +206,6 @@ class SeoPageExtension extends DataExtension
      **/
     public function updateSettingsFields(FieldList $fields)
     {
-
         // Sitemap - add to behavior tab
         $visibility = FieldGroup::create(
             CheckboxField::create('SitemapHide', 'Hide in HTML sitemap?'),
