@@ -150,8 +150,7 @@ class SeoPageExtension extends DataExtension
 
         // SEO notice
         if (!$this->owner->MetaTitle || !$this->owner->MetaDescription) {
-            $fields->addFieldToTab(
-                'Root.Main',
+            $fields->push(
                 LiteralField::create('SEO Notice', '<p class="message warning">Attention required: Please complete the SEO fields below.</p>')
             );
         }
@@ -205,10 +204,9 @@ class SeoPageExtension extends DataExtension
                     $uploader->setDescription('Using the page featured image');
                 }
             }
-        }        
+        }
 
-        $fields->addFieldToTab(
-            'Root.Main',
+        $fields->push(
             ToggleCompositeField::create(
                 'SEO',
                 'Page SEO Settings',
@@ -217,10 +215,9 @@ class SeoPageExtension extends DataExtension
                     $title,
                     $description,
                     $uploader,
-                ]   
+                ]
             ),
         );
-
     }
 
 
