@@ -147,6 +147,8 @@ class SeoPageExtension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
+        // remove default SS field
+        $fields->removeByName('MetaDescription');
 
         // SEO notice
         if (!$this->owner->MetaTitle || !$this->owner->MetaDescription) {
