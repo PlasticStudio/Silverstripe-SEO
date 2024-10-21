@@ -47,8 +47,15 @@ class RobotsTxtController extends Controller
                 'Host' => Director::absoluteBaseUrl()
             ])->renderWith('RobotsTxtDisallowAll');
         }
+        
+        // Check base URL for trailing slash, add so filepath for robots.txt is correct
+        $baseURL = Director::absoluteBaseUrl();
+        if(strrev($baseURL)[0] != '/') {
+            $baseURL .= '/';
+        }
+
         return $this->customise([
-            'Host' => Director::absoluteBaseUrl()
+            'Host' => $baseURL
         ])->renderWith('RobotsTxt');
     }
 }
