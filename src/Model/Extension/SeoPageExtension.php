@@ -153,7 +153,7 @@ class SeoPageExtension extends DataExtension
         // SEO notice
         if (!$this->owner->MetaTitle || !$this->owner->MetaDescription) {
             $fields->addFieldToTab('Root.Main',
-                LiteralField::create('SEO Notice', '<p class="message warning">Attention required: Please complete the SEO fields below.</p>')
+                LiteralField::create('SEONotice', '<p class="message warning">Attention required: Please complete the SEO fields below.</p>')
             );
         }
 
