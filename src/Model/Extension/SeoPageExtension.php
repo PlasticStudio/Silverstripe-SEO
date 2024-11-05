@@ -150,6 +150,12 @@ class SeoPageExtension extends DataExtension
         // remove default SS field
         $fields->removeByName('MetaDescription');
 
+        // This gives us a target to position other cms fields "before"
+        $fields->addFieldToTab(
+            'Root.Main',
+            LiteralField::create('SEOMarker', '') // so we can position stuff above seo notice
+        );
+
         // SEO notice
         if (!$this->owner->MetaTitle || !$this->owner->MetaDescription) {
             $fields->addFieldToTab('Root.Main',
