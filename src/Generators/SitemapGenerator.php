@@ -6,7 +6,6 @@ use Page;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\ErrorPage\ErrorPage;
-use SilverStripe\ORM\Arraylist;
 use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Subsites\Model\SubSite;
@@ -85,14 +84,15 @@ class SitemapGenerator
      **/
     public function getSitemapHTML()
     {
-        $data = ArrayList::create();
-
         $filters = $this->getSitemapFilters();
         $filters['ParentID'] = 0;
 
         $pages = Page::get()->filter($filters);
 
         $this->getChildPages($pages);
+
+        // check $html for '<ul></ul>' and remove from string
+        $this->html = preg_replace('/<ul><\/ul>/', '', $this->html);
 
         return $this->html;
     }
