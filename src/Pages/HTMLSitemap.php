@@ -4,9 +4,8 @@ namespace PlasticStudio\SEO\Pages;
 
 use Page;
 use SilverStripe\ORM\DB;
-use SilverStripe\ORM\ArrayList;
 use SilverStripe\CMS\Model\SiteTree;
-use SilverStripe\ErrorPage\ErrorPage;
+use PlasticStudio\SEO\Generators\SitemapGenerator;
 
 class HTMLSitemap extends Page {
 
@@ -31,24 +30,11 @@ class HTMLSitemap extends Page {
 		return $fields;
 	}
 
-    public function Sitemap()
-	{
-		// exclude error pages and self
-		$sitetree = SiteTree::get()->Filter(['ParentID' => 0, 'ClassName:not' => [ErrorPage::class, HTMLSitemap::class]])->sort('Sort ASC');
-
-		$pages = ArrayList::create();
-		
-		// exclude pages that are hidden from the sitemap
-		foreach ($sitetree as $item) {
-			$page = Page::get()->byID($item->ID);
-
-			if ($page && !$page->SitemapHide) {
-				$pages->push($page);
-			}
-		}
-
-		return $pages;
-	}
+    public function getSitemap()
+    {
+        $generator = new SitemapGenerator();
+        return $generator->getSitemapHTML();
+    }
 	
 	/**
 	 * Add default record to database
