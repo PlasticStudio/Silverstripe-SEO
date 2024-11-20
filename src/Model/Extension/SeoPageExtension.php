@@ -6,9 +6,11 @@ use Page;
 use SilverStripe\i18n\i18n;
 use SilverStripe\Assets\Image;
 use SilverStripe\Core\Convert;
+use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Control\Director;
+use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\PaginatedList;
@@ -35,7 +37,6 @@ use SilverStripe\AssetAdmin\Forms\UploadField;
 use PlasticStudio\SEO\Schema\Builder\SchemaBuilder;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
-use SilverStripe\Forms\FieldGroup;
 
 /**
  * @package silverstripe-seo
@@ -69,13 +70,13 @@ use SilverStripe\Forms\FieldGroup;
  **/
 class SeoPageExtension extends DataExtension
 {
-     /**
-     * A PaginatedList instance used for rel Meta tags
-     *
-     * @since version 2.0.0
-     *
-     * @var PaginatedList $pagination
-     **/
+    /**
+    * A PaginatedList instance used for rel Meta tags
+    *
+    * @since version 2.0.0
+    *
+    * @var PaginatedList $pagination
+    **/
     private $pagination;
 
     /**
@@ -86,18 +87,20 @@ class SeoPageExtension extends DataExtension
      * @config array $db
      **/
     private static $db = [
-        'MetaTitle'       => 'Varchar(512)',
-        'Canonical'       => 'Varchar(512)',
-        'Robots'          => 'Varchar(100)',
-        'ManualSchema'    => 'Text',
-        'Priority'        => 'Decimal(3,2)',
-        'ChangeFrequency' => 'Varchar(20)',
-        'SitemapHide'     => 'Boolean',
-        'XMLSitemapHide'  => 'Boolean',
-        'HideSocial'      => 'Boolean',
-        'OGtype'          => 'Varchar(100)',
-        'OGlocale'        => 'Varchar(10)',
-        'TwitterCard'     => 'Varchar(100)'
+        'MetaTitle'             => 'Varchar(512)',
+        'MetaTitleLastEdited'   => 'Datetime',
+        'MetaDescriptionLastEdited'   => 'Datetime',
+        'Canonical'             => 'Varchar(512)',
+        'Robots'                => 'Varchar(100)',
+        'ManualSchema'          => 'Text',
+        'Priority'              => 'Decimal(3,2)',
+        'ChangeFrequency'       => 'Varchar(20)',
+        'SitemapHide'           => 'Boolean',
+        'XMLSitemapHide'        => 'Boolean',
+        'HideSocial'            => 'Boolean',
+        'OGtype'                => 'Varchar(100)',
+        'OGlocale'              => 'Varchar(10)',
+        'TwitterCard'           => 'Varchar(100)'
     ];
 
     /**
@@ -158,7 +161,8 @@ class SeoPageExtension extends DataExtension
 
         // SEO notice
         if (!$this->owner->MetaTitle || !$this->owner->MetaDescription) {
-            $fields->addFieldToTab('Root.Main',
+            $fields->addFieldToTab(
+                'Root.Main',
                 LiteralField::create('SEONotice', '<p class="message warning">Attention required: Please complete the SEO fields below.</p>')
             );
         }
@@ -175,9 +179,8 @@ class SeoPageExtension extends DataExtension
                 'Enter a unique and include the target keyword for page ranking. Max 60 characters.
                 <br /><p class="message warning">The meta title is empty. The page title (' . $this->owner->Title . ') will be used if not set.</p>'
             );
-        
         } else {
-            $title->setDescription('Enter a unique and include the target keyword for page ranking. Max 60 characters.');
+            $title->setDescription('<i>Last edited: ' . $this->owner->dbObject('MetaTitleLastEdited')->Nice() . '</i><br/><br/>Enter a unique and include the target keyword for page ranking. Max 60 characters.');
         }
 
         $description = TextareaField::create('MetaDescription')->setMaxLength(160);
@@ -187,15 +190,15 @@ class SeoPageExtension extends DataExtension
                 <br /><p class="message warning">The meta description should not be left empty.</p>'
             );
         } else {
-            $description->setDescription('Enter a concise summary of the page content. Max 160 characters.');
+            $description->setDescription('<i>Last edited: ' . $this->owner->dbObject('MetaDescriptionLastEdited')->Nice() . '</i><br/><br/>Enter a concise summary of the page content. Max 160 characters.');
         }
 
-        if(class_exists(BlogPost::class)) {
-            if($this->owner instanceof BlogPost) {
-                if($this->owner->Parent()->DefaultPostMetaTitle == 1) {
+        if (class_exists(BlogPost::class)) {
+            if ($this->owner instanceof BlogPost) {
+                if ($this->owner->Parent()->DefaultPostMetaTitle == 1) {
                     $title->setAttribute('placeholder', 'Using page title');
                 }
-                if($this->owner->Parent()->DefaultPostMetaDescription == 1) {
+                if ($this->owner->Parent()->DefaultPostMetaDescription == 1) {
                     $description->setAttribute('placeholder', 'Using page summary');
                 }
             }
@@ -206,15 +209,16 @@ class SeoPageExtension extends DataExtension
             ->setFolderName(Config::inst()->get('SocialImage', 'image_folder'))
             ->setAllowedFileCategories('image', 'image/supported')
             ->setDescription('The image that will be used when sharing this page on social media platforms. Recommended size 1200x630px.');
-        if(class_exists(BlogPost::class)) {
-            if($this->owner instanceof BlogPost) {
-                if($this->owner->Parent()->UseFeaturedAsSocialImage == 1) {
+        if (class_exists(BlogPost::class)) {
+            if ($this->owner instanceof BlogPost) {
+                if ($this->owner->Parent()->UseFeaturedAsSocialImage == 1) {
                     $uploader->setDescription('Using the page featured image');
                 }
             }
         }
 
-        $fields->addFieldToTab('Root.Main',
+        $fields->addFieldToTab(
+            'Root.Main',
             ToggleCompositeField::create(
                 'SEO',
                 'Page SEO Settings',
@@ -270,7 +274,7 @@ class SeoPageExtension extends DataExtension
         }
         
         $canonical = TextField::create('Canonical');
-        if(!$this->owner->Canonical) {
+        if (!$this->owner->Canonical) {
             $canonical->setAttribute('placeholder', 'Using page URL');
         }
         $fields->addFieldToTab('Root.AdvancedSEO.Indexing', $canonical);
@@ -278,7 +282,7 @@ class SeoPageExtension extends DataExtension
         $robots = DropdownField::create('Robots', 'Robots')
             ->setSource($this->getRobotsIndexingRules())
             ->setEmptyString('- please select - ');
-        if(!$this->owner->Robots) {
+        if (!$this->owner->Robots) {
             $robots->setDescription('Using default "index,follow" rule');
         }
         $fields->addFieldToTab('Root.AdvancedSEO.Indexing', $robots);
@@ -288,7 +292,7 @@ class SeoPageExtension extends DataExtension
         $og = DropdownField::create('OGtype', 'Open Graph Type')
             ->setSource($this->getOGtypes())
             ->setEmptyString('- please select - ');
-        if(!$this->owner->OGtype) {
+        if (!$this->owner->OGtype) {
             $og->setDescription('Using default "website" type');
         }
         $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $og);
@@ -296,7 +300,7 @@ class SeoPageExtension extends DataExtension
         $og = DropdownField::create('OGlocale', 'Open Graph Locale')
             ->setSource($this->getOGlocales())
             ->setEmptyString('- please select - ');
-        if(!$this->owner->OGlocale) {
+        if (!$this->owner->OGlocale) {
             $locale = str_replace('-', '_', i18n::get_locale());
             $og->setDescription(sprintf('Using default locale from application "%s"', $locale));
         }
@@ -341,10 +345,28 @@ class SeoPageExtension extends DataExtension
      **/
     public function updateSummaryFields(&$fields)
     {
-        if(Controller::curr() instanceof SEOAdmin) {
+        if (Controller::curr() instanceof SEOAdmin) {
             Config::modify()->set($this->owner->ClassName, 'summary_fields', $this->getSummaryFields());
 
             $fields = Config::inst()->get($this->owner->ClassName, 'summary_fields');
+        }
+    }
+
+    /**
+     * Update the respective lastEdited fields when the metatags are changed
+     *
+     * @return void
+     **/
+    public function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+
+        if ($this->owner->isChanged('MetaTitle', DataObject::CHANGE_VALUE)) {
+            $this->owner->MetaTitleLastEdited = date('Y-m-d H:i:s');
+        }
+
+        if ($this->owner->isChanged('MetaDescription', DataObject::CHANGE_VALUE)) {
+            $this->owner->MetaDescriptionLastEdited = date('Y-m-d H:i:s');
         }
     }
 
@@ -498,17 +520,17 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageMetaTitle()
     {
-        if($this->owner->MetaTitle) {
+        if ($this->owner->MetaTitle) {
             return $this->owner->MetaTitle;
         }
-        if(class_exists(BlogPost::class)) {
-            if($this->owner instanceof BlogPost) {
-                if($this->owner->Parent()->DefaultPostMetaTitle == 1) {
+        if (class_exists(BlogPost::class)) {
+            if ($this->owner instanceof BlogPost) {
+                if ($this->owner->Parent()->DefaultPostMetaTitle == 1) {
                     return $this->owner->Title;
                 }
             }
         }
-        if(SiteConfig::current_site_config()->UseTitleAsMetaTitle) {
+        if (SiteConfig::current_site_config()->UseTitleAsMetaTitle) {
             return $this->owner->Title;
         }
     }
@@ -522,12 +544,12 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageMetaDescription()
     {
-        if($this->owner->MetaDescription) {
+        if ($this->owner->MetaDescription) {
             return $this->owner->MetaDescription;
         }
-        if(class_exists(BlogPost::class)) {
-            if($this->owner instanceof BlogPost) {
-                if($this->owner->Parent()->DefaultPostMetaDescription == 1) {
+        if (class_exists(BlogPost::class)) {
+            if ($this->owner instanceof BlogPost) {
+                if ($this->owner->Parent()->DefaultPostMetaDescription == 1) {
                     if ($this->owner->Summary) {
                         return strip_tags($this->owner->Summary);
                     }
@@ -545,12 +567,12 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageCanonical($query = null)
     {
-        if($this->pagination) {
-            if($this->pagination->getPageStart() > 0) {
+        if ($this->pagination) {
+            if ($this->pagination->getPageStart() > 0) {
                 $query = '?'.$this->pagination->getPaginationGetVar().'='.$this->pagination->getPageStart();
             }
         }
-        if($this->owner->Canonical) {
+        if ($this->owner->Canonical) {
             return $this->owner->Canonical.$query;
         }
         return $this->getPageURL().$query;
@@ -586,7 +608,7 @@ class SeoPageExtension extends DataExtension
         if (self::excludeSiteFromIndexing()) {
             return 'noindex,nofollow';
         }
-        if($this->owner->Robots) {
+        if ($this->owner->Robots) {
             return $this->owner->Robots;
         }
         return 'index,follow';
@@ -614,7 +636,7 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageOgType()
     {
-        if($this->owner->OGtype) {
+        if ($this->owner->OGtype) {
             return $this->owner->OGtype;
         }
         return 'website';
@@ -629,7 +651,7 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageOgLocale()
     {
-        if($this->owner->OGlocale) {
+        if ($this->owner->OGlocale) {
             return $this->owner->OGlocale;
         }
         return str_replace('-', '_', i18n::get_locale());
@@ -644,7 +666,7 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageTwitterCard()
     {
-        if($this->owner->TwitterCard) {
+        if ($this->owner->TwitterCard) {
             return $this->owner->TwitterCard;
         }
         return 'summary';
@@ -659,12 +681,12 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPageSocialImage()
     {
-        if($this->owner->SocialImageID > 0) {
+        if ($this->owner->SocialImageID > 0) {
             return $this->owner->SocialImage();
         }
-        if(class_exists(BlogPost::class)) {
-            if($this->owner instanceof BlogPost) {
-                if($this->owner->Parent()->UseFeaturedAsSocialImage == true) {
+        if (class_exists(BlogPost::class)) {
+            if ($this->owner instanceof BlogPost) {
+                if ($this->owner->Parent()->UseFeaturedAsSocialImage == true) {
                     return $this->owner->FeaturedImage();
                 }
             }
@@ -692,7 +714,7 @@ class SeoPageExtension extends DataExtension
      **/
     public function getSiteOgSiteName()
     {
-        if(SiteConfig::current_site_config()->OGSiteName) {
+        if (SiteConfig::current_site_config()->OGSiteName) {
             return SiteConfig::current_site_config()->OGSiteName;
         }
         return SiteConfig::current_site_config()->Title;
@@ -786,7 +808,7 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPublishedIcon()
     {
-        if($this->owner instanceof Page) {
+        if ($this->owner instanceof Page) {
             $status = $this->owner->isPublished() ? 'accept' : 'delete';
         } else {
             $status = 'accept';
@@ -822,17 +844,17 @@ class SeoPageExtension extends DataExtension
     public function setPaginationTags(PaginatedList $list, $params = []) // @todo allowed
     {
         $controller = Controller::curr();
-        if($controller->getRequest()->getVar($list->getPaginationGetVar()) !== NULL) {
-            if((int) $list->getPageStart() === 0) {
+        if ($controller->getRequest()->getVar($list->getPaginationGetVar()) !== null) {
+            if ((int) $list->getPageStart() === 0) {
                 return $controller->httpError(404);
             }
-            if($list->CurrentPage() > $list->TotalPages()){
+            if ($list->CurrentPage() > $list->TotalPages()) {
                 return $controller->httpError(404);
             }
-            if($list->getPageStart() % $list->getPageLength() !== 0){
+            if ($list->getPageStart() % $list->getPageLength() !== 0) {
                 return $controller->httpError(404);
             }
-            if(!preg_match('/^[0-9]+$/', $list->getPageStart())){
+            if (!preg_match('/^[0-9]+$/', $list->getPageStart())) {
                 return $controller->httpError(404);
             }
         }
@@ -848,9 +870,9 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPaginationPrevTag()
     {
-        if($this->pagination) {
-            if($this->pagination->TotalPages() > 1 && $this->pagination->NotFirstPage()) {
-                if((int) $this->pagination->CurrentPage() === 2) {
+        if ($this->pagination) {
+            if ($this->pagination->TotalPages() > 1 && $this->pagination->NotFirstPage()) {
+                if ((int) $this->pagination->CurrentPage() === 2) {
                     return $this->getPageURL();
                 } else {
                     $start = $this->pagination->getPageStart() - $this->pagination->getPageLength();
@@ -870,8 +892,8 @@ class SeoPageExtension extends DataExtension
      **/
     public function getPaginationNextTag()
     {
-        if($this->pagination) {
-            if($this->pagination->TotalPages() > 1 && $this->pagination->NotLastPage()) {
+        if ($this->pagination) {
+            if ($this->pagination->TotalPages() > 1 && $this->pagination->NotLastPage()) {
                 $start = $this->pagination->getPageStart() + $this->pagination->getPageLength();
 
                 return $this->getPageURL().'?'.$this->pagination->getPaginationGetVar().'='.$start;
@@ -894,7 +916,7 @@ class SeoPageExtension extends DataExtension
     public function ApplySchema()
     {
         // if a schema has been pasted into CMS, add it to page
-        if($this->owner->ManualSchema) {
+        if ($this->owner->ManualSchema) {
             Requirements::insertHeadTags(sprintf(
                 "<script type='application/ld+json'>%s</script>",
                 json_encode($this->owner->ManualSchema)
