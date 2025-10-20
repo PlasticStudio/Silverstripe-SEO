@@ -2,16 +2,16 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
-class PostalAddressSchema extends SchemaType
-{
+use JsonSerializable;
 
-    public string $atType = 'PostalAddress';
+class PostalAddressSchema extends SchemaType implements JsonSerializable
+{
     public string $streetAddress;
     public string $addressLocality;
     public string $addressRegion;
     public string $postalCode;
     public string $addressCountry;
-    
+
     public function __construct($streetAddress, $addressLocality, $addressRegion, $postalCode, $addressCountry)
     {
         $this->streetAddress = $streetAddress;
@@ -24,7 +24,7 @@ class PostalAddressSchema extends SchemaType
     public function jsonSerialize(): array
     {
         return [
-            '@type' => $this->atType,
+            '@type' => 'PostalAddress',
             'streetAddress' => $this->streetAddress,
             'addressLocality' => $this->addressLocality,
             'addressRegion' => $this->addressRegion,

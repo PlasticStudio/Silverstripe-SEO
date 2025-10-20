@@ -2,13 +2,14 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
-class GeoCoordinatesSchema extends SchemaType
+use JsonSerializable;
+
+class GeoCoordinatesSchema extends SchemaType implements JsonSerializable
 {
-    public string $atType = 'GeoCoordinates';
     public float $latitude;
     public float $longitude;
 
-    public function __construct(float $latitude, float $longitude)
+    public function __construct($latitude, $longitude)
     {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
@@ -17,7 +18,7 @@ class GeoCoordinatesSchema extends SchemaType
     public function jsonSerialize(): array
     {
         return [
-            '@type' => $this->atType,
+            '@type' => 'GeoCoordinates',
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
         ];
