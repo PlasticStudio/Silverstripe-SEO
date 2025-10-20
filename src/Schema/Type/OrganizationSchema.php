@@ -12,13 +12,6 @@ class OrganizationSchema extends SchemaType
     public ?array $contactPoint = null;
     public ?array $sameAs = null;
 
-    /**
-     * OrganizationSchema constructor.
-     *
-     * @param                   $name
-     * @param                   $url
-     * @param ImageObjectSchema $logo
-     */
     public function __construct($name, $url, ImageObjectSchema $logo)
     {
         $this->atContext = 'http://schema.org';

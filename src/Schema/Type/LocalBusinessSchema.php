@@ -4,14 +4,6 @@ namespace PlasticStudio\SEO\Schema\Type;
 
 class LocalBusinessSchema extends SchemaType
 {
-    /**
-     * LocalBusinessSchema constructor.
-     *
-     * @param $id
-     * @param $name
-     * @param PostalAddressSchema $address
-     * @param $url
-     */
 
     public string $atContext = 'http://schema.org';
     public string $atType = 'LocalBusiness';

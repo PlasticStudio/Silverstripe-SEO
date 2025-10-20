@@ -4,15 +4,6 @@ namespace PlasticStudio\SEO\Schema\Type;
 
 class PostalAddressSchema extends SchemaType
 {
-    /**
-     * PostalAddressSchema constructor.
-     *
-     * @param $streetAddress String
-     * @param $addressLocality String
-     * @param $addressRegion String
-     * @param $postalCode String
-     * @param $addressCountry String
-     */
 
     public string $atType = 'PostalAddress';
     public string $streetAddress;

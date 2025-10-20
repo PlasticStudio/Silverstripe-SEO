@@ -15,19 +15,7 @@ class NewsArticleSchema extends SchemaType
     public ?ImageObjectSchema $image = null;
     public ?PersonSchema $author = null;
     public ?OrganizationSchema $publisher = null;
-
-    /**
-     * NewsArticleSchema constructor.
-     *
-     * @param string             $headline
-     * @param string             $datePublished
-     * @param string             $dateModified
-     * @param string             $description
-     * @param EntityOfPageSchema $mainEntityOfPage
-     * @param ImageObjectSchema  $image
-     * @param PersonSchema       $author
-     * @param OrganizationSchema $publisher
-     */
+    
     public function __construct(
         $headline,
         $datePublished,
