@@ -22,7 +22,7 @@ Every page apart from Blog Posts have a Settings -> Schema tab with a textarea f
 # Google SEO schema settings
 
 Page:
-  default_image: "public/path_to_logo_file.png"
+  default_image: "/public/path_to_logo_file.png"      // leading / important for SS5
   active_schema:
     - 'PlasticStudio\SEO\Schema\Builder\Breadcrumbs'
 
