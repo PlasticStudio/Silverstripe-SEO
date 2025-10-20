@@ -5,8 +5,6 @@ namespace PlasticStudio\SEO\Schema\Type;
 class NewsArticleSchema extends SchemaType
 {
 
-    public string $atContext = 'http://schema.org';
-    public string $atType = 'NewsArticle';
     public string $headline;
     public string $datePublished;
     public string $dateModified;
@@ -21,28 +19,26 @@ class NewsArticleSchema extends SchemaType
         $datePublished,
         $dateModified,
         $description,
-        EntityOfPageSchema $mainEntityOfPage,
-        PersonSchema $author,
-        OrganizationSchema $publisher,
-        ImageObjectSchema $image
+        ?EntityOfPageSchema $mainEntityOfPage = null,
+        ?PersonSchema $author = null,
+        ?OrganizationSchema $publisher = null,
+        ?ImageObjectSchema $image = null
     ) {
-        $this->atContext = 'http://schema.org';
-        $this->atType = 'NewsArticle';
         $this->headline = $headline;
         $this->datePublished = $datePublished;
         $this->dateModified = $dateModified;
         $this->description = $description;
         $this->mainEntityOfPage = $mainEntityOfPage;
-        $this->image = $image;
         $this->author = $author;
         $this->publisher = $publisher;
+        $this->image = $image;
     }
 
     public function jsonSerialize(): array
     {
         $data = [
-            '@context' => $this->atContext,
-            '@type' => $this->atType,
+            '@context' => 'http://schema.org',
+            '@type' => 'NewsArticle',
             'headline' => $this->headline,
             'datePublished' => $this->datePublished,
             'dateModified' => $this->dateModified,
