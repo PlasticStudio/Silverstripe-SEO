@@ -41,7 +41,8 @@ class NewsArticle extends SchemaBuilder
                 new ImageObjectSchema(
                     Director::absoluteBaseURL() . Config::inst()->get('Page', 'default_image')
                 )
-            )
+                ),
+            null // pass null for the $image argument
         );
 
         /** @var \Image $featuredImage */
