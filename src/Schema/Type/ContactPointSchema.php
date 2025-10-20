@@ -15,6 +15,10 @@ namespace PlasticStudio\SEO\Schema\Type;
 
 class ContactPointSchema extends SchemaType
 {
+    private string $atType = 'ContactPoint';
+    private string $telephone;
+    private string $contactType;
+
     private static $contact_options = array(
         'TollFree',
         'HearingImpairedSupported'
@@ -43,9 +47,23 @@ class ContactPointSchema extends SchemaType
      */
     public function __construct($phone, $contactType)
     {
-        $this->{'@type'} = 'ContactPoint';
         $this->telephone = $phone;
         $this->contactType = $this->setContactType($contactType);
+    }
+
+    public function jsonSerialize(): array
+    {
+        $data = [
+            '@type' => $this->atType,
+            'telephone' => $this->telephone,
+            'contactType' => $this->contactType,
+        ];
+
+        if (isset($this->contactOption)) {
+            $data['contactOption'] = $this->contactOption;
+        }
+
+        return $data;
     }
 
 

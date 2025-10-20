@@ -2,34 +2,26 @@
 
 namespace Plasticstudio\SEO\Schema\Type;
 
+use JsonSerializable;
 use SilverStripe\ORM\ArrayList;
 use PlasticStudio\SEO\Schema\Type\ThingSchema;
 use PlasticStudio\SEO\Schema\Type\ListItemSchema;
 
-class BreadcrumbListSchema extends SchemaType
+class BreadcrumbListSchema extends SchemaType implements JsonSerializable
 {
-    /**
-     * BreadcrumbListSchema constructor.
-     *
-     * @param ArrayList|null $breadcrumbs
-     */
-    public function __construct(ArrayList $breadcrumbs = null)
-    {
-        $this->{'@context'} = 'http://schema.org';
-        $this->{'@type'} = 'BreadcrumbList';
-        $this->itemListElement = array();
+    public string $atContext = 'http://schema.org';
+    public string $atType = 'BreadcrumbList';
+    public array $itemListElement = [];
 
-        if (isset($breadcrumbs)) {
+    public function __construct(?ArrayList $breadcrumbs = null)
+    {
+        if ($breadcrumbs) {
             $this->makeItemListElement($breadcrumbs);
         }
     }
 
-    /**
-     * Construct the breadcrumb list
-     *
-     * @param ArrayList $breadcrumbs
-     */
-    private function makeItemListElement(ArrayList $breadcrumbs) {
+    private function makeItemListElement(ArrayList $breadcrumbs): void
+    {
         foreach ($breadcrumbs as $crumb) {
             $listItem = new ListItemSchema(
                 $crumb->getPageLevel(),
@@ -38,7 +30,16 @@ class BreadcrumbListSchema extends SchemaType
                     $crumb->Title
                 )
             );
-            array_push($this->itemListElement, $listItem);
+            $this->itemListElement[] = $listItem;
         }
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            '@context' => $this->atContext,
+            '@type' => $this->atType,
+            'itemListElement' => $this->itemListElement,
+        ];
     }
 }

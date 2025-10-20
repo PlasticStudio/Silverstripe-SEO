@@ -2,10 +2,16 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
-use PlasticStudio\SEO\Schema\Type\Schema\Type;
-
 class OrganizationSchema extends SchemaType
 {
+    public string $atContext = 'http://schema.org';
+    public string $atType = 'Organization';
+    public string $name;
+    public string $url;
+    public ImageObjectSchema $logo;
+    public ?array $contactPoint = null;
+    public ?array $sameAs = null;
+
     /**
      * OrganizationSchema constructor.
      *
@@ -15,11 +21,32 @@ class OrganizationSchema extends SchemaType
      */
     public function __construct($name, $url, ImageObjectSchema $logo)
     {
-        $this->{'@context'} = 'http://schema.org';
-        $this->{'@type'} = 'Organization';
+        $this->atContext = 'http://schema.org';
+        $this->atType = 'Organization';
         $this->name = $name;
         $this->url = $url;
         $this->logo = $logo;
+    }
+
+    public function jsonSerialize(): array
+    {
+        $data = [
+            '@context' => $this->atContext,
+            '@type' => $this->atType,
+            'name' => $this->name,
+            'url' => $this->url,
+            'logo' => $this->logo,
+        ];
+
+        if ($this->contactPoint !== null) {
+            $data['contactPoint'] = $this->contactPoint;
+        }
+
+        if ($this->sameAs !== null) {
+            $data['sameAs'] = $this->sameAs;
+        }
+
+        return $data;
     }
 
     /**
