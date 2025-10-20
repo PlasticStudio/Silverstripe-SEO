@@ -10,13 +10,6 @@ class ImageObjectSchema extends SchemaType
     public ?int $width = null;
     public ?int $height = null;
 
-    /**
-     * ImageObjectSchema constructor.
-     *
-     * @param string $url
-     * @param int    $width
-     * @param int    $height
-     */
     public function __construct($url, $width = null, $height = null)
     {
         $this->url = $url;

@@ -2,19 +2,10 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
-class LocalBusinessSchema extends SchemaType
-{
-    /**
-     * LocalBusinessSchema constructor.
-     *
-     * @param $id
-     * @param $name
-     * @param PostalAddressSchema $address
-     * @param $url
-     */
+use JsonSerializable;
 
-    public string $atContext = 'http://schema.org';
-    public string $atType = 'LocalBusiness';
+class LocalBusinessSchema extends SchemaType implements JsonSerializable
+{
     public string $id;
     public string $name;
     public PostalAddressSchema $address;
@@ -34,16 +25,16 @@ class LocalBusinessSchema extends SchemaType
     public function jsonSerialize(): array
     {
         $data = [
-            '@context' => $this->atContext,
-            '@type' => $this->atType,
+            '@context' => 'http://schema.org',
+            '@type' => 'LocalBusiness',
             '@id' => $this->id,
             'name' => $this->name,
-            'address' => $this->address,
+            'address' => $this->address, // PostalAddressSchema implements JsonSerializable
             'url' => $this->url,
         ];
 
         if ($this->geo) {
-            $data['geo'] = $this->geo;
+            $data['geo'] = $this->geo; // GeoCoordinatesSchema implements JsonSerializable
         }
 
         if ($this->telephone) {
