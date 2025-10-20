@@ -10,10 +10,22 @@ class GeoCoordinatesSchema extends SchemaType
      * @param $latitude Float
      * @param $longitude Float
      */
-    public function __construct($latitude, $longitude)
+    public string $atType = 'GeoCoordinates';
+    public float $latitude;
+    public float $longitude;
+
+    public function __construct(float $latitude, float $longitude)
     {
-        $this->{'@type'} = 'GeoCoordinates';
         $this->latitude = $latitude;
         $this->longitude = $longitude;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            '@type' => $this->atType,
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude,
+        ];
     }
 }
