@@ -359,8 +359,6 @@ class SeoPageExtension extends Extension
      **/
     public function onBeforeWrite()
     {
-        parent::onBeforeWrite();
-
         if ($this->owner->isChanged('MetaTitle', DataObject::CHANGE_VALUE)) {
             $this->owner->MetaTitleLastEdited = date('Y-m-d H:i:s');
         }
