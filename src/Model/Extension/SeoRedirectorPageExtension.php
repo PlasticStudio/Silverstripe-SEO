@@ -2,7 +2,7 @@
 
 namespace PlasticStudio\SEO\Model\Extension;
 
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 
 /**
  * SeoRedirectorPageExtension
@@ -11,7 +11,7 @@ use SilverStripe\ORM\DataExtension;
  *
  * @package silverstripe-seo
  **/
-class SeoRedirectorPageExtension extends DataExtension
+class SeoRedirectorPageExtension extends Extension
 {
     /**
      * Set the default value for the XMLSitemapHide field
