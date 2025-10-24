@@ -6,13 +6,13 @@ use Page;
 use SilverStripe\i18n\i18n;
 use SilverStripe\Assets\Image;
 use SilverStripe\Core\Convert;
+use SilverStripe\Core\Extension;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\TextField;
 use SilverStripe\Control\Director;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\HeaderField;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\PaginatedList;
 use SilverStripe\View\Requirements;
 use SilverStripe\CMS\Model\SiteTree;
@@ -68,7 +68,7 @@ use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
  * related DataObject detection and other features. You can subclass, override, or
  * use YML config to compliment this class and create your own detailed Meta strategies.
  **/
-class SeoPageExtension extends DataExtension
+class SeoPageExtension extends Extension
 {
     /**
     * A PaginatedList instance used for rel Meta tags

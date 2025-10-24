@@ -2,10 +2,7 @@
 
 namespace PlasticStudio\SEO\Model\Extension;
 
-use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\HeaderField;
-use SilverStripe\Forms\CheckboxField;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 
 /**
  * SeoBlogPostExtension
@@ -14,7 +11,7 @@ use SilverStripe\ORM\DataExtension;
  *
  * @package silverstripe-seo
  **/
-class SeoBlogPostExtension extends DataExtension
+class SeoBlogPostExtension extends Extension
 {	
     /**
      * Returns the summary description for use in schema description

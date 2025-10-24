@@ -5,7 +5,7 @@ namespace PlasticStudio\SEO\Model\Extension;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\CheckboxField;
-use SilverStripe\ORM\DataExtension;
+use SilverStripe\Core\Extension;
 
 /**
  * SeoBlogExtension
@@ -14,7 +14,7 @@ use SilverStripe\ORM\DataExtension;
  *
  * @package silverstripe-seo
  **/
-class SeoBlogExtension extends DataExtension
+class SeoBlogExtension extends Extension
 {
     /**
      * Our page fields
@@ -23,7 +23,7 @@ class SeoBlogExtension extends DataExtension
      *
      * @config array $db 
      **/
-    private static $db = [
+    private static array $db = [
         'DefaultPostMetaTitle'       => 'Boolean',
         'DefaultPostMetaDescription' => 'Boolean',
         'UseFeaturedAsSocialImage'   => 'Boolean'
