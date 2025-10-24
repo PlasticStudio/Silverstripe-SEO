@@ -5,7 +5,7 @@ namespace PlasticStudio\SEO\ORM;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTP;
 use SilverStripe\Control\HTTPRequest;
-use SilverStripe\ORM\PaginatedList;
+use SilverStripe\ORM\Lists\PaginatedList;
 
 class SeoPaginatedList extends PaginatedList
 {
