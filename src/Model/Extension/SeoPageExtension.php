@@ -155,6 +155,21 @@ class SeoPageExtension extends Extension
             'MetaTitle',
             'MetaDescription',
             'SocialImage',
+            'MetaTitleLastEdited',
+            'MetaDescriptionLastEdited',
+            'Canonical',
+            'Robots',
+            'ManualSchema',
+            'Priority',
+            'ChangeFrequency',
+            'SitemapHide',
+            'XMLSitemapHide',
+            'HideSocial',
+            'OGtype',
+            'OGlocale',
+            'TwitterCard',
+            'SitemapImages',
+            'HeadTags',
         ]);
 
         // This gives us a target to position other cms fields "before"
