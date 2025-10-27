@@ -2,13 +2,12 @@
 
 namespace PlasticStudio\SEO\Controller;
 
-use Page;
-use SilverStripe\ORM\ArrayList;
 use SilverStripe\Control\Director;
 use SilverStripe\Control\Controller;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\ErrorPage\ErrorPage;
+use SilverStripe\Model\List\ArrayList;
 use SilverStripe\CMS\Model\RedirectorPage;
 use PlasticStudio\SEO\Generators\SitemapGenerator;
 

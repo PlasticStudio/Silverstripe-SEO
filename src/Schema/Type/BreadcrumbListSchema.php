@@ -3,7 +3,7 @@
 namespace Plasticstudio\SEO\Schema\Type;
 
 use JsonSerializable;
-use SilverStripe\ORM\ArrayList;
+use SilverStripe\Model\List\ArrayList;
 use PlasticStudio\SEO\Schema\Type\ThingSchema;
 use PlasticStudio\SEO\Schema\Type\ListItemSchema;
 
