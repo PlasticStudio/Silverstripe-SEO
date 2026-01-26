@@ -6,8 +6,8 @@ class NewsArticleSchema extends SchemaType
 {
 
     public string $headline;
-    public string $datePublished;
-    public string $dateModified;
+    public ?string $datePublished = null;
+    public ?string $dateModified = null;
     public string $description;
     public ?EntityOfPageSchema $mainEntityOfPage = null;
     public ?ImageObjectSchema $image = null;
@@ -16,8 +16,8 @@ class NewsArticleSchema extends SchemaType
     
     public function __construct(
         $headline,
-        $datePublished,
-        $dateModified,
+        ?string $datePublished,
+        ?string $dateModified,
         $description,
         ?EntityOfPageSchema $mainEntityOfPage = null,
         ?PersonSchema $author = null,
