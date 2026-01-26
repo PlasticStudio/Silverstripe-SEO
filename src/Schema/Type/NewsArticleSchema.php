@@ -16,7 +16,7 @@ class NewsArticleSchema extends SchemaType
     
     public function __construct(
         $headline,
-        $datePublished,
+        ?$datePublished = null,
         $dateModified,
         $description,
         ?EntityOfPageSchema $mainEntityOfPage = null,
