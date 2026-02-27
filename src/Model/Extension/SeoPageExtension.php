@@ -151,7 +151,26 @@ class SeoPageExtension extends Extension
     public function updateCMSFields(FieldList $fields)
     {
         // remove default SS field
-        $fields->removeByName('MetaDescription');
+        $fields->removeByName([
+            'MetaTitle',
+            'MetaDescription',
+            'SocialImage',
+            'MetaTitleLastEdited',
+            'MetaDescriptionLastEdited',
+            'Canonical',
+            'Robots',
+            'ManualSchema',
+            'Priority',
+            'ChangeFrequency',
+            'SitemapHide',
+            'XMLSitemapHide',
+            'HideSocial',
+            'OGtype',
+            'OGlocale',
+            'TwitterCard',
+            'SitemapImages',
+            'HeadTags',
+        ]);
 
         // This gives us a target to position other cms fields "before"
         $fields->addFieldToTab(
