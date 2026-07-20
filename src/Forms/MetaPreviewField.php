@@ -55,13 +55,17 @@ class MetaPreviewField extends LiteralField
      **/
     private function getMetaContent()
     {
-        return Controller::curr()->customise([
-            'SerpSiteTitle'         => SiteConfig::current_site_config()->Title,
-            'SerpMetaLink'          => $this->getPageMetaLink(),
-            'SerpMetaTitle'         => $this->getPageMetaTitle(),
-            'SerpMetaDescription'   => $this->getPageMetaDescription(),
-            // 'SerpMetaDescriptionClass' => $this->getPageMetaDescriptionClass(),
-        ])->renderWith('MetaPreview');
+        $controller = Controller::curr();
+
+        if ($controller) {
+            return $controller->customise([
+                'SerpSiteTitle'         => SiteConfig::current_site_config()->Title,
+                'SerpMetaLink'          => $this->getPageMetaLink(),
+                'SerpMetaTitle'         => $this->getPageMetaTitle(),
+                'SerpMetaDescription'   => $this->getPageMetaDescription(),
+                // 'SerpMetaDescriptionClass' => $this->getPageMetaDescriptionClass(),
+            ])->renderWith('MetaPreview');
+        }
     }
 
     /**
