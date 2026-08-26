@@ -2,23 +2,28 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
+use Plasticstudio\SEO\Schema\Type\EntityOfPageSchema;
+use PlasticStudio\SEO\Schema\Type\ImageObjectSchema;
+use PlasticStudio\SEO\Schema\Type\OrganizationSchema;
+use PlasticStudio\SEO\Schema\Type\PersonSchema;
+
 class NewsArticleSchema extends SchemaType
 {
 
     public string $headline;
-    public string $datePublished;
-    public string $dateModified;
-    public string $description;
+    public ?string $datePublished = null;
+    public ?string $dateModified = null;
+    public ?string $description = null;
     public ?EntityOfPageSchema $mainEntityOfPage = null;
     public ?ImageObjectSchema $image = null;
     public ?PersonSchema $author = null;
     public ?OrganizationSchema $publisher = null;
     
     public function __construct(
-        $headline,
-        $datePublished,
-        $dateModified,
-        $description,
+        string $headline,
+        ?string $datePublished = null,
+        ?string $dateModified = null,
+        ?string $description = null,
         ?EntityOfPageSchema $mainEntityOfPage = null,
         ?PersonSchema $author = null,
         ?OrganizationSchema $publisher = null,
@@ -40,10 +45,19 @@ class NewsArticleSchema extends SchemaType
             '@context' => 'http://schema.org',
             '@type' => 'NewsArticle',
             'headline' => $this->headline,
-            'datePublished' => $this->datePublished,
-            'dateModified' => $this->dateModified,
-            'description' => $this->description,
         ];
+
+        if ($this->datePublished === null) {
+            unset($data['datePublished']);
+        }
+
+        if ($this->dateModified === null) {
+            unset($data['dateModified']);
+        }
+
+        if ($this->description === null) {
+            unset($data['description']);
+        }
 
         if ($this->mainEntityOfPage !== null) {
             $data['mainEntityOfPage'] = $this->mainEntityOfPage;
