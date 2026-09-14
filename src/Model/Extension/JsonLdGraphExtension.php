@@ -2,8 +2,8 @@
 
 namespace PlasticStudio\SEO\Model\Extension;
 
-use SilverStripe\ORM\Extension;
 use SilverStripe\View\Requirements;
+use SilverStripe\Core\Extension;
 
 class JsonLdGraphExtension extends Extension 
 {

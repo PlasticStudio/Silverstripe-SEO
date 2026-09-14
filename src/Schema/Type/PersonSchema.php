@@ -9,6 +9,13 @@ class PersonSchema extends SchemaType
     public ?string $atId = null;
     public string $name;
 
+    // Explicitly declare sameAs array variable properties
+    public ?array $sameAs = null;
+    public ?string $jobTitle = null;
+    public ?string $description = null;
+    public ?string $image = null;
+    public ?array $worksFor = null;
+
     /**
      * PersonSchema constructor.
      *
