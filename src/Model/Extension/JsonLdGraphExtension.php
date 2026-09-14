@@ -16,22 +16,14 @@ class JsonLdGraphExtension extends Extension
 
         // Check for manual overrides from content managers
         if ($this->owner->ManualSchema) {
-            // If it's a raw string, decode it into a clean array first
-            $manualData = is_string($this->owner->ManualSchema) 
-                ? json_decode($this->owner->ManualSchema, true) 
-                : $this->owner->ManualSchema;
-                
+            $manualData = is_string($this->owner->ManualSchema) ? json_decode($this->owner->ManualSchema, true) : $this->owner->ManualSchema;
+            
             if ($manualData) {
-                // If the override already has a graph structure, merge it right in
-                if (isset($manualData['@graph'])) {
-                    $graph = array_merge($graph, $manualData['@graph']);
-                } else {
-                    $graph[] = $manualData;
-                }
+                $graph = array_merge($graph, isset($manualData['@graph']) ? $manualData['@graph'] : [$manualData]);
             }
         }
 
-        // Automatically loop through your configured schema builders
+        // Fetch the static active schemas from your site's YAML file config blocks
         $schemas = (array)$this->owner->config()->get('active_schema');
         
         // if cms selected schema, inject it into the array 

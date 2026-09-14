@@ -21,6 +21,11 @@ Every page apart from Blog Posts have a Settings -> Schema tab with a textarea f
 ```
 # Google SEO schema settings
 
+PlasticStudio\SEO\Schema\Extensions\PageSchemaSelectorExtension:
+  custom_builders:
+    'Skeletor\Schema\Builder\RealEstateAgent': 'Property Agent Profile'
+    'Skeletor\Schema\Builder\EventCalendar': 'Event Listings'
+
 Page:
   default_image: "/public/path_to_logo_file.png"      // leading / important for SS5
   active_schema:
@@ -33,6 +38,16 @@ Skeletor\Pages\HomePage:
 Skeletor\Pages\NewsArticle:
   active_schema:
     - 'PlasticStudio\SEO\Schema\Builder\NewsArticle'
+
+Skeletor\Pages\AboutPage:
+  active_schema:
+    - 'PlasticStudio\SEO\Schema\Builder\StaffDirectory'
+  staff_config:
+    Relation: 'TeamMembers'
+    NameField: 'FullName'
+    JobTitleField: 'Role'
+    ImageRelation: 'Avatar'
+    SocialField: 'LinkedInProfile'
 ```
 
 ## Custom schema example
