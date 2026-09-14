@@ -1,7 +1,5 @@
 <?php
 
-<?php
-
 namespace PlasticStudio\SEO\Schema\Builder;
 
 use PlasticStudio\SEO\Schema\Builder\SchemaBuilder;
