@@ -1,6 +1,6 @@
 <?php
 
-namespace PlasticStudio\SEO\Model\Extension;
+namespace PlasticStudio\SEO\Models\Extensions;
 
 use SilverStripe\View\Requirements;
 use SilverStripe\Core\Extension;
