@@ -1,0 +1,16 @@
+---
+Name: plasticstudio-seo-schema-builders
+---
+PlasticStudio\SEO\Schema\Extensions\PageSchemaSelectorExtension:
+  core_builders:
+    'PlasticStudio\SEO\Schema\Builder\Organization': 'Organization'
+    'PlasticStudio\SEO\Schema\Builder\Website': 'Website'
+    'PlasticStudio\SEO\Schema\Builder\LocalBusiness': 'Local Business'
+    'PlasticStudio\SEO\Schema\Builder\Breadcrumbs': 'Breadcrumbs'
+    'PlasticStudio\SEO\Schema\Builder\NewsArticle': 'News Article'
+    'PlasticStudio\SEO\Schema\Builder\StaffDirectory': 'Staff Directory'
+    'PlasticStudio\SEO\Schema\Builder\FAQ': 'FAQ Collection'
+    'PlasticStudio\SEO\Schema\Builder\Glossary': 'Glossary Set'
+
+# custom_builders:
+# add any custom, site specific builders to the yml on the individual site

@@ -100,7 +100,8 @@ class SeoPageExtension extends Extension
         'HideSocial'            => 'Boolean',
         'OGtype'                => 'Varchar(100)',
         'OGlocale'              => 'Varchar(10)',
-        'TwitterCard'           => 'Varchar(100)'
+        'TwitterCard'           => 'Varchar(100)',
+        'SelectedSchemaBuilder' => 'Varchar(255)',
     ];
 
     /**
@@ -316,7 +317,15 @@ class SeoPageExtension extends Extension
         
 
         // SCHEMA TAB
-        $fields->addFieldToTab('Root.AdvancedSEO.Schema', TextareaField::create('ManualSchema', 'Manual schema'));
+
+        $availableBuilders = $this->getAvailableBuilders();
+
+        $fields->addFieldsToTab('Root.AdvancedSEO.Schema', [
+            DropdownField::create('SelectedSchemaBuilder', 'Page schema type', $availableBuilders)
+                ->setEmptyString('- please select - ')
+                ->setDescription('Choose the schema type for Google and AI Engines'),
+            TextareaField::create('ManualSchema', 'Manual schema')                
+        ]);
 
         // SITEMAP TAB
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', NumericField::create('Priority')->setScale(1)
@@ -332,6 +341,34 @@ class SeoPageExtension extends Extension
         // $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', $uploader);
 
         return $fields;
+    }
+
+    /**
+     * Merges core plugin builders and site-specific builders from YAML config
+     *
+     * @return array
+     */
+    private function getAvailableBuilders()
+    {
+        $options = [
+            '' => '-- Default WebPage / Auto --'
+        ];
+
+        // Fetch both config arrays dynamically from the architecture tree
+        $core = Config::inst()->get(self::class, 'core_builders') ?: [];
+        $custom = Config::inst()->get(self::class, 'custom_builders') ?: [];
+
+        // Merge them together. If a custom builder uses the same key, it overrides the core version.
+        $mergedBuilders = array_merge($core, $custom);
+
+        foreach ($mergedBuilders as $classNamespace => $humanLabel) {
+            // Verify the class actually exists before adding it to the dropdown menu
+            if (class_exists($classNamespace)) {
+                $options[$classNamespace] = $humanLabel;
+            }
+        }
+
+        return $options;
     }
 
     /**

@@ -14,7 +14,7 @@ class JsonLdGraphExtension extends Extension
     {
         $graph = [];
 
-        // 1. First, check for manual overrides from content managers
+        // Check for manual overrides from content managers
         if ($this->owner->ManualSchema) {
             // If it's a raw string, decode it into a clean array first
             $manualData = is_string($this->owner->ManualSchema) 
@@ -31,8 +31,17 @@ class JsonLdGraphExtension extends Extension
             }
         }
 
-        // 2. Automatically loop through your configured schema builders
-        $schemas = array_filter((array)$this->owner->config()->get('active_schema'));
+        // Automatically loop through your configured schema builders
+        $schemas = (array)$this->owner->config()->get('active_schema');
+        
+        // if cms selected schema, inject it into the array 
+        if ($this->owner->SelectedSchemaBuilder) {
+            $schemas[] = $this->owner->SelectedSchemaBuilder;
+        }
+
+        // Clean out empty values and duplicates safely
+        $schemas = array_unique(array_filter($schemas));
+
         foreach ($schemas as $schemaClass) {
             if (class_exists($schemaClass)) {
                 $builder = new $schemaClass();
@@ -47,7 +56,7 @@ class JsonLdGraphExtension extends Extension
             }
         }
 
-        // 3. Inject the single merged graph dataset into the header background
+        // Inject the single merged graph dataset into the header background
         if (!empty($graph)) {
             $output = [
                 '@context' => 'https://schema.org',
