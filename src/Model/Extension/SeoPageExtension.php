@@ -155,7 +155,22 @@ class SeoPageExtension extends Extension
         $fields->removeByName([
             'MetaTitle', 
             'MetaDescription',
+            'MetaTitleLastEdited',
+            'MetaDescriptionLastEdited',
+            'Canonical',
+            'Robots',
+            'Priority',
+            'ChangeFrequency',
+            'SitemapHide',
+            'XMLSitemapHide',
+            'HideSocial',
+            'OGtype',
+            'OGlocale',
+            'TwitterCard',
+            'SelectedSchemaBuilder',
             'SocialImage',
+            'SitemapImages',
+            'ShowDebugTools',
         ]);
 
         // This gives us a target to position other cms fields "before"

@@ -3,10 +3,7 @@ Name: plasticstudio-seo-schema-builders
 ---
 PlasticStudio\SEO\Model\Extension\SeoPageExtension:
   core_builders:
-    'PlasticStudio\SEO\Schema\Builder\Organization': 'Organization'
-    'PlasticStudio\SEO\Schema\Builder\Website': 'Website'
-    'PlasticStudio\SEO\Schema\Builder\LocalBusiness': 'Local Business'
-    'PlasticStudio\SEO\Schema\Builder\Breadcrumbs': 'Breadcrumbs'
+  # page builders - not base level eg organisation, breadcrumbs etc
     'PlasticStudio\SEO\Schema\Builder\NewsArticle': 'News Article'
     'PlasticStudio\SEO\Schema\Builder\StaffDirectory': 'Staff Directory'
     'PlasticStudio\SEO\Schema\Builder\FAQ': 'FAQ Collection'
