@@ -2,9 +2,14 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
+use PlasticStudio\SEO\Schema\Type\EntityOfPageSchema;
+use PlasticStudio\SEO\Schema\Type\ImageObjectSchema;
+use PlasticStudio\SEO\Schema\Type\PersonSchema;
 class NewsArticleSchema extends SchemaType
 {
-
+    // Overriding the type so our base class serializer picks it up automatically
+    public string $atType = 'NewsArticle';
+    public string $atId = '';
     public string $headline;
     public ?string $datePublished = null;
     public ?string $dateModified = null;
@@ -12,7 +17,10 @@ class NewsArticleSchema extends SchemaType
     public ?EntityOfPageSchema $mainEntityOfPage = null;
     public ?ImageObjectSchema $image = null;
     public ?PersonSchema $author = null;
-    public ?OrganizationSchema $publisher = null;
+    public $publisher = null;
+
+    // Explicitly declaring these properties for graph nesting connections
+    public ?array $isPartOf = null;
     
     public function __construct(
         $headline,
@@ -21,7 +29,7 @@ class NewsArticleSchema extends SchemaType
         $description,
         ?EntityOfPageSchema $mainEntityOfPage = null,
         ?PersonSchema $author = null,
-        ?OrganizationSchema $publisher = null,
+        $publisher = null,
         ?ImageObjectSchema $image = null
     ) {
         $this->headline = $headline;
@@ -32,36 +40,6 @@ class NewsArticleSchema extends SchemaType
         $this->author = $author;
         $this->publisher = $publisher;
         $this->image = $image;
-    }
-
-    public function jsonSerialize(): array
-    {
-        $data = [
-            '@context' => 'http://schema.org',
-            '@type' => 'NewsArticle',
-            'headline' => $this->headline,
-            'datePublished' => $this->datePublished,
-            'dateModified' => $this->dateModified,
-            'description' => $this->description,
-        ];
-
-        if ($this->mainEntityOfPage !== null) {
-            $data['mainEntityOfPage'] = $this->mainEntityOfPage;
-        }
-
-        if ($this->image !== null) {
-            $data['image'] = $this->image;
-        }
-
-        if ($this->author !== null) {
-            $data['author'] = $this->author;
-        }
-
-        if ($this->publisher !== null) {
-            $data['publisher'] = $this->publisher;
-        }
-
-        return $data;
     }
 
     public function setImageObject(ImageObjectSchema $image) {
@@ -76,7 +54,7 @@ class NewsArticleSchema extends SchemaType
         $this->mainEntityOfPage = $mainEntityOfPage;
     }
 
-    public function setPublisher(OrganizationSchema $publisher) {
+    public function setPublisher($publisher) {
         $this->publisher = $publisher;
     }
 }

@@ -2,10 +2,11 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
+use Plasticstudio\SEO\Schema\Type\SchemaType;
 class PersonSchema extends SchemaType
 {
-    public string $atContext = 'http://schema.org';
     public string $atType = 'Person';
+    public ?string $atId = null;
     public string $name;
 
     /**
@@ -13,18 +14,9 @@ class PersonSchema extends SchemaType
      *
      * @param $name
      */
-    public function __construct($name)
+    public function __construct(string $name, ?string $id = null)
     {
-        $this->atType = 'Person';
         $this->name = $name;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            '@context' => $this->atContext,
-            '@type' => $this->atType,
-            'name' => $this->name,
-        ];
+        $this->atId = $id;  // Sets up the '#author-name' anchor pointer
     }
 }

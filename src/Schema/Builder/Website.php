@@ -2,10 +2,8 @@
 
 namespace Plasticstudio\SEO\Schema\Builder;
 
-use Plasticstudio\SEO\Schema\Type\SearchActionSchema;
 use Plasticstudio\SEO\Schema\Type\WebSiteSchema;
 use SilverStripe\Control\Director;
-use SilverStripe\ORM\Search\FulltextSearchable;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
@@ -23,20 +21,18 @@ class Website extends SchemaBuilder
     public function getSchema($page)
     {
         $siteConfig = SiteConfig::current_site_config();
+        $baseUrl = Director::absoluteBaseURL();
 
-        $website = new WebSiteSchema(
-            $siteConfig->getField('Title'),
-            Director::absoluteBaseURL()
+        // Instantiate the schema type with its unique ID anchor point
+        $webSite = new WebSiteSchema(
+            $siteConfig->Title,
+            $baseUrl,
+            $baseUrl . '#website'
         );
 
-        // add a search box if Fulltext search is enabled
-        if (is_array(FulltextSearchable::get_searchable_classes())) {
-            $website->potentialAction = new SearchActionSchema(
-                Director::absoluteBaseURL() . 'SearchForm?Search={search_term_string}',
-                'required name=search_term_string'
-            );
-        }
+        // Stitch this website node directly back to your root organization publisher item
+        $webSite->publisher = ['@id' => $baseUrl . '#organisation'];
 
-        return $website;
+        return $webSite;
     }
 }

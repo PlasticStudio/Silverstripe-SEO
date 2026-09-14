@@ -19,3 +19,9 @@ SilverStripe\Blog\Model\BlogPost:
 SilverStripe\CMS\Model\RedirectorPage:
   extensions:
     - PlasticStudio\SEO\Model\Extension\SeoRedirectorPageExtension
+SilverStripe\CMS\Model\SiteTree:
+  extensions:
+    - PlasticStudio\SEO\Models\Extensions\JsonLdGraphExtension
+SilverStripe\CMS\Controllers\ContentController:
+  extensions:
+    - PlasticStudio\SEO\Models\Extensions\JsonLdControllerExtension

@@ -14,7 +14,7 @@ Every page apart from Blog Posts have a Settings -> Schema tab with a textarea f
 
 1. Add a yml to specify which schema to include where
 2. In Site Settings -> SEO tab, complete site name, address, phone and lat/lng details
-3. Add $ApplySchema template variable to your page (preferably before the closing body tag)
+3. Add $ApplyUnifiedSchema template variable to your page (preferably before the closing body tag)
 
 #### Example YAML
 

@@ -905,56 +905,56 @@ class SeoPageExtension extends Extension
     /*----------------- SCHEMAS ------------------- */
 
     
-    /**
-     * Hook onto the page meta tags and append any configured schema objects
-     * fixme: does not trigger correctly on DataObjects pages
-     *
-     * @param $tags
-     */
-    public function ApplySchema()
-    {
-        // if a schema has been pasted into CMS, add it to page
-        if ($this->owner->ManualSchema) {
-            Requirements::insertHeadTags(sprintf(
-                "<script type='application/ld+json'>%s</script>",
-                json_encode($this->owner->ManualSchema)
-            ));
-        }
+    // /**
+    //  * Hook onto the page meta tags and append any configured schema objects
+    //  * fixme: does not trigger correctly on DataObjects pages
+    //  *
+    //  * @param $tags
+    //  */
+    // public function ApplySchema()
+    // {
+    //     // if a schema has been pasted into CMS, add it to page
+    //     if ($this->owner->ManualSchema) {
+    //         Requirements::insertHeadTags(sprintf(
+    //             "<script type='application/ld+json'>%s</script>",
+    //             json_encode($this->owner->ManualSchema)
+    //         ));
+    //     }
 
-        $schemas = array_filter($this->owner->config()->get('active_schema'));
-        foreach ($schemas as $schema) {
-            if (self::is_valid($schema)) {
-                $this->appendSchema(new $schema());
-            }
-        }
-    }
+    //     $schemas = array_filter($this->owner->config()->get('active_schema'));
+    //     foreach ($schemas as $schema) {
+    //         if (self::is_valid($schema)) {
+    //             $this->appendSchema(new $schema());
+    //         }
+    //     }
+    // }
 
 
-    /**
-     * Append a schema ld+json tag
-     *
-     * @param $tags
-     * @param $schema
-     */
-    private function appendSchema(SchemaBuilder $schema)
-    {
-        if ($schema = $schema->getSchema($this->owner)) {
-            Requirements::insertHeadTags(sprintf(
-                "<script type='application/ld+json'>%s</script>",
-                json_encode($schema)
-            ), get_class($schema));
-        }
-    }
+    // /**
+    //  * Append a schema ld+json tag
+    //  *
+    //  * @param $tags
+    //  * @param $schema
+    //  */
+    // private function appendSchema(SchemaBuilder $schema)
+    // {
+    //     if ($schema = $schema->getSchema($this->owner)) {
+    //         Requirements::insertHeadTags(sprintf(
+    //             "<script type='application/ld+json'>%s</script>",
+    //             json_encode($schema)
+    //         ), get_class($schema));
+    //     }
+    // }
 
-    /**
-     * Check if the set schema is of an active and available type
-     *
-     * @param $schema
-     *
-     * @return bool
-     */
-    private static function is_valid($schema)
-    {
-        return class_exists($schema) && new $schema() instanceof SchemaBuilder;
-    }
+    // /**
+    //  * Check if the set schema is of an active and available type
+    //  *
+    //  * @param $schema
+    //  *
+    //  * @return bool
+    //  */
+    // private static function is_valid($schema)
+    // {
+    //     return class_exists($schema) && new $schema() instanceof SchemaBuilder;
+    // }
 }

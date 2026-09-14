@@ -2,21 +2,14 @@
 
 namespace Plasticstudio\SEO\Schema\Type;
 
+use Plasticstudio\SEO\Schema\Type\SchemaType;
+
 class EntityOfPageSchema extends SchemaType
 {
+    public string $atId;
 
-    private string $id;
-
-    public function __construct($id)
+    public function __construct(string $id)
     {
-        $this->id = $id;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            '@type' => 'EntityOfPage',
-            'id' => $this->id,
-        ];
+        $this->atId = $id;
     }
 }

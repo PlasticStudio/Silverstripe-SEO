@@ -2,23 +2,32 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
-class ListItemSchema extends SchemaType implements \JsonSerializable
-{
-    public int $position;
-    public ThingSchema $item;
+use PlasticStudio\SEO\Schema\Type\SchemaType;
 
-    public function __construct(int $position, ThingSchema $item)
+class ListItemSchema extends SchemaType
+{
+    public string $atType = 'ListItem';
+    public ?string $atId = null;
+    public int $position;
+    public string $name;
+    
+    /**
+     * Declaring item as mixed/array so it can accept our 
+     * nested target pointer identifier block cleanly
+     */
+    public array $item = [];
+
+    /**
+     * ListItemSchema constructor.
+     *
+     * @param int $position
+     * @param string $name
+     * @param string|null $id
+     */
+    public function __construct(int $position, string $name, ?string $id = null)
     {
         $this->position = $position;
-        $this->item = $item;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            '@type' => 'ListItem',
-            'position' => $this->position,
-            'item' => $this->item, // ThingSchema implements JsonSerializable
-        ];
+        $this->name = $name;
+        $this->atId = $id ? $id . '#breadcrumb-item' : null;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace PlasticStudio\SEO\Schema\Builder;
 
-use PlasticStudio\SEO\Schema\Type\ContactPointSchema;
-use PlasticStudio\SEO\Schema\Type\ImageObjectSchema;
 use PlasticStudio\SEO\Schema\Type\OrganizationSchema;
 use SilverStripe\Control\Director;
 use SilverStripe\Core\Config\Config;
@@ -24,28 +22,42 @@ class Organization extends SchemaBuilder
     public function getSchema($page)
     {
         $siteConfig = SiteConfig::current_site_config();
+        $baseUrl = Director::absoluteBaseURL();
 
-        $organization = new OrganizationSchema(
-            SiteConfig::current_site_config()->Title,
-            Director::absoluteBaseURL(),
-            new ImageObjectSchema(
-                Director::absoluteBaseURL() . Config::inst()->get('Page', 'default_image')
-            )
-        );
+        $organisation = new \stdClass();
+        $organisation->{"@type"} = "Organization";
+        $organisation->{"@id"} = $baseUrl . "#organisation"; // Core anchor point
+        $organisation->name = $siteConfig->Title;
+        $organisation->url = $baseUrl;
 
-        // TODO: make more generic
-        $organization->addContactPoint($point = new ContactPointSchema(
-            $siteConfig->getField('Phone'),
-            'customer service'
-        ));
+        // logo handing using absolute assets
+        $defaultImage = Config::inst()->get('Page', 'default_image');
+        if ($defaultImage) {
+            $organisation->logo = [
+                "@type" => "ImageObject",
+                "url" => Director::absoluteURL($defaultImage)
+            ];
+        }
 
-        // TODO make this more generic
-        if (class_exists('SocialMediaPlatform') && $siteConfig->SocialMediaPlatforms() && $siteConfig->SocialMediaPlatforms()->Count()) {
+        // Add phone configurations
+        if ($phone = $siteConfig->getField('Phone')) {
+            $organisation->contactPoint = [
+                "@type" => "ContactPoint",
+                "telephone" => $phone,
+                "contactType" => "customer service"
+            ];
+        }
+
+        // 2. Loop through social properties dynamically without strict class coupling
+        $organisation->sameAs = [];
+        if ($siteConfig->hasMethod('SocialMediaPlatforms')) {
             foreach ($siteConfig->SocialMediaPlatforms() as $platform) {
-                $organization->addSameAs($platform->URL);
+                if ($platform->URL) {
+                    $organisation->sameAs[] = $platform->URL;
+                }
             }
         }
 
-        return $organization;
+        return $organisation;
     }
 }
