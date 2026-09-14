@@ -167,10 +167,12 @@ class SeoPageExtension extends Extension
             'OGtype',
             'OGlocale',
             'TwitterCard',
+            'ManualSchema',
             'SelectedSchemaBuilder',
             'SocialImage',
             'SitemapImages',
             'ShowDebugTools',
+            'HeadTags',
         ]);
 
         // This gives us a target to position other cms fields "before"
