@@ -152,7 +152,11 @@ class SeoPageExtension extends Extension
     public function updateCMSFields(FieldList $fields)
     {
         // remove default SS field
-        $fields->removeByName('MetaDescription');
+        $fields->removeByName([
+            'MetaTitle', 
+            'MetaDescription',
+            'SocialImage',
+        ]);
 
         // This gives us a target to position other cms fields "before"
         $fields->addFieldToTab(
@@ -355,8 +359,8 @@ class SeoPageExtension extends Extension
         ];
 
         // Fetch both config arrays dynamically from the architecture tree
-        $core = Config::inst()->get(self::class, 'core_builders') ?: [];
-        $custom = Config::inst()->get(self::class, 'custom_builders') ?: [];
+        $core = Config::inst()->get(SeoPageExtension::class, 'core_builders') ?: [];
+        $custom = Config::inst()->get(SeoPageExtension::class, 'custom_builders') ?: [];
 
         // Merge them together. If a custom builder uses the same key, it overrides the core version.
         $mergedBuilders = array_merge($core, $custom);

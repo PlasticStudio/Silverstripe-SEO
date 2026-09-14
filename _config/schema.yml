@@ -1,7 +1,7 @@
 ---
 Name: plasticstudio-seo-schema-builders
 ---
-PlasticStudio\SEO\Schema\Extensions\PageSchemaSelectorExtension:
+PlasticStudio\SEO\Schema\Extensions\SeoPageExtension:
   core_builders:
     'PlasticStudio\SEO\Schema\Builder\Organization': 'Organization'
     'PlasticStudio\SEO\Schema\Builder\Website': 'Website'
