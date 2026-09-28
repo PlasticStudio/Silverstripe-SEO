@@ -7,6 +7,7 @@ use PlasticStudio\SEO\Schema\Type\SchemaType;
 class WebSiteSchema extends SchemaType
 {
     public string $atType = 'WebSite';
+    public ?string $atId = null;
     public string $name;
     public string $url;
     public $publisher = null; //leave it untyped so it can accept both full schema objects or raw reference pointer arrays

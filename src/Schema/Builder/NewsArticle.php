@@ -25,7 +25,7 @@ class NewsArticle extends SchemaBuilder
         $pageUrl = $page->AbsoluteLink();
 
         // 1. Resolve Author Name
-        if (($credits = $page->getCredits()) && $credits->exists()) {
+        if ($page->hasMethod('getCredits') && ($credits = $page->getCredits()) && $credits->exists()) {
             $author = $credits->first()->Name;
         } else {
             $author = SiteConfig::current_site_config()->Title;
@@ -60,8 +60,7 @@ class NewsArticle extends SchemaBuilder
         $newsArticle->isPartOf = ['@id' => $pageUrl . '#webpage'];
 
         // 6. Handle Featured Image processing safely
-        $featuredImage = $page->FeaturedImage();
-        if ($featuredImage && $featuredImage->exists()) {
+        if ($page->hasMethod('FeaturedImage') && $featuredImage = $page->FeaturedImage() && $featuredImage->exists()) {
             $newsArticle->setImageObject(new ImageObjectSchema(
                 $featuredImage->Fill(800, 800)->AbsoluteLink(),
                 800,

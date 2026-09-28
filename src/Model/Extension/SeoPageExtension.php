@@ -90,6 +90,7 @@ class SeoPageExtension extends Extension
         'MetaTitle'             => 'Varchar(512)',
         'MetaTitleLastEdited'   => 'Datetime',
         'MetaDescriptionLastEdited'   => 'Datetime',
+        'DatePublished'         => 'Datetime',
         'Canonical'             => 'Varchar(512)',
         'Robots'                => 'Varchar(100)',
         'ManualSchema'          => 'Text',
@@ -424,6 +425,10 @@ class SeoPageExtension extends Extension
         if ($this->owner->isChanged('MetaDescription', DataObject::CHANGE_VALUE)) {
             $this->owner->MetaDescriptionLastEdited = date('Y-m-d H:i:s');
         }
+
+        // if (!$this->owner->DatePublished) {
+        //     $this->owner->DatePublished = $this->owner->Created;
+        // }
     }
 
     /**

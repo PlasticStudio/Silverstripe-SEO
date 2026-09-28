@@ -4,10 +4,14 @@ Name: plasticstudio-seo-schema-builders
 PlasticStudio\SEO\Model\Extension\SeoPageExtension:
   core_builders:
   # page builders - not base level eg organisation, breadcrumbs etc
+    'PlasticStudio\SEO\Schema\Builder\WebPage': 'Web Page'
     'PlasticStudio\SEO\Schema\Builder\NewsArticle': 'News Article'
     'PlasticStudio\SEO\Schema\Builder\StaffDirectory': 'Staff Directory'
     'PlasticStudio\SEO\Schema\Builder\FAQ': 'FAQ Collection'
     'PlasticStudio\SEO\Schema\Builder\Glossary': 'Glossary Set'
+    'PlasticStudio\SEO\Schema\Builder\ContactPage': 'Contact Page'
+    'PlasticStudio\SEO\Schema\Builder\AboutPage': 'About Page'
+    'PlasticStudio\SEO\Schema\Builder\CollectionPage': 'Collection Page'
 
 # custom_builders:
 # add any custom, site specific builders to the yml on the individual site

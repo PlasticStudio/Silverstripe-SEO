@@ -2,6 +2,8 @@
 
 namespace PlasticStudio\SEO\Schema\Type;
 
+use PlasticStudio\SEO\Schema\Type\SchemaType;
+
 class WebPageSchema extends SchemaType
 {
     public string $atType = 'WebPage';
