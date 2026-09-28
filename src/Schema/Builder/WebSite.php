@@ -7,9 +7,9 @@ use SilverStripe\Control\Director;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
- * Class Website
+ * Class WebSite
  */
-class Website extends SchemaBuilder
+class WebSite extends SchemaBuilder
 {
     /**
      * Create the website schema object
