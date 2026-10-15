@@ -8,7 +8,56 @@ This PlasticStudio SEO module includes a couple of helpers to define how to use 
 
 ## src/Schema/SchemaProvider
 
-Is an interface for data objects or elements that provide custom schema to SS-Schema-Manager.
+Is an interface for pages, data objects or elements that provide custom schema to SS-Schema-Manager.
+
+```
+use PlasticStudio\SEO\Schema\SchemaProvider;
+use PlasticStudio\SEO\Schema\DefinedTermSchema;
+use PlasticStudio\SEO\Schema\DefinedTermSetSchema;
+
+class GlossaryPage extends Page implements SchemaProvider {
+
+public function getSchemaEntities(): array
+  {
+    $pageUrl = rtrim($this->AbsoluteLink(), '/') . '/';
+
+    $description = $this->GlossaryDescription
+      ?: ($this->dbObject('Content')->FirstParagraph()
+        ?: 'Glossary collection');
+
+    $termSet = DefinedTermSetSchema::create(
+      $pageUrl . '#glossaryset',
+      $this->Title,
+      $description
+    );
+
+    foreach ($this->GlossaryItems()->sort('Term ASC') as $item) {
+      $term = trim((string) $item->Term);
+      $definition = trim(
+        html_entity_decode(
+          strip_tags((string) $item->Definition),
+          ENT_QUOTES | ENT_HTML5,
+          'UTF-8'
+        )
+      );
+
+      if ($term === '' || $definition === '') {
+        continue;
+      }
+
+      $termSchema = DefinedTermSchema::create(
+        $pageUrl . '#term-' . $item->ID,
+        $term,
+        $definition
+      );
+
+      $termSet->addTerm($termSchema);
+    }
+
+    return [$termSet];
+  }
+}
+```
 
 ## src/Schema/SchemaExtension
 
