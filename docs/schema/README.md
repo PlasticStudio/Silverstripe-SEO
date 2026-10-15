@@ -1,127 +1,47 @@
 # Schema
 
-This module allows you to add schema.org JSON to your webpage and auto generates schema for Blog Posts, Local Business, Organisation, Breadcrumbs
+Silverstripe's Schema Manager module is included: https://github.com/DorsetDigital/silverstripe-schema-manager
 
-Google schema references: https://developers.google.com/search/docs/advanced/structured-data/article
+This module creates structure data to produce a linked JSON-LD @graph and inserts it into the page's head automatically.
 
-## Manual schemas
+This PlasticStudio SEO module includes a couple of helpers to define how to use the schema manager module.
 
-Every page apart from Blog Posts have a Settings -> Schema tab with a textarea field where you can add custom schema to that page.
+## src/Schema/SchemaProvider
 
-## Displaying dynamic schema on Your Page
+Is an interface for data objects or elements that provide custom schema to SS-Schema-Manager.
 
-### Installation / set up
+## src/Schema/SchemaExtension
 
-1. Add a yml to specify which schema to include where
-2. In Site Settings -> SEO tab, complete site name, address, phone and lat/lng details
-3. Add $ApplyUnifiedSchema template variable to your page (preferably before the closing body tag)
+Uses the SS-Schema-Manager updateSchemaManagerEntities hook to add custom schema entities to the JSON-LD output.
 
-#### Example YAML
+For elemental, implement the SchemaProvider and include a getSchemaEntities() function which registers and maps the element to a provided schema from SS-Schema-Manager. For example:
 
 ```
-# Google SEO schema settings
-
-PlasticStudio\SEO\Schema\Extensions\PageSchemaSelectorExtension:
-  custom_builders:
-    'Skeletor\Schema\Builder\RealEstateAgent': 'Property Agent Profile'
-    'Skeletor\Schema\Builder\EventCalendar': 'Event Listings'
-
-Page:
-  default_image: "/public/path_to_logo_file.png"      // leading / important for SS5
-  active_schema:
-    - 'PlasticStudio\SEO\Schema\Builder\Breadcrumbs'
-
-Skeletor\Pages\HomePage:
-  active_schema:
-    - 'PlasticStudio\SEO\Schema\Builder\LocalBusiness'
-
-Skeletor\Pages\NewsArticle:
-  active_schema:
-    - 'PlasticStudio\SEO\Schema\Builder\NewsArticle'
-
-Skeletor\Pages\AboutPage:
-  active_schema:
-    - 'PlasticStudio\SEO\Schema\Builder\StaffDirectory'
-  staff_config:
-    Relation: 'TeamMembers'
-    NameField: 'FullName'
-    JobTitleField: 'Role'
-    ImageRelation: 'Avatar'
-    SocialField: 'LinkedInProfile'
-```
-
-## Custom schema example
-
-1. Create new schema type in app/src/Schema/Types
-2. Extend PlasticStudio\SEO\Schema\Type\SchemaType
-3. Write a construct method with required fields from Google Schema
-4. Create a new builder module in app/src/Schema/Builder
-5. Extend PlasticStudio\SEO\Schema\Builder\SchemaBuilder
-6. Write a getSchema method to pull specific data for schema type
-7. In yaml, specify your custom schema builder
-
-eg: https://gist.github.com/ebakernz/1dbcb7cd229ebccf2e861dbb47729991
-
-```
-Skeletor\Artena\Models\CustomDataObjectOrPage:
-  active_schema:
-    - 'Skeletor\Schema\Builder\CustomBuilder'
-```
-
-## BlogPost Schema
-
-NewsArticle schema is set up for Blog module's Blog Posts.
-
-If you're using a custom post page, you'll need to write a custom schema, OR use the same field names (see fields pulled from blog post below).
-
-In your CMS Site Settings -> SEO tab, add your organisation name and image to populate the data:
-
-- publisher.name
-- publisher.logo.url
-- publisher.logo.width
-- publisher.logo.height
-
-The following data is pulled from the actual BlogPost:
-
-- headline - Title
-- datePublished - PublishDate
-- dateModified - LastEdited
-- description - Summary
-- author.name - First Author FirstName and Surname
-- image - FeaturedImage.URL
-
-The below snippet is auto generated form your BlogPost data and some site config settings.
-
-```javascript
-<script type="application/ld+json">
+class ProductElement extends BaseElement implements SchemaProvider
 {
-    "@context": "http://schema.org",
-    "@type": "NewsArticle",
-    "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://google.com/article"
-    },
-    "headline": "Article headline",
-    "datePublished": "2015-02-05T08:00:00+08:00",
-    "dateModified": "2015-02-05T09:20:00+08:00",
-    "description": "A most wonderful article",
-    "author": {
-        "@type": "Person",
-        "name": "John Doe"
-    },
-    "publisher": {
-        "@type": "Organization",
-        "name": "Google",
-        "logo": {
-            "@type": "ImageObject",
-            "url": "https://google.com/logo.jpg",
-            "width": 100,
-            "height": 100
-        }
-    },
-    "image": [
-        "https://example.com/photos/1x1/photo.jpg"
-    ]
+
+  public function getSchemaEntities(): array
+  {
+    $page = $this->parent()->getOwnerPage();
+
+    if (!$page) {
+      return [];
+    }
+
+    $schema = ProductSchema::create(
+      'product-' . $this->ID,
+      $this->Title,
+      $this->MetaDescription ?: null
+    )
+      ->setURL($page->AbsoluteLink())
+      ->setMainEntityOfPage($page->AbsoluteLink())
+      ->setImage($this->Image()->exists() ? $this->Image()->AbsoluteLink() : null)
+      ->setSKU($this->SKU ?: null)
+      ->setBrand($this->Brand ?: null)
+      ->setOffer($this->Price, 'NZD', $this->InStock ?: null);
+
+    return [$schema];
+  }
 }
-</script>
 ```
+
