@@ -10,6 +10,12 @@ This PlasticStudio SEO module includes a couple of helpers to define how to use 
 
 Is an interface for pages, data objects or elements that provide custom schema to SS-Schema-Manager.
 
+## src/Schema/SchemaExtension
+
+Uses the SS-Schema-Manager updateSchemaManagerEntities hook to add custom schema entities to the JSON-LD output.
+
+## Examples
+
 ```
 use PlasticStudio\SEO\Schema\SchemaProvider;
 use PlasticStudio\SEO\Schema\DefinedTermSchema;
@@ -59,11 +65,8 @@ public function getSchemaEntities(): array
 }
 ```
 
-## src/Schema/SchemaExtension
-
-Uses the SS-Schema-Manager updateSchemaManagerEntities hook to add custom schema entities to the JSON-LD output.
-
 For elemental, implement the SchemaProvider and include a getSchemaEntities() function which registers and maps the element to a provided schema from SS-Schema-Manager. For example:
+
 
 ```
 class ProductElement extends BaseElement implements SchemaProvider

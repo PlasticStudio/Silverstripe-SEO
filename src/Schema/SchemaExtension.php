@@ -11,15 +11,17 @@ class SchemaExtension extends Extension
     {
         $page = $this->owner;
 
-        if (!$page->ElementalArea()->exists()) {
-            return;
-        }
-
-        // page type schemas defined on an individual site
+        // Page level schemas defined on an individual site
         if ($this->owner instanceof SchemaProvider) {
             foreach ($this->owner->getSchemaEntities() as $schema) {
                 $entities[] = $schema;
             }
+        }
+
+        // Elemental schemas
+
+        if (!$page->ElementalArea()->exists()) {
+            return;
         }
 
         foreach ($page->ElementalArea()->Elements() as $element) {
