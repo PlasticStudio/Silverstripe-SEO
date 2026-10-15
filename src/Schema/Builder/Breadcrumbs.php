@@ -36,7 +36,8 @@ class Breadcrumbs extends SchemaBuilder
                 $listItem = new ListItemSchema(
                     $position,
                     $item->Title,
-                    $itemUrl
+                    $itemUrl,
+                    $item->ID
                 );
                 
                 // Add a unique nested identifier string for the item

@@ -18,6 +18,11 @@ abstract class SchemaType implements \JsonSerializable
             unset($data['atId']);
         }
 
+        $data = array_filter(
+            $data,
+            static fn ($value) => $value !== null
+        );
+
         return $data;
     }
 }

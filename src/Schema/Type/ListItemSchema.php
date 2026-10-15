@@ -10,6 +10,7 @@ class ListItemSchema extends SchemaType
     public ?string $atId = null;
     public int $position;
     public string $name;
+    public ?string $id;
     
     /**
      * Declaring item as mixed/array so it can accept our 
@@ -24,10 +25,10 @@ class ListItemSchema extends SchemaType
      * @param string $name
      * @param string|null $id
      */
-    public function __construct(int $position, string $name, ?string $id = null)
+    public function __construct(int $position, string $name, ?string $url = null, ?string $id = null)
     {
         $this->position = $position;
         $this->name = $name;
-        $this->atId = $id ? $id . '#breadcrumb-item' : null;
+        $this->atId = $url ? $url . '#breadcrumb-item-' . $id : null;
     }
 }

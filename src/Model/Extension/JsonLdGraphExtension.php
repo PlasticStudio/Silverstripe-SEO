@@ -28,7 +28,16 @@ class JsonLdGraphExtension extends Extension
         
         // if cms selected schema, inject it into the array 
         if ($this->owner->SelectedSchemaBuilder) {
-            $schemas[] = $this->owner->SelectedSchemaBuilder;
+            $schemas = array_map(
+                function ($schemaClass) {
+                    if ($schemaClass === 'PlasticStudio\\SEO\\Schema\\Builder\\WebPage') {
+                        return $this->owner->SelectedSchemaBuilder;
+                    }
+
+                    return $schemaClass;
+                },
+                $schemas
+            );
         }
 
         // Clean out empty values and duplicates safely
