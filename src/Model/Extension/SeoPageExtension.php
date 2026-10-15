@@ -34,7 +34,6 @@ use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\ToggleCompositeField;
 use PlasticStudio\SEO\Forms\MetaPreviewField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
-use PlasticStudio\SEO\Schema\Builder\SchemaBuilder;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
 
@@ -93,7 +92,6 @@ class SeoPageExtension extends Extension
         'DatePublished'         => 'Datetime',
         'Canonical'             => 'Varchar(512)',
         'Robots'                => 'Varchar(100)',
-        'ManualSchema'          => 'Text',
         'Priority'              => 'Decimal(3,2)',
         'ChangeFrequency'       => 'Varchar(20)',
         'SitemapHide'           => 'Boolean',
@@ -102,7 +100,6 @@ class SeoPageExtension extends Extension
         'OGtype'                => 'Varchar(100)',
         'OGlocale'              => 'Varchar(10)',
         'TwitterCard'           => 'Varchar(100)',
-        'SelectedSchemaBuilder' => 'Varchar(255)',
     ];
 
     /**
@@ -168,8 +165,6 @@ class SeoPageExtension extends Extension
             'OGtype',
             'OGlocale',
             'TwitterCard',
-            'ManualSchema',
-            'SelectedSchemaBuilder',
             'SocialImage',
             'SitemapImages',
             'ShowDebugTools',
@@ -337,17 +332,6 @@ class SeoPageExtension extends Extension
         // }
         // $fields->addFieldToTab('Root.AdvancedSEO.OpenGraph', $card);
         
-
-        // SCHEMA TAB
-
-        $availableBuilders = $this->getAvailableBuilders();
-
-        $fields->addFieldsToTab('Root.AdvancedSEO.Schema', [
-            DropdownField::create('SelectedSchemaBuilder', 'Page schema type', $availableBuilders)
-                ->setEmptyString('- please select - ')
-                ->setDescription('Choose the schema type for Google and AI Engines'),
-            TextareaField::create('ManualSchema', 'Manual schema')                
-        ]);
 
         // SITEMAP TAB
         $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', NumericField::create('Priority')->setScale(1)
@@ -962,62 +946,4 @@ class SeoPageExtension extends Extension
         }
     }
 
-
-
-
-    /*----------------- SCHEMAS ------------------- */
-
-    
-    // /**
-    //  * Hook onto the page meta tags and append any configured schema objects
-    //  * fixme: does not trigger correctly on DataObjects pages
-    //  *
-    //  * @param $tags
-    //  */
-    // public function ApplySchema()
-    // {
-    //     // if a schema has been pasted into CMS, add it to page
-    //     if ($this->owner->ManualSchema) {
-    //         Requirements::insertHeadTags(sprintf(
-    //             "<script type='application/ld+json'>%s</script>",
-    //             json_encode($this->owner->ManualSchema)
-    //         ));
-    //     }
-
-    //     $schemas = array_filter($this->owner->config()->get('active_schema'));
-    //     foreach ($schemas as $schema) {
-    //         if (self::is_valid($schema)) {
-    //             $this->appendSchema(new $schema());
-    //         }
-    //     }
-    // }
-
-
-    // /**
-    //  * Append a schema ld+json tag
-    //  *
-    //  * @param $tags
-    //  * @param $schema
-    //  */
-    // private function appendSchema(SchemaBuilder $schema)
-    // {
-    //     if ($schema = $schema->getSchema($this->owner)) {
-    //         Requirements::insertHeadTags(sprintf(
-    //             "<script type='application/ld+json'>%s</script>",
-    //             json_encode($schema)
-    //         ), get_class($schema));
-    //     }
-    // }
-
-    // /**
-    //  * Check if the set schema is of an active and available type
-    //  *
-    //  * @param $schema
-    //  *
-    //  * @return bool
-    //  */
-    // private static function is_valid($schema)
-    // {
-    //     return class_exists($schema) && new $schema() instanceof SchemaBuilder;
-    // }
 }

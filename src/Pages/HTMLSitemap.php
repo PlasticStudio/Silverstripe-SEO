@@ -56,18 +56,6 @@ class HTMLSitemap extends Page {
 				DB::alteration_message('Sitemap HTML page created', 'created');
 			}
 		}
-
-		/*
-		// schema migration
-		// @todo Move to migration task once infrastructure is implemented
-		if($this->class == 'SiteTree') {
-			$conn = DB::getConn();
-			// only execute command if fields haven't been renamed to _obsolete_<fieldname> already by the task
-			if(array_key_exists('Viewers', $conn->fieldList('SiteTree'))) {
-				$task = new UpgradeSiteTreePermissionSchemaTask();
-				$task->run(new SS_HTTPRequest('GET','/'));
-			}
-		}*/
 	}
 
 }
