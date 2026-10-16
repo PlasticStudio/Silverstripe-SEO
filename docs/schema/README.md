@@ -1,18 +1,23 @@
 # Schema
 
-Silverstripe's Schema Manager module is included: https://github.com/DorsetDigital/silverstripe-schema-manager
+Silverstripe's Schema Manager module is included: https://github.com/DorsetDigital/silverstripe-schema-manager. This module creates structure data to produce a linked JSON-LD @graph and inserts it into the page's head automatically.
 
-This module creates structure data to produce a linked JSON-LD @graph and inserts it into the page's head automatically.
-
+## Helpers
 This PlasticStudio SEO module includes a couple of helpers to define how to use the schema manager module.
 
-## SchemaProvider
+SchemaProvider: is an interface for pages, data objects or elements that provide custom schema to SS-Schema-Manager.
+SchemaExtension: uses the SS-Schema-Manager updateSchemaManagerEntities hook to add custom schema entities to the JSON-LD output.
 
-Is an interface for pages, data objects or elements that provide custom schema to SS-Schema-Manager.
+## Usage
 
-## SchemaExtension
+Determine which website pages and sections require a specific schema
 
-Uses the SS-Schema-Manager updateSchemaManagerEntities hook to add custom schema entities to the JSON-LD output.
+Implement SchemaProvider to class eg:
+- class ProductElement extends BaseElement implements SchemaProvider
+- class GlossaryPage extends Page implements SchemaProvider
+
+Add getSchemaEntities() to assign the correct values to the schema map
+See SS-Schema-Manager for docs: https://github.com/DorsetDigital/silverstripe-schema-manager/tree/main/docs
 
 
 ## Examples
