@@ -5,24 +5,25 @@ Silverstripe's Schema Manager module is included: https://github.com/DorsetDigit
 ## Helpers
 This PlasticStudio SEO module includes a couple of helpers to define how to use the schema manager module.
 
-SchemaProvider: is an interface for pages, data objects or elements that provide custom schema to SS-Schema-Manager.
-SchemaExtension: uses the SS-Schema-Manager updateSchemaManagerEntities hook to add custom schema entities to the JSON-LD output.
+- SchemaProvider: is an interface for pages, data objects or elements that provide custom schema to SS-Schema-Manager.
+- SchemaExtension: uses the SS-Schema-Manager updateSchemaManagerEntities hook to add custom schema entities to the JSON-LD output.
 
 ## Usage
 
-Determine which website pages and sections require a specific schema
+Determine which website pages and sections require a specific schema.
 
 Implement SchemaProvider to class eg:
 - class ProductElement extends BaseElement implements SchemaProvider
 - class GlossaryPage extends Page implements SchemaProvider
 
-Add getSchemaEntities() to assign the correct values to the schema map
+Add getSchemaEntities() to assign the correct values to the schema map.
+
 See SS-Schema-Manager for docs: https://github.com/DorsetDigital/silverstripe-schema-manager/tree/main/docs
 
 
 ## Examples
 
-Create a specific organisation type schema, eg BankOrCreditUnion
+Example of a specific organisation type schema, eg BankOrCreditUnion
 ```
 schema-manager.yml
 # disable automatic organisation schema - using custom bank schema
@@ -86,6 +87,7 @@ class BankOrCreditUnionSchema extends Schema
 }
 ```
 
+Example of a custom glosssary page
 ```
 use PlasticStudio\SEO\Schema\SchemaProvider;
 use PlasticStudio\SEO\Schema\DefinedTermSchema;
@@ -135,9 +137,7 @@ public function getSchemaEntities(): array
 }
 ```
 
-For elemental, implement the SchemaProvider and include a getSchemaEntities() function which registers and maps the element to a provided schema from SS-Schema-Manager. For example:
-
-
+Elemental example:
 ```
 class ProductElement extends BaseElement implements SchemaProvider
 {
@@ -167,6 +167,7 @@ class ProductElement extends BaseElement implements SchemaProvider
 }
 ```
 
+Person / Data object:
 ```
 use DorsetDigital\SchemaManager\Model\Schema\PersonSchema;
 use PlasticStudio\SEO\Schema\SchemaProvider;
@@ -224,7 +225,7 @@ class Person extends DataObject implements SchemaProvider {
   }
 }
 ```
-
+Article page with connected authors from People data object
 ```
 use SilverStripe\Assets\Image;
 use SilverStripe\Security\Member;
@@ -316,9 +317,8 @@ class ArticlePage extends Page implements SchemaProvider {
     
 }
 ```
-
-```
 FAQ page:
+```
 public function getSchemaEntities(): array
 {
   $url = $this->AbsoluteLink();
