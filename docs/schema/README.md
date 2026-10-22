@@ -10,6 +10,58 @@ This PlasticStudio SEO module includes a couple of helpers to define how to use 
 
 ## Usage
 
+The base schemas are added to the site by default:
+- Organization
+- WebSite
+- WebPage
+- Breadcrumbs
+
+```
+<script id="schema-manager-jsonld" type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "http://localhost/#organisation",
+        "name": "SBS Bank",
+        "url": "http://localhost/",
+        "legalName": "Emmas test limited",
+        "telephone": "0800 111 222",
+        "email": "emma@test.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "12 Johnston Street",
+          "addressLocality": "Wellington",
+          "addressRegion": "Wellington",
+          "postalCode": "6022",
+          "addressCountry": "New Zealand"
+        },
+        "sameAs": ["https://facebook.com"]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "http://localhost/#website",
+        "name": "Southland Building Society",
+        "url": "http://localhost/",
+        "publisher": { "@id": "http://localhost/#organisation" }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "http://localhost/#webpage",
+        "name": "Home",
+        "url": "http://localhost/",
+        "isPartOf": { "@id": "http://localhost/#website" },
+        "description": "EXAMPLE EXAMPLE",
+        "datePublished": "2025-02-07T09:24:00+13:00",
+        "dateModified": "2025-03-14T16:01:11+13:00"
+      }
+    ]
+  }
+</script>
+```
+
+Further customisation and specificity is possible and recommended.
 Determine which website pages and sections require a specific schema.
 
 Implement SchemaProvider to class eg:
