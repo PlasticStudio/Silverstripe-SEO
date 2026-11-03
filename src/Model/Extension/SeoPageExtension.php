@@ -36,6 +36,7 @@ use PlasticStudio\SEO\Forms\MetaPreviewField;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RelationEditor;
 use SilverStripe\Forms\GridField\GridFieldAddExistingAutocompleter;
+use DorsetDigital\SchemaManager\Annotation\SchemaDefinitionRegistry;
 
 /**
  * @package silverstripe-seo
@@ -169,6 +170,7 @@ class SeoPageExtension extends Extension
             'SitemapImages',
             'ShowDebugTools',
             'HeadTags',
+            'Schema',
         ]);
 
         // This gives us a target to position other cms fields "before"
@@ -345,6 +347,19 @@ class SeoPageExtension extends Extension
         //     ->setFolderName('SitemapImages')
         //     ->setAllowedFileCategories('image', 'image/supported');
         // $fields->addFieldToTab('Root.AdvancedSEO.Sitemap', $uploader);
+
+        // SCHEMA TAB
+        $definitions = SchemaDefinitionRegistry::definitions();
+        $options = [];
+        foreach ($definitions as $key => $definition) {
+            $options[$key] = $definition['label'] ?? $key;
+        }
+
+        $fields->addFieldToTab('Root.AdvancedSEO.Schema', DropdownField::create(
+            'SchemaAnnotationType',
+            'Page annotation',
+            $options
+        )->setEmptyString('None'));
 
         return $fields;
     }

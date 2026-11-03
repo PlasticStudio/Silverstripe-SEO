@@ -75,69 +75,6 @@ See SS-Schema-Manager for docs: https://github.com/DorsetDigital/silverstripe-sc
 
 ## Examples
 
-Example of a specific organisation type schema, eg BankOrCreditUnion
-```
-schema-manager.yml
-# disable automatic organisation schema - using custom bank schema
-DorsetDigital\SchemaManager\Service\SchemaManager:
-  automatic_organisation_schema: false
-SilverStripe\SiteConfig\SiteConfig:
-  extensions:
-    - Skeletor\Extension\SiteConfigBankSchemaExtension
-```
-
-```
-use DorsetDigital\SchemaManager\Model\Schema\Schema;
-
-class BankOrCreditUnionSchema extends Schema
-{
-  public static function create(
-    string $id,
-    string $name,
-    ?string $url = null
-  ): static {
-    return new static([
-      '@type' => 'BankOrCreditUnion',
-      '@id' => $id,
-      'name' => $name,
-      'url' => $url,
-    ]);
-  }
-
-  public function setLogo(?string $url): static
-  {
-    return $this->setOptional('logo', $url === null ? null : [
-      '@type' => 'ImageObject',
-      'url' => $url,
-    ]);
-  }
-
-  public function setTelephone(?string $phone): static
-  {
-    return $this->setOptional('contactPoint', $phone === null ? null : [
-      '@type' => 'ContactPoint',
-      'telephone' => $phone,
-      'contactType' => 'customer service',
-    ]);
-  }
-
-  public function setSameAs(array $urls): static
-  {
-    return $this->setOptional('sameAs', array_values(array_filter($urls)));
-  }
-
-  private function setOptional(string $key, mixed $value): static
-  {
-    if ($value === null) {
-      unset($this->data[$key]);
-    } else {
-      $this->data[$key] = $value;
-    }
-
-    return $this;
-  }
-}
-```
 
 Example of a custom glosssary page
 ```
@@ -390,5 +327,109 @@ public function getSchemaEntities(): array
   }
 
   return [$schema];
+}
+```
+Example of a specific organisation type schema, eg BankOrCreditUnion
+Has little impact on SEO, but   
+```
+schema-manager.yml
+# disable automatic organisation schema - using custom bank schema
+DorsetDigital\SchemaManager\Service\SchemaManager:
+  automatic_organisation_schema: false
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - Skeletor\Extension\SiteConfigBankSchemaExtension
+```
+```
+class SiteConfigBankSchemaExtension extends Extension
+{
+  public function updateSchemaManagerEntities(array &$entities): void
+  {
+    $siteConfig = $this->owner;
+    $baseUrl = rtrim(Director::absoluteBaseURL(), '/') . '/';
+
+    $title = $siteConfig->SchemaOrganisationName ?? $siteConfig->Title;
+
+    $schema = BankOrCreditUnionSchema::create(
+      $baseUrl . '#organisation',
+      $title,
+      $baseUrl
+    );
+
+    $defaultImage = $siteConfig->SchemaOrganisationLogo;
+
+    if ($defaultImage && $defaultImage->exists()) {
+      $schema->setLogo(Director::absoluteURL($defaultImage->URL));
+    }
+
+    $schema->setTelephone($siteConfig->SchemaOrganisationPhone);
+
+    $socialUrls = preg_split(
+      '/\r\n|\r|\n/',
+      (string) $siteConfig->SchemaOrganisationSameAs
+    );
+
+    $schema->setSameAs(
+      array_values(
+        array_filter(
+          array_map('trim', $socialUrls)
+        )
+      )
+    );
+
+    $entities[] = $schema;
+  }
+}
+```
+```
+use DorsetDigital\SchemaManager\Model\Schema\Schema;
+
+class BankOrCreditUnionSchema extends Schema
+{
+  public static function create(
+    string $id,
+    string $name,
+    ?string $url = null
+  ): static {
+    return new static([
+      '@type' => 'BankOrCreditUnion',
+      '@id' => $id,
+      'name' => $name,
+      'url' => $url,
+    ]);
+  }
+
+  public function setLogo(?string $url): static
+  {
+    return $this->setOptional('logo', $url === null ? null : [
+      '@type' => 'ImageObject',
+      'url' => $url,
+    ]);
+  }
+
+  public function setTelephone(?string $phone): static
+  {
+    return $this->setOptional('contactPoint', $phone === null ? null : [
+      '@type' => 'ContactPoint',
+      'telephone' => $phone,
+      'contactType' => 'customer service',
+    ]);
+  }
+
+  public function setSameAs(array $urls): static
+  {
+    return $this->setOptional('sameAs', array_values(array_filter($urls)));
+  }
+
+  private function setOptional(string $key, mixed $value): static
+  {
+    if ($value === null) {
+      unset($this->data[$key]);
+    } else {
+      $this->data[$key] = $value;
+    }
+
+    return $this;
+  }
 }
 ```
